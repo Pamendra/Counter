@@ -18,7 +18,6 @@ class Utils {
     }
   }
 
-
   void setUserId(String userID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('username', userID);
