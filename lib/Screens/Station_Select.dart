@@ -171,7 +171,7 @@ class _StationState extends State<Station> {
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: ColorConstants.appcolor,
-                                shape: StadiumBorder()
+                                shape: const StadiumBorder(),
                               ),
                               child: const Text(
                                 'Search',
