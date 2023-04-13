@@ -162,9 +162,7 @@ class _TrainListState extends State<TrainList> {
                 child: IconButton(onPressed: (){
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const DataScreen(
-
-                    )),
+                    MaterialPageRoute(builder: (context) => const DataScreen()),
                   );
                 }, icon: const Icon(Icons.data_saver_on,color: Colors.white,size: 30,),)
             ),
@@ -279,7 +277,7 @@ class _TrainListState extends State<TrainList> {
 
                               final isMatch = searchtrain.text.isEmpty ||
                                   train.origin_location.toLowerCase().contains(searchtrain.text.toLowerCase()) || train.headcode.toLowerCase().contains((searchtrain.text.toLowerCase()))
-                                  || train.train_uid.toLowerCase().contains((searchtrain.text.toLowerCase())) || train.origin_time.contains((searchtrain.text)) ;
+                                  || train.train_uid.toLowerCase().contains((searchtrain.text.toLowerCase())) || train.origin_time.replaceAll(':', '').contains(searchtrain.text);
 
                               if (isMatch) {
                                 return InkWell(

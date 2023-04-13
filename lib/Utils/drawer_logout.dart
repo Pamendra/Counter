@@ -36,7 +36,7 @@ class DrawerLogout extends StatelessWidget {
                 side: BorderSide(
                     color: ColorConstants.primaryColor, width: 2
                 )),
-            backgroundColor: ColorConstants.DarkBlueColor,
+            backgroundColor: ColorConstants.appcolor,
             insetPadding: EdgeInsets.all(20),
 
             actionsPadding: const EdgeInsets.symmetric(horizontal: 10),
