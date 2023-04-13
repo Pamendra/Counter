@@ -18,6 +18,7 @@ class DataScreenState extends State<DataScreen> {
   List<Map<String, dynamic>> _data = [];
   final LocalDatabase _localDatabase = LocalDatabase.instance;
 
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +55,9 @@ class DataScreenState extends State<DataScreen> {
             DataColumn(label: Text('Joining')),
             DataColumn(label: Text('Alightning')),
             DataColumn(label: Text('Comments')),
+            DataColumn(label: Text('Edit')),
+            DataColumn(label: Text('Delete')),
+
           ],
           rows: _data.map((row) {
             return DataRow(cells: [
@@ -65,6 +69,22 @@ class DataScreenState extends State<DataScreen> {
               DataCell(Text(row['joining'])),
               DataCell(Text(row['alightning'])),
               DataCell(Text(row['comment'])),
+              DataCell(
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+
+                  },
+                ),
+              ),
+              DataCell(
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+
+                  },
+                ),
+              ),
             ]);
           }).toList(),
         ),

@@ -252,26 +252,6 @@ class LocalDatabase {
       print('Failed to update data: $e');
     }  }
 
-  // Future<int?> updateData(int id, String originLocation, String originTime, String destinationLocation, String destinationTime, String ota, String otd, String joining, String alightning, String comment) async {
-  //   final db = await instance.database;
-  //   final res = await db?.update(
-  //     'my_boarding',
-  //     {
-  //       'origin_location': originLocation,
-  //       'origin_time': originTime,
-  //       'destination_location': destinationLocation,
-  //       'destination_time': destinationTime,
-  //       'ota': ota,
-  //       'otd': otd,
-  //       'joining': joining,
-  //       'alightning': alightning,
-  //       'comment': comment,
-  //     },
-  //     where: 'id = ?',
-  //     whereArgs: [id],
-  //   );
-  //   return res;
-  // }
 
   Future<void> deleteData(int id) async {
     final db = await database;
