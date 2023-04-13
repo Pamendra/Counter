@@ -6,6 +6,7 @@ import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Utils/dialogs_utils.dart';
 import 'package:counter/Utils/drawer_login.dart';
 import 'package:counter/Utils/gradient_color.dart';
+import 'package:counter/Utils/utils.dart';
 import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:flutter/material.dart';
@@ -193,6 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                          } else  {
                            BlocProvider.of<LoginBloc>(context).add(
                                LoginPressedEvent(emailController.text, passwordController.text));
+                           Utils().setUserId(emailController.text);
                          }
                        },style: ElevatedButton.styleFrom(
                            backgroundColor: ColorConstants.appcolor

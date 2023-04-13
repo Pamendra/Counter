@@ -46,7 +46,7 @@ class Dialogs {
                             color: Colors.white,
                           ),
                         )),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         PrimaryButton(
@@ -55,7 +55,7 @@ class Dialogs {
                               Navigator.pop(context);
                               Navigator.pop(context, true);
                             }),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                       ])
@@ -69,7 +69,7 @@ class Dialogs {
         context: context,
         builder: (context) {
           return AlertDialog(
-            insetPadding: EdgeInsets.all(20),
+            insetPadding: const EdgeInsets.all(20),
             shape: RoundedRectangleBorder(
                 borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                 side: BorderSide(color: ColorConstants.primaryColor, width: 2)),
