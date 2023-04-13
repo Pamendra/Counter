@@ -67,6 +67,9 @@ class _BoardingState extends State<Boarding> {
     _join.dispose();
     _alight.dispose();
     _focusNode.dispose();
+    _focusNod.dispose();
+    _focusNo.dispose();
+    _focusN.dispose();
     super.dispose();
   }
 
