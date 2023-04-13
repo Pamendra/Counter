@@ -100,7 +100,7 @@ class _StationState extends State<Station> {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black),
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -132,9 +132,12 @@ class _StationState extends State<Station> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             SizedBox(height: 10,),
-                        SizedBox(
+                        Container(
                           height: 50,
                           width: 200,
+                          // decoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.circular(5)
+                          // ),
                           child: ElevatedButton(
                               onPressed: () async{
                                 if(trainID.isNotEmpty) {

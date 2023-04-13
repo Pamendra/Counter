@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                        decoration: InputDecoration(
                          focusedBorder: OutlineInputBorder(
                            borderSide:  BorderSide(width: 3,color: ColorConstants.primaryColor),
-                           borderRadius: BorderRadius.circular(11)
+                           borderRadius: BorderRadius.circular(5)
                          ),
                            filled: true,
                            fillColor: Colors.white,
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                            hintStyle: const TextStyle(color: Colors.black54),
                            suffixIcon: const Icon(Icons.email,color:  Color(0xFF202447),),
                            border: OutlineInputBorder(
-                               borderRadius: BorderRadius.circular(11))),
+                               borderRadius: BorderRadius.circular(5))),
                      ),
                    ),
                    const SizedBox(height: 20),
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                        decoration: InputDecoration(
                            focusedBorder: OutlineInputBorder(
                                borderSide:  BorderSide(width: 3,color: ColorConstants.primaryColor),
-                               borderRadius: BorderRadius.circular(11)
+                               borderRadius: BorderRadius.circular(5)
                            ),
                          filled: true,
                            fillColor: Colors.white,
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                              },
                            ),
                            border: OutlineInputBorder(
-                               borderRadius: BorderRadius.circular(11))),
+                               borderRadius: BorderRadius.circular(5))),
                      ),
                    ),
                    const SizedBox(height: 40,),
