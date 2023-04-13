@@ -33,15 +33,16 @@ var gradient_login = const BoxDecoration(
   gradient:LinearGradient(
       colors: [
 
-        Color(0xffa0ad91),
-        Color(0xff9fae86),
-        Color(0xff9daf7b),
-        Color(0xff9cb071),
+        Color(0xffe8ecef),
+        Color(0xffe8ecef),
+        Color(0xffe8ecef),
+        Color(0xfff2f2f2),
+        Color(0xffe8ecef),
         //add more colors for gradient
       ],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      stops: [0, 0.2, 0.5, 0.8]
+      stops: [0, 0.2, 0.5, 0.8,1]
   ),
 );
 

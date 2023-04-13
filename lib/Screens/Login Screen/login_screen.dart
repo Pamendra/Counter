@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                child: Column(
                  children: [
                    Image.asset('assets/images/pcds.webp'),
-                   const Text('Counter App',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 30,color: Colors.white),),
+                   const Text('Counter App',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 30,color: Color(0xFF202447)),),
                    const SizedBox(height: 40,),
                    Row(
                      children: [
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                        controller: emailController,
                        decoration: InputDecoration(
                          focusedBorder: OutlineInputBorder(
-                           borderSide: const BorderSide(width: 3,color: Color(0xFF202447)),
+                           borderSide:  BorderSide(width: 3,color: ColorConstants.primaryColor),
                            borderRadius: BorderRadius.circular(11)
                          ),
                            filled: true,
@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                        obscureText: !_passwordVisible,
                        decoration: InputDecoration(
                            focusedBorder: OutlineInputBorder(
-                               borderSide: const BorderSide(width: 3,color: Color(0xFF202447)),
+                               borderSide:  BorderSide(width: 3,color: ColorConstants.primaryColor),
                                borderRadius: BorderRadius.circular(11)
                            ),
                          filled: true,

@@ -12,7 +12,7 @@ class headingText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(title,style:TextStyle(fontWeight:FontWeight.w600,color:Colors.white,fontFamily:"Aleo",
+    return Text(title,style:TextStyle(fontWeight:FontWeight.w600,color:Color(0xFF202447),fontFamily:"Aleo",
         fontSize:12.sp,letterSpacing:1),);
   }
 

@@ -76,19 +76,16 @@ class _StationState extends State<Station> {
             scrollDirection: Axis.vertical,
             child: SafeArea(
               child:Padding(
-                padding: const EdgeInsets.only(top: 50,left: 10,right: 10),
+                padding: const EdgeInsets.only(top: 120,left: 10,right: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Column(
                       children:  [
-                        headingTextTwo(title: 'Please enter the Station'),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        Image.asset('assets/images/tracsis.png'),
                       ],
                     ),
-                    const SizedBox(height: 50,),
+                    // const SizedBox(height: 50,),
 
 
                     const SizedBox(height: 20,),
@@ -103,7 +100,7 @@ class _StationState extends State<Station> {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black),
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(11),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -130,12 +127,11 @@ class _StationState extends State<Station> {
 
 
                     Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Column(children: [
-                        const SizedBox(
-                          height: 50,
-                        ),
-
+                      padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            SizedBox(height: 10,),
                         SizedBox(
                           height: 50,
                           width: 200,
@@ -172,6 +168,7 @@ class _StationState extends State<Station> {
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: ColorConstants.appcolor,
+                                shape: StadiumBorder()
                               ),
                               child: const Text(
                                 'Search',

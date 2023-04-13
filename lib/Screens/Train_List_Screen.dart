@@ -112,7 +112,7 @@ import 'package:sqflite/sqflite.dart';
              child: Container(
                padding: const EdgeInsets.all(15),
                width: 50,
-               height: 60,
+               height: 50,
                color: ColorConstants.appcolor,
                child: Row(
                  mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +127,7 @@ import 'package:sqflite/sqflite.dart';
                    ),
                    Text(
                      'Go Back',
-                     style: TextStyle(color: Colors.white, fontSize: 21),
+                     style: TextStyle(color: Colors.white, fontSize: 19),
                    )
                  ],
                ),

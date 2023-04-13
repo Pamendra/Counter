@@ -124,7 +124,7 @@ class _BoardingState extends State<Boarding> {
             child: Container(
               padding: const EdgeInsets.all(15),
               width: 50,
-              height: 60,
+              height: 50,
               color: ColorConstants.appcolor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +139,7 @@ class _BoardingState extends State<Boarding> {
                   ),
                   Text(
                     'Go Back',
-                    style: TextStyle(color: Colors.white, fontSize: 21),
+                    style: TextStyle(color: Colors.white, fontSize: 19),
                   )
                 ],
               ),
