@@ -1,16 +1,96 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:counter/Utils/drawertextbox.dart';
+import 'package:counter/Utils/utils.dart';
+import 'package:counter/Widgets/PrimaryButton.dart';
 import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:counter/Widgets/images_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sizer/sizer.dart';
 import 'colors_constants.dart';
 
 class DrawerLogin extends StatelessWidget {
-   const DrawerLogin({Key? key}) : super(key: key);
-
+    DrawerLogin({Key? key}) : super(key: key);
+  String logout = 'user not loggedIn';
   //PackageInfo packageInfo =await PackageInfo.fromPlatform();
+   openAppInfoDialog(BuildContext context) async {
+     Utils().setUserId(logout);
+     String user = await Utils().getUsererId();
+     bool checkInternet = await Utils.checkInternet();
+     PackageInfo packageInfo = await PackageInfo.fromPlatform();
+     String version = packageInfo.version;
+     print(version);
 
+     return showDialog(
+         context: context,
+         builder: (context) {
+           return AlertDialog(
+             shape: RoundedRectangleBorder(
+
+                 borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                 side: BorderSide(
+                     color: ColorConstants.primaryColor, width: 2
+                 )),
+             backgroundColor: ColorConstants.appcolor,
+             insetPadding: EdgeInsets.all(20),
+
+             actionsPadding: const EdgeInsets.symmetric(horizontal: 10),
+             title: Container(
+                 width: MediaQuery.of(context).size.width * 0.7,
+                 child: Padding(
+                   padding: EdgeInsets.all(0.0),
+                   child: Text(
+                     "App Information",
+                     style: TextStyle(
+                         fontWeight: FontWeight.w900,
+                         fontSize: 15.sp,
+                         color: Colors.white),
+                   ),
+                 )),
+             actions: [
+               Padding(
+                 padding: const EdgeInsets.all(10.0),
+                 child: Column(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   crossAxisAlignment: CrossAxisAlignment.center,
+                   children: [
+                     DialogTextbox2(
+                         title: "User:", subtitle:user
+                     ),
+                     DialogTextbox2(title: "App Version:", subtitle: version),
+                     DialogTextbox2(
+                         title: "Current Status:",
+                         subtitle: checkInternet ? "Online" : "Offline"),
+                     // DialogTextbox2(
+                     //     title: "Last Checked for Updates:", subtitle: "N/A"),
+                     const SizedBox(
+                       height: 15,
+                     ),
+                     const SizedBox(
+                       height: 10,
+                     ),
+                     Row(
+                       children: [
+                         Expanded(
+                           child: PrimaryButton(
+                               title: "Close",
+                               onAction: () {
+                                 Navigator.pop(context, true);
+                               }),
+                         ),
+                       ],
+                     ),
+                     const SizedBox(
+                       height: 16,
+                     )
+                   ],
+                 ),
+               )
+             ],
+           );
+         });
+   }
 
 
   @override
@@ -47,7 +127,8 @@ class DrawerLogin extends StatelessWidget {
                         fontSize: 17,
                         color: Colors.white),
                   ),
-                  onTap: () async {
+                  onTap: ()  {
+
                     Navigator.pop(context);
                   }),
             ),
@@ -65,61 +146,13 @@ class DrawerLogin extends StatelessWidget {
                         fontSize: 17,
                         color: Colors.white),
                   ),
-                  onTap: () async {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context){
-                          return  Center(
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 0,right:0, top: 250,bottom: 350),
-                              child: AlertDialog(
-                                // title: Text("Alert Dialog"),
-                                backgroundColor:const Color(0xFF202447).withOpacity(1),
-
-                                shape: RoundedRectangleBorder(
-                                    side:const BorderSide(color: Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
-                                title: const Text('App Information',style: TextStyle(color: Colors.white),),
-                                content:Column(
-                                  children: [
-                                    Container(
-                                      decoration: const BoxDecoration(border: Border(bottom: BorderSide(color:  Color(0xFF249238))),),
-                                      child: Row(
-                                        children: const [
-                                           Text("User:",style: TextStyle(color: Colors.white),),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10,),
-                                    Container(
-                                      decoration: const BoxDecoration(border: Border(bottom: BorderSide(color:  Color(0xFF249238))),),
-                                      child: Row(
-                                        children: const [
-                                           Text("App Version:",style: TextStyle(color: Colors.white),),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10,),
-                                    Container(
-                                      decoration: const BoxDecoration(border: Border(bottom: BorderSide(color:  Color(0xFF249238))),),
-                                      child: Row(
-                                        children: const [
-                                           Text("Current Status:",style: TextStyle(color: Colors.white),),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                              ),
-                            ),
-                          );
-                        }
-                    );
+                  onTap: (){
+                    openAppInfoDialog(context);
                   }),
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top: 455),
+              padding: const EdgeInsets.only(top: 430),
               child: Column(
                 children: [
                   Padding(
