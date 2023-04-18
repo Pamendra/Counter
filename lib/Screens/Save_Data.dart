@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/colors_constants.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +38,115 @@ class DataScreenState extends State<DataScreen> {
     });
   }
 
+
+  Future<void> _editData(int id) async {
+    // Open the database
+    final Database? db = await _localDatabase.database;
+
+    List<Map<String, dynamic>> data = await db!.query(
+      'my_boarding',
+      where: 'id = ?',
+      whereArgs: <int>[id],
+    );
+
+    // Show a dialog to get the new values
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Define a form with text fields for each value
+        final TextEditingController otaController = TextEditingController();
+        final TextEditingController otdController = TextEditingController();
+        final TextEditingController joiningController = TextEditingController();
+        final TextEditingController alightningController =
+        TextEditingController();
+        final TextEditingController commentController = TextEditingController();
+
+        otaController.text = data[0]['ota'];
+        otdController.text = data[0]['otd'];
+        joiningController.text = data[0]['joining'];
+        alightningController.text = data[0]['alightning'];
+        commentController.text = data[0]['comment'];
+
+        return AlertDialog(
+          title: const Text('Edit Data'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  controller: otaController,
+                  decoration: const InputDecoration(labelText: 'OTA'),
+                ),
+                TextField(
+                  controller: otdController,
+                  decoration: const InputDecoration(labelText: 'OTD'),
+                ),
+                TextField(
+                  controller: joiningController,
+                  decoration: const InputDecoration(labelText: 'Joining'),
+                ),
+                TextField(
+                  controller: alightningController,
+                  decoration: const InputDecoration(labelText: 'Alightning'),
+                ),
+                TextField(
+                  controller: commentController,
+                  decoration: const InputDecoration(labelText: 'Comment'),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // update the row with the new values
+                await _localDatabase.updateData(
+                  id,
+                  otaController.text,
+                  otdController.text,
+                  joiningController.text,
+                  alightningController.text,
+                  commentController.text,
+                );
+
+                // update the data on the screen
+                await _getData();
+
+                // dismiss the dialog
+                Navigator.pop(context);
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Delete the data
+
+  Future<void> _deleteData(int id) async {
+    // Open the database
+    final Database? db = await _localDatabase.database;
+
+    // Delete the data with the given ID
+    await db?.delete(
+      'my_boarding',
+      where: 'id = ?',
+      whereArgs: <int>[id],
+    );
+
+    // Refresh the data displayed in the UI
+    await _getData();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +173,10 @@ class DataScreenState extends State<DataScreen> {
           rows: _data.map((row) {
             return DataRow(cells: [
               DataCell(Text(row['id'].toString())),
-              DataCell(Text('${row['origin_location']}\n${row['origin_time']}')),
-              DataCell(Text('${row['destination_location']}\n${row['destination_time']}')),
+              DataCell(
+                  Text('${row['origin_location']}\n${row['origin_time']}')),
+              DataCell(Text(
+                  '${row['destination_location']}\n${row['destination_time']}')),
               DataCell(Text(row['ota'])),
               DataCell(Text(row['otd'])),
               DataCell(Text(row['joining'])),
@@ -73,7 +186,7 @@ class DataScreenState extends State<DataScreen> {
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-
+                    _editData(row['id']);
                   },
                 ),
               ),
@@ -81,7 +194,7 @@ class DataScreenState extends State<DataScreen> {
                 IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {
-
+                    _deleteData(row['id']);
                   },
                 ),
               ),

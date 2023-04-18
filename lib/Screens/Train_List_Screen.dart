@@ -4,11 +4,12 @@
 import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Sqflite/Model/service_model.dart';
+import 'package:counter/Utils/ApploadingBar.dart';
 import 'package:counter/Utils/colors_constants.dart';
 import 'package:counter/Utils/gradient_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -112,7 +113,7 @@ import 'package:sqflite/sqflite.dart';
              child: Container(
                padding: const EdgeInsets.all(15),
                width: 50,
-               height: 50,
+               height: 55,
                color: ColorConstants.appcolor,
                child: Row(
                  mainAxisAlignment: MainAxisAlignment.center,
@@ -133,123 +134,100 @@ import 'package:sqflite/sqflite.dart';
                ),
              )),
 
-         body: Stack(
-           children:[
-             Container(
-             height: 1000.h,
-             decoration: gradient_login,
-             child: SafeArea(
-               child: Padding(
-                 padding: const EdgeInsets.only(top: 80,left: 10,right: 10),
-                 child: Column(
-                     children: [
-                       TextFormField(
-                         textCapitalization: TextCapitalization.characters,
-                         controller: searchtrain,
-                         onChanged: _runFilter,
+         body: ModalProgressHUD(
+           color: Colors.white,
+           opacity: .1,
+           progressIndicator: const LoadingBar(),
+           inAsyncCall: _isLoading ? true: false,
+           child: Stack(
+             children:[
+               Container(
+               height: 1000.h,
+               decoration: gradient_login,
+               child: SafeArea(
+                 child: Padding(
+                   padding: const EdgeInsets.only(top: 80,left: 10,right: 10),
+                   child: Column(
+                       children: [
+                         TextFormField(
+                           textCapitalization: TextCapitalization.characters,
+                           controller: searchtrain,
+                           onChanged: _runFilter,
 
-                         decoration: InputDecoration(
-                             focusedBorder: OutlineInputBorder(
-                                 borderSide: const BorderSide(width: 3,color: Color(0xFF249238)),
-                                 borderRadius: BorderRadius.circular(11)
-                             ),
-                             filled: true,
-                             fillColor: Colors.white,
-                             suffixIcon: const Icon(Icons.search),
-                             hintText: 'Search',
-                             border: OutlineInputBorder(
-                                 borderRadius: BorderRadius.circular(21))),
-                       ),
+                           decoration: InputDecoration(
+                               focusedBorder: OutlineInputBorder(
+                                   borderSide: const BorderSide(width: 3,color: Color(0xFF249238)),
+                                   borderRadius: BorderRadius.circular(11)
+                               ),
+                               filled: true,
+                               fillColor: Colors.white,
+                               suffixIcon: const Icon(Icons.search),
+                               hintText: 'Search',
+                               border: OutlineInputBorder(
+                                   borderRadius: BorderRadius.circular(21))),
+                         ),
 
-                       Expanded(
-                         child: RawScrollbar(
-                             trackVisibility: true,
-                             thumbColor: ColorConstants.appcolor,
-                             trackColor: Colors.white,
-                             trackRadius: const Radius.circular(20),
-                             thumbVisibility: true,
-                             //always show scrollbar
-                             thickness: 8,
-                             //width of scrollbar
-                             radius: const Radius.circular(20),
-                             //corner radius of scrollbar
+                         Expanded(
+                           child: RawScrollbar(
+                               trackVisibility: true,
+                               thumbColor: ColorConstants.appcolor,
+                               trackColor: Colors.white,
+                               trackRadius: const Radius.circular(20),
+                               thumbVisibility: true,
+                               //always show scrollbar
+                               thickness: 8,
+                               //width of scrollbar
+                               radius: const Radius.circular(20),
+                               //corner radius of scrollbar
 
-                             scrollbarOrientation: ScrollbarOrientation.right,
-                             child: ListView.separated(
-                               shrinkWrap: true,
-                               padding: EdgeInsets.zero,
-                               itemCount: searchList.length,
-                               itemBuilder: (BuildContext context, int index) {
-                                 return InkWell(
-                                   onTap: () {
-                                     Navigator.pop(context, searchList[index]);
-                                   },
-                                   child: ListTile(
-                                     contentPadding: EdgeInsets.zero,
-                                     dense: true,
-                                     minLeadingWidth: 30,
-                                     leading: Icon(
-                                       CupertinoIcons.train_style_one,
-                                       color: ColorConstants.appcolor,
-                                     ),
-                                     title: Text(
-                                       /*isNormalStation ? data.value :*/
-                                       searchList[index]?.tiploc.toString() ?? "",
-                                       style: TextStyle(
+                               scrollbarOrientation: ScrollbarOrientation.right,
+                               child: ListView.separated(
+                                 shrinkWrap: true,
+                                 padding: EdgeInsets.zero,
+                                 itemCount: searchList.length,
+                                 itemBuilder: (BuildContext context, int index) {
+                                   return InkWell(
+                                     onTap: () {
+                                       Navigator.pop(context, searchList[index]);
+                                     },
+                                     child: ListTile(
+                                       contentPadding: EdgeInsets.zero,
+                                       dense: true,
+                                       minLeadingWidth: 30,
+                                       leading: Icon(
+                                         CupertinoIcons.train_style_one,
                                          color: ColorConstants.appcolor,
-                                         fontWeight: FontWeight.w500,
-                                         fontSize: 17,
-                                         fontFamily: "Aleo",
                                        ),
-                                       maxLines: 2,
-                                       overflow: TextOverflow.ellipsis,
+                                       title: Text(
+                                         /*isNormalStation ? data.value :*/
+                                         searchList[index]?.tiploc.toString() ?? "",
+                                         style: TextStyle(
+                                           color: ColorConstants.appcolor,
+                                           fontWeight: FontWeight.w500,
+                                           fontSize: 17,
+                                           fontFamily: "Aleo",
+                                         ),
+                                         maxLines: 2,
+                                         overflow: TextOverflow.ellipsis,
+                                       ),
                                      ),
-                                   ),
-                                 );
-                               },
-                               separatorBuilder: (context, index) {
-                                 return const Divider(
-                                   color: Colors.black,
-                                 );
-                               },
-                             )),
-                       ),
+                                   );
+                                 },
+                                 separatorBuilder: (context, index) {
+                                   return const Divider(
+                                     color: Colors.black,
+                                   );
+                                 },
+                               )),
+                         ),
 
-                     ]
-                 ),
-               ),
-             ),
-           ),
-             Visibility(
-               visible: _isLoading,
-               child: Padding(
-                 padding: const EdgeInsets.all(115),
-                 child: Dialog(
-                   backgroundColor:
-                   const Color(0xFF202447).withOpacity(0.7),
-                   shape: RoundedRectangleBorder(
-                       side:
-                       const BorderSide(color: Color(0xFF249238), width: 3),
-                       borderRadius: BorderRadius.circular(11)),
-                   child: Container(
-                     padding: const EdgeInsets.all(20),
-                     decoration: BoxDecoration(
-                       border: Border.all(
-                           color: ColorConstants.primaryColor, width: 2),
-                       borderRadius:
-                       const BorderRadius.all(Radius.circular(8)),
-                       color: Colors.black87,
-                       shape: BoxShape.rectangle,
-                     ),
-                     child: Lottie.asset(
-                         'assets/animations/loading1.json',
-                         frameRate: FrameRate.max,
-                         height: 50),
+                       ]
                    ),
                  ),
                ),
              ),
-           ]
+             ]
+           ),
          ),
        ),
      );

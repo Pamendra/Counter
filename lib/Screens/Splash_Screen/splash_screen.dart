@@ -3,6 +3,7 @@ import 'package:counter/Screens/Login%20Screen/login_screen.dart';
 import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/gradient_color.dart';
+import 'package:counter/Utils/utils.dart';
 import 'package:lottie/lottie.dart';
 import 'package:counter/Screens/Service_List.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String logout = 'user not loggedIn';
+
+
 
   @override
   void initState() {
     super.initState();
+    Utils().setUserId(logout);
     Timer(const Duration(milliseconds: 1600), () {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) =>  const LoginPage()));

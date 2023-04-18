@@ -2,6 +2,7 @@ import 'package:counter/Screens/Train_List_Screen.dart';
 import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Sqflite/Model/service_model.dart';
+import 'package:counter/Utils/ApploadingBar.dart';
 import 'package:counter/Utils/colors_constants.dart';
 import 'package:counter/Utils/drawer_logout.dart';
 import 'package:counter/Utils/gradient_color.dart';
@@ -9,6 +10,7 @@ import 'package:counter/widgets/TextWidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sizer/sizer.dart';
 
 class Station extends StatefulWidget {
@@ -67,157 +69,134 @@ class _StationState extends State<Station> {
       drawer: const DrawerLogout(),
       appBar: AppBar(backgroundColor: ColorConstants.appcolor,
       ),
-      body: Stack(
-        children: [
-          Container(
-          height: 1000.h,
-          decoration: gradient_login,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SafeArea(
-              child:Padding(
-                padding: const EdgeInsets.only(top: 120,left: 10,right: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Column(
-                      children:  [
-                        Image.asset('assets/images/tracsis.png'),
-                      ],
-                    ),
-                    // const SizedBox(height: 50,),
+      body: ModalProgressHUD(
+        color: Colors.white,
+        opacity: .1,
+        progressIndicator:const LoadingBar(),
+        inAsyncCall: _isLoading ? true:false,
+        child: Stack(
+          children: [
+            Container(
+            height: 1000.h,
+            decoration: gradient_login,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: SafeArea(
+                child:Padding(
+                  padding: const EdgeInsets.only(top: 120,left: 10,right: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Column(
+                        children:  [
+                          Image.asset('assets/images/tracsis.png'),
+                        ],
+                      ),
+                      // const SizedBox(height: 50,),
 
 
-                    const SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
 
-                    GestureDetector(
-                      onTap: () {
-                        getTrainID(context);
-                      },
-                      child: Container(
-                        width: 100,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                trainID == ""
-                                    ? "Select Station"
-                                    : trainID.toString(),
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              Icon(
-                                CupertinoIcons.search,
-                                color: ColorConstants.appcolor,
-                              ),
-                            ],
+                      GestureDetector(
+                        onTap: () {
+                          getTrainID(context);
+                        },
+                        child: Container(
+                          width: 100,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  trainID == ""
+                                      ? "Select Station"
+                                      : trainID.toString(),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                Icon(
+                                  CupertinoIcons.search,
+                                  color: ColorConstants.appcolor,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
 
 
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            SizedBox(height: 10,),
-                        Container(
-                          height: 50,
-                          width: 200,
-                          // decoration: BoxDecoration(
-                          //   borderRadius: BorderRadius.circular(5)
-                          // ),
-                          child: ElevatedButton(
-                              onPressed: () async{
-                                if(trainID.isNotEmpty) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => TrainList(station: trainID.toString(),)));
-                                }
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              SizedBox(height: 10,),
+                          Container(
+                            height: 50,
+                            width: 200,
+                            // decoration: BoxDecoration(
+                            //   borderRadius: BorderRadius.circular(5)
+                            // ),
+                            child: ElevatedButton(
+                                onPressed: () async{
+                                  if(trainID.isNotEmpty) {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => TrainList(station: trainID.toString(),)));
+                                  }
 
-                                else{
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return  Center(
-                                          child: AlertDialog(
-                                            backgroundColor: const Color(0xFF202447).withOpacity(0.7),
-                                            shape: RoundedRectangleBorder(
-                                                side: const BorderSide(color:Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
-                                            title: Row(
-                                              children: [
-                                                const Text('Message',style: TextStyle(color: Colors.white),),
-                                                const SizedBox(width: 170,),
-                                                InkWell(
-                                                    onTap: (){
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Icon(Icons.close,color: Colors.white,)),
-                                              ],
+                                  else{
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return  Center(
+                                            child: AlertDialog(
+                                              backgroundColor: const Color(0xFF202447).withOpacity(0.7),
+                                              shape: RoundedRectangleBorder(
+                                                  side: const BorderSide(color:Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
+                                              title: Row(
+                                                children: [
+                                                  const Text('Message',style: TextStyle(color: Colors.white),),
+                                                  const SizedBox(width: 170,),
+                                                  InkWell(
+                                                      onTap: (){
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Icon(Icons.close,color: Colors.white,)),
+                                                ],
+                                              ),
+                                              content: const Text("please select station",style: TextStyle(color: Colors.white),),
                                             ),
-                                            content: const Text("please select station",style: TextStyle(color: Colors.white),),
-                                          ),
-                                        );});
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: ColorConstants.appcolor,
-                                shape: const StadiumBorder(),
-                              ),
-                              child: const Text(
-                                'Search',
-                                style: TextStyle(fontSize: 21),
-                              )),
-                        ),
+                                          );});
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: ColorConstants.appcolor,
+                                  shape: const StadiumBorder(),
+                                ),
+                                child: const Text(
+                                  'Search',
+                                  style: TextStyle(fontSize: 21),
+                                )),
+                          ),
 
-                      ]),
+                        ]),
 
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-          Visibility(
-            visible: _isLoading,
-            child: Padding(
-              padding: const EdgeInsets.all(120),
-              child: Dialog(
-                backgroundColor:
-                const Color(0xFF202447).withOpacity(0.5),
-                shape: RoundedRectangleBorder(
-                    side:
-                    const BorderSide(color: Color(0xFF249238), width: 3),
-                    borderRadius: BorderRadius.circular(11)),
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: ColorConstants.primaryColor, width: 2),
-                    borderRadius:
-                    const BorderRadius.all(Radius.circular(8)),
-                    color: Colors.black87,
-                    shape: BoxShape.rectangle,
+                      ),
+                    ],
                   ),
-                  child: Lottie.asset(
-                      'assets/animations/loading1.json',
-                      frameRate: FrameRate.max,
-                      height: 50),
                 ),
               ),
             ),
           ),
-      ]
+        ]
+        ),
       ),
     );
   }

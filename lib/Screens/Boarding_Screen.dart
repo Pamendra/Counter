@@ -127,7 +127,7 @@ class _BoardingState extends State<Boarding> {
             child: Container(
               padding: const EdgeInsets.all(15),
               width: 50,
-              height: 50,
+              height: 55,
               color: ColorConstants.appcolor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -422,9 +422,9 @@ class _BoardingState extends State<Boarding> {
 
                       if (_showNumberPicker)
                       SizedBox(
-                        width: 60,
+                        width: 9.w,
                         child: NumberPicker(
-                          selectedTextStyle: const TextStyle(fontSize: 23),
+                          selectedTextStyle: const TextStyle(fontSize: 22),
                           value: _selectedNumber,
                           itemHeight: 35,
                           itemCount: 10,
@@ -499,8 +499,8 @@ class _BoardingState extends State<Boarding> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Padding(padding: const EdgeInsets.only(left: 20),
                   child: SizedBox(
-                    width: 250,
-                    height: 50,
+                    width: 50.w,
+                    height: 5.h,
                     child: ElevatedButton(onPressed: (){},style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstants.appcolor
 
@@ -511,7 +511,7 @@ class _BoardingState extends State<Boarding> {
                   const SizedBox(width: 7,),
                   Expanded(child: Padding(
                     padding: const EdgeInsets.only(right: 20),
-                    child: SizedBox(height: 50,
+                    child: SizedBox(height: 5.h,
                         child: ElevatedButton(onPressed: (){
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidget()));
                         },style: ElevatedButton.styleFrom(
@@ -526,7 +526,7 @@ class _BoardingState extends State<Boarding> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 50,
+                      SizedBox(height: 5.h,
                           child: ElevatedButton(onPressed: (){
                             Navigator.pop(context, MaterialPageRoute(builder: (context) => TrainList(station: widget.station,) ));
                             _insert();

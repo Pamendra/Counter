@@ -161,7 +161,7 @@ class LocalDatabase {
   static final _databaseName = "Boarding.db";
   static final _databaseVersion = 1;
 
-  static final table = 'my_boarding';
+    static final table = 'my_boarding';
 
 
   static final columnID = 'id';
