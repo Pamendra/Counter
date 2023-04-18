@@ -16,7 +16,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  String logout = 'user not loggedIn';
+  String logout = 'not logged In';
 
 
 
