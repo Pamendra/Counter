@@ -66,6 +66,7 @@ dependencies:
   bloc_provider: ^1.0.0
   flutter_bloc: ^8.1.2
   package_info_plus: ^3.0.2
+  fluttertoast: ^8.2.1
 
 
 dev_dependencies:

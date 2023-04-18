@@ -174,6 +174,8 @@ class LocalDatabase {
   static final columnOTIME = 'origin_time';
   static final columnDLOCATION = 'destination_location';
   static final columnDTIME = 'destination_time';
+  static final columnDELAY = 'delay';
+  static final columnHEADCODE = 'headcode';
 
   // make this a singleton class
   LocalDatabase._privateConstructor();
@@ -212,7 +214,9 @@ class LocalDatabase {
       origin_location  TEXT,
       origin_time TEXT ,
       destination_location TEXT,
-      destination_time TEXT
+      destination_time TEXT,
+      delay TEXT,
+      headcode TEXT
        )
       ''');
 
@@ -228,7 +232,7 @@ class LocalDatabase {
     return rows;
   }
 
-  Future<void> updateData(int id, String ota, String otd, String join, String alight, String comment) async {
+  Future<void> updateData(int id, String ota, String otd, String join, String alight, String comment, String delay) async {
     Database? db = await LocalDatabase.instance.database;
 
     // row to update
@@ -239,6 +243,7 @@ class LocalDatabase {
       LocalDatabase.columnJOIN: join,
       LocalDatabase.columnALIGHT: alight,
       LocalDatabase.columnCOMMENT: comment,
+      LocalDatabase.columnDELAY: delay,
     };
 
     // update the row with the given id

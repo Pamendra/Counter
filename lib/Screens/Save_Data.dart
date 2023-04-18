@@ -19,7 +19,7 @@ class DataScreen extends StatefulWidget {
 class DataScreenState extends State<DataScreen> {
   List<Map<String, dynamic>> _data = [];
   final LocalDatabase _localDatabase = LocalDatabase.instance;
-
+  double _scale = 1.0;
 
   @override
   void initState() {
@@ -60,12 +60,14 @@ class DataScreenState extends State<DataScreen> {
         final TextEditingController alightningController =
         TextEditingController();
         final TextEditingController commentController = TextEditingController();
+        final TextEditingController delayController = TextEditingController();
 
         otaController.text = data[0]['ota'];
         otdController.text = data[0]['otd'];
         joiningController.text = data[0]['joining'];
         alightningController.text = data[0]['alightning'];
         commentController.text = data[0]['comment'];
+        delayController.text = data[0]['delay'];
 
         return AlertDialog(
           title: const Text('Edit Data'),
@@ -92,6 +94,9 @@ class DataScreenState extends State<DataScreen> {
                 TextField(
                   controller: commentController,
                   decoration: const InputDecoration(labelText: 'Comment'),
+                ), TextField(
+                  controller: delayController,
+                  decoration: const InputDecoration(labelText: 'Delay'),
                 ),
               ],
             ),
@@ -113,6 +118,7 @@ class DataScreenState extends State<DataScreen> {
                   joiningController.text,
                   alightningController.text,
                   commentController.text,
+                  delayController.text,
                 );
 
                 // update the data on the screen
@@ -121,7 +127,7 @@ class DataScreenState extends State<DataScreen> {
                 // dismiss the dialog
                 Navigator.pop(context);
               },
-              child: const Text('Save'),
+              child: const Text('Update'),
             ),
           ],
         );
@@ -154,52 +160,61 @@ class DataScreenState extends State<DataScreen> {
         backgroundColor: ColorConstants.appcolor,
         title: const Text('Saved Data'),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columns: const [
-            DataColumn(label: Text('ID')),
-            DataColumn(label: Text('Origin')),
-            DataColumn(label: Text('Destination')),
-            DataColumn(label: Text('OTA')),
-            DataColumn(label: Text('OTD')),
-            DataColumn(label: Text('Joining')),
-            DataColumn(label: Text('Alightning')),
-            DataColumn(label: Text('Comments')),
-            DataColumn(label: Text('Edit')),
-            DataColumn(label: Text('Delete')),
+      body: GestureDetector(
+        onScaleUpdate: (ScaleUpdateDetails details) {
+          setState(() {
+            _scale = details.scale;
+          });
+        },
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            columns: const [
+              DataColumn(label: Text('ID')),
+              DataColumn(label: Text('HeadCode')),
+              DataColumn(label: Text('Origin')),
+              DataColumn(label: Text('Destination')),
+              DataColumn(label: Text('OTA')),
+              DataColumn(label: Text('OTD')),
+              DataColumn(label: Text('Joining')),
+              DataColumn(label: Text('Alightning')),
+              DataColumn(label: Text('Delay')),
+              DataColumn(label: Text('Comments')),
+              DataColumn(label: Text('Edit')),
+              DataColumn(label: Text('Delete')),
 
-          ],
-          rows: _data.map((row) {
-            return DataRow(cells: [
-              DataCell(Text(row['id'].toString())),
-              DataCell(
-                  Text('${row['origin_location']}\n${row['origin_time']}')),
-              DataCell(Text(
-                  '${row['destination_location']}\n${row['destination_time']}')),
-              DataCell(Text(row['ota'])),
-              DataCell(Text(row['otd'])),
-              DataCell(Text(row['joining'])),
-              DataCell(Text(row['alightning'])),
-              DataCell(Text(row['comment'])),
-              DataCell(
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    _editData(row['id']);
-                  },
+            ],
+            rows: _data.map((row) {
+              return DataRow(cells: [
+                DataCell(Text(row['id'].toString())),
+                DataCell(Text('${row['headcode']}')),
+                DataCell(Text('${row['origin_location']}\n${row['origin_time']}')),
+                DataCell(Text('${row['destination_location']}\n${row['destination_time']}')),
+                DataCell(Text(row['ota'])),
+                DataCell(Text(row['otd'])),
+                DataCell(Text(row['joining'])),
+                DataCell(Text(row['alightning'])),
+                DataCell(Text(row['delay'])),
+                DataCell(Text(row['comment'])),
+                DataCell(
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      _editData(row['id']);
+                    },
+                  ),
                 ),
-              ),
-              DataCell(
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    _deleteData(row['id']);
-                  },
+                DataCell(
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      _deleteData(row['id']);
+                    },
+                  ),
                 ),
-              ),
-            ]);
-          }).toList(),
+              ]);
+            }).toList(),
+          ),
         ),
       ),
     );

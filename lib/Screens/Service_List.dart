@@ -153,7 +153,6 @@ class _TrainListState extends State<TrainList> {
               ),
             )),
         backgroundColor: const Color(0xFF024B40),
-        // drawer: const DrawerLogout(),
         appBar: AppBar(
           backgroundColor: ColorConstants.appcolor,
           title: Text('Station-${widget.station}',style: TextStyle(fontWeight:FontWeight.w500,color:Colors.white,fontFamily:"Aleo",
@@ -184,7 +183,7 @@ class _TrainListState extends State<TrainList> {
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 0),
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
                       color: ColorConstants.appcolor,
                       height:55,
                       // decoration: BoxDecoration(
@@ -196,7 +195,7 @@ class _TrainListState extends State<TrainList> {
                         padding: const EdgeInsets.only(top: 5),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 18),
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -281,10 +280,10 @@ class _TrainListState extends State<TrainList> {
                               itemCount: trains!.length,
                               itemBuilder: (context, index) {
                                 final train = trains[index];
-                                DateTime now = DateTime.now();
-                                DateTime originTime = DateTime.parse('2000-01-01 ${trains[index].origin_time}:00');
-                                int diffInMinutes = originTime.difference(now).inMinutes;
-                                DateTime nextTime = now.add(Duration(minutes: diffInMinutes % 30 == 0 ? 30 : (30 - diffInMinutes % 30)));
+                                // DateTime now = DateTime.now();
+                                // DateTime originTime = DateTime.parse('2000-01-01 ${trains[index].origin_time}:00');
+                                // int diffInMinutes = originTime.difference(now).inMinutes;
+                                //DateTime nextTime = now.add(Duration(minutes: diffInMinutes % 30 == 0 ? 30 : (30 - diffInMinutes % 30)));
 
                                 final isMatch = searchtrain.text.isEmpty ||
                                     train.origin_location.toLowerCase().contains(searchtrain.text.toLowerCase()) || train.headcode.toLowerCase().contains((searchtrain.text.toLowerCase()))
@@ -292,11 +291,8 @@ class _TrainListState extends State<TrainList> {
 
                                 if (isMatch) {
                                   return InkWell(
-                                    onTap: (){
-                                      setState(() {
-                                          _selectedIndexes.add(index);
-                                      });
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Boarding(
+                                    onTap: () async {
+                                      final result = await   Navigator.push(context, MaterialPageRoute(builder: (context) => Boarding(
                                         origin_location: snapshot.data![index].origin_location,
                                         origin_time: snapshot.data![index].origin_time,
                                          destination_location: snapshot.data![index].destination_location,
@@ -304,6 +300,11 @@ class _TrainListState extends State<TrainList> {
                                         headcode: snapshot.data![index].headcode,
                                         train_uid: snapshot.data![index].train_uid, station: widget.station,
                                       )));
+                                      if (result ?? false) {
+                                        setState(() {
+                                          _selectedIndexes.add(index);
+                                        });
+                                      }
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width,

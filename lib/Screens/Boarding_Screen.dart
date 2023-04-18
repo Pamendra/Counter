@@ -6,6 +6,7 @@ import 'package:counter/Utils/colors_constants.dart';
 import 'package:counter/Utils/drawer_logout.dart';
 import 'package:counter/Utils/gradient_color.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sqflite/sqflite.dart';
@@ -33,6 +34,8 @@ class _BoardingState extends State<Boarding> {
   final TextEditingController _otd = TextEditingController();
   final TextEditingController _join = TextEditingController();
   final TextEditingController _alight = TextEditingController();
+  final _delay = TextEditingController();
+
   bool _otaactive = false;
   bool _otDactive = false;
   bool _joinactive = false;
@@ -44,7 +47,7 @@ class _BoardingState extends State<Boarding> {
   bool _showNumberPicker = false;
   final LocalDatabase _database = LocalDatabase.instance;
   int _selectedNumber = 1;
-
+  bool _showTextField = false;
 
   List<DropdownMenuItem<int>> _numberList() {
     List<DropdownMenuItem<int>> items = [];
@@ -93,9 +96,43 @@ class _BoardingState extends State<Boarding> {
         _showNumberPicker = _focusN.hasFocus;
       });
     });
-
-
   }
+
+
+
+
+  _showInputDialog() async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Enter a Value'),
+          content: TextField(
+            controller: _delay,
+            decoration: InputDecoration(
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('CANCEL'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(_delay.text);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -501,9 +538,10 @@ class _BoardingState extends State<Boarding> {
                   child: SizedBox(
                     width: 50.w,
                     height: 5.h,
-                    child: ElevatedButton(onPressed: (){},style: ElevatedButton.styleFrom(
+                    child: ElevatedButton(onPressed: (){
+                      Navigator.pop(context);
+                    },style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstants.appcolor
-
                     ),
                         child: const Text('Cancellation')),
                   ),
@@ -512,14 +550,14 @@ class _BoardingState extends State<Boarding> {
                   Expanded(child: Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: SizedBox(height: 5.h,
-                        child: ElevatedButton(onPressed: (){
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidget()));
+                        child: ElevatedButton(onPressed: () async {
+                          String value = await _showInputDialog();
+                          print('The user entered: $value');
                         },style: ElevatedButton.styleFrom(
                           backgroundColor: ColorConstants.appcolor
-
                         ),
                             child: const Text('Delay'))),
-                  ))
+                  )),
                   ]
                 ),
                 Padding(padding: const EdgeInsets.only(top: 10,left: 20,right: 20),
@@ -528,74 +566,19 @@ class _BoardingState extends State<Boarding> {
                     children: [
                       SizedBox(height: 5.h,
                           child: ElevatedButton(onPressed: (){
-                            Navigator.pop(context, MaterialPageRoute(builder: (context) => TrainList(station: widget.station,) ));
-                            _insert();
-
-
-                            // showDialog(
-                            //   context: context,
-                            //   builder: (BuildContext context) {
-                            //     return AlertDialog(
-                            //       backgroundColor:const Color(0xFF202447).withOpacity(0.7),
-                            //       shape: RoundedRectangleBorder(
-                            //           side: const BorderSide(color:  Color(0xFF249238)),borderRadius: BorderRadius.circular(11)),
-                            //       title: Row(
-                            //         children: [
-                            //           const Text('Message',style: TextStyle(color: Colors.white),),
-                            //           const SizedBox(width: 170,),
-                            //           InkWell(
-                            //               onTap: (){
-                            //                 Navigator.pop(context);
-                            //               },
-                            //               child: const Icon(Icons.close,color: Colors.white,)),
-                            //         ],
-                            //       ),
-                            //       content: const Text("Saved successfully",style: TextStyle(color: Colors.white),),
-                            //     );
-                            //   },
-                            // );
+                          if(_ota.text.isNotEmpty || _otd.text.isNotEmpty || _join.text.isNotEmpty || _alight.text.isNotEmpty)
+                            {
+                              // Navigator.pop(context, MaterialPageRoute(builder: (context) => TrainList(station: widget.station,) ));
+                              Navigator.pop(context, true);
+                              _insert();
+                            }else{
+                            Fluttertoast.showToast(msg: 'please enter values');
+                          }
                           },style: ElevatedButton.styleFrom(
                             backgroundColor: ColorConstants.appcolor
 
                           ),
                               child: const Text('Save'))),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //   children: [
-                      //     // ElevatedButton(onPressed: () async{
-                      //     //   // Database? db = await LocalDatabase.instance.database;
-                      //     //   // List<Map<String, dynamic>> rows = await db!.query(LocalDatabase.table);
-                      //     //   // rows.forEach((row) => print(row));
-                      //     //   Navigator.push(
-                      //     //     context,
-                      //     //     MaterialPageRoute(builder: (context) => DataScreen(
-                      //     //
-                      //     //     )),
-                      //     //   );
-                      //     //
-                      //     // },style: ElevatedButton.styleFrom(backgroundColor: ColorConstants.appcolor), child: Text('Show Data')),
-                      //     ElevatedButton(onPressed: () async{
-                      //       Database? db = await LocalDatabase.instance.database;
-                      //       Map<String, dynamic> row = {
-                      //         LocalDatabase.columnOTA : _ota.text,
-                      //         LocalDatabase.columnOTD  : _otd.text,
-                      //         LocalDatabase.columnJOIN  : _join.text,
-                      //         LocalDatabase.columnALIGHT  : _alight.text,
-                      //         LocalDatabase.columnCOMMENT  : comment.text,
-                      //         LocalDatabase.columnOLOCATION  : widget.origin_location,
-                      //         LocalDatabase.columnOTIME  : widget.origin_time,
-                      //         LocalDatabase.columnDLOCATION  : widget.destination_location,
-                      //         LocalDatabase.columnDTIME  : widget.destination_time,
-                      //
-                      //       };
-                      //       int id = await db!.insert(LocalDatabase.table, row);
-                      //       await _database.updateData(id, _ota.text, _otd.text, _join.text, _alight.text, comment.text);
-                      //     }, child: Text('Update')),
-                      //     // ElevatedButton(onPressed: () async{
-                      //     //    await LocalDatabase.instance.deleteDatabase();
-                      //     // }, child: Text('Delete'))
-                      //   ],
-                      // ),
                     ],
                   ),
                 )
@@ -615,6 +598,7 @@ class _BoardingState extends State<Boarding> {
 
     // row to insert
     Map<String, dynamic> row = {
+      LocalDatabase.columnHEADCODE  : widget.headcode,
       LocalDatabase.columnOTA : _ota.text,
       LocalDatabase.columnOTD  : _otd.text,
       LocalDatabase.columnJOIN  : _join.text,
@@ -624,9 +608,10 @@ class _BoardingState extends State<Boarding> {
       LocalDatabase.columnOTIME  : widget.origin_time,
       LocalDatabase.columnDLOCATION  : widget.destination_location,
       LocalDatabase.columnDTIME  : widget.destination_time,
-
+      LocalDatabase.columnDTIME  : widget.destination_time,
+      LocalDatabase.columnDELAY  : _delay.text,
     };
-
+print(row);
     // do the insert and get the id of the inserted row
     int id = await db!.insert(LocalDatabase.table, row);
 
