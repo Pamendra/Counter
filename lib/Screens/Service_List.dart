@@ -203,6 +203,7 @@ class _TrainListState extends State<TrainList> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: const [
                                       Text('Origin Station',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                       SizedBox(height: 5,),
@@ -214,6 +215,8 @@ class _TrainListState extends State<TrainList> {
                                 const SizedBox(width: 85,),
 
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+
                                   children: const [
                                     Text('Arrival',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                     SizedBox(height: 5,),
@@ -223,6 +226,8 @@ class _TrainListState extends State<TrainList> {
                                 const SizedBox(width: 5,),
 
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+
                                   children: const [
                                     Text('Headcode',style:TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                     SizedBox(height: 5,),
@@ -276,92 +281,104 @@ class _TrainListState extends State<TrainList> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             List<ServiceList>? trains = snapshot.data;
-                            return ListView.builder(
-                              itemCount: trains!.length,
-                              itemBuilder: (context, index) {
-                                final train = trains[index];
-                                // DateTime now = DateTime.now();
-                                // DateTime originTime = DateTime.parse('2000-01-01 ${trains[index].origin_time}:00');
-                                // int diffInMinutes = originTime.difference(now).inMinutes;
-                                //DateTime nextTime = now.add(Duration(minutes: diffInMinutes % 30 == 0 ? 30 : (30 - diffInMinutes % 30)));
+                            return RawScrollbar(
+                              trackVisibility: true,
+                              thumbColor: ColorConstants.appcolor,
+                              trackColor: Colors.white,
+                              trackRadius: const Radius.circular(20),
+                              thumbVisibility: true,
+                              //always show scrollbar
+                              thickness: 8,
+                              //width of scrollbar
+                              radius: const Radius.circular(20),
+                              //corner radius of scrollbar
+                              child: ListView.builder(
+                                itemCount: trains!.length,
+                                itemBuilder: (context, index) {
+                                  final train = trains[index];
+                                  // DateTime now = DateTime.now();
+                                  // DateTime originTime = DateTime.parse('2000-01-01 ${trains[index].origin_time}:00');
+                                  // int diffInMinutes = originTime.difference(now).inMinutes;
+                                  //DateTime nextTime = now.add(Duration(minutes: diffInMinutes % 30 == 0 ? 30 : (30 - diffInMinutes % 30)));
 
-                                final isMatch = searchtrain.text.isEmpty ||
-                                    train.origin_location.toLowerCase().contains(searchtrain.text.toLowerCase()) || train.headcode.toLowerCase().contains((searchtrain.text.toLowerCase()))
-                                    || train.train_uid.toLowerCase().contains((searchtrain.text.toLowerCase())) || train.origin_time.replaceAll(':', '').contains(searchtrain.text);
+                                  final isMatch = searchtrain.text.isEmpty ||
+                                      train.origin_location.toLowerCase().contains(searchtrain.text.toLowerCase()) || train.headcode.toLowerCase().contains((searchtrain.text.toLowerCase()))
+                                      || train.train_uid.toLowerCase().contains((searchtrain.text.toLowerCase())) || train.origin_time.replaceAll(':', '').contains(searchtrain.text);
 
-                                if (isMatch) {
-                                  return InkWell(
-                                    onTap: () async {
-                                      final result = await   Navigator.push(context, MaterialPageRoute(builder: (context) => Boarding(
-                                        origin_location: snapshot.data![index].origin_location,
-                                        origin_time: snapshot.data![index].origin_time,
-                                         destination_location: snapshot.data![index].destination_location,
-                                        destination_time: snapshot.data![index].destination_time,
-                                        headcode: snapshot.data![index].headcode,
-                                        train_uid: snapshot.data![index].train_uid, station: widget.station,
-                                      )));
-                                      if (result ?? false) {
-                                        setState(() {
-                                          _selectedIndexes.add(index);
-                                        });
-                                      }
-                                    },
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 12.h,
-                                      padding: const EdgeInsets.symmetric(horizontal: 7),
-                                      child: Card(
-                                        color: _selectedIndexes.contains(index) ? Colors.green : null,
-                                        child: ListTile(
-                                          leading: Column(
-                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(height: 5,),
-                                              Column(
-                                                children: [
-                                              Text('${trains[index].origin_time}-${trains[index].origin_location}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),textAlign: TextAlign.center,),                                     ],
-                                              ),
-                                              const SizedBox(height: 15,),
-                                              Text('${trains[index].destination_time}-${trains[index].destination_location}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                                            ],
-                                          ),
+                                  if (isMatch) {
+                                    return InkWell(
+                                      onTap: () async {
+                                        final result = await   Navigator.push(context, MaterialPageRoute(builder: (context) => Boarding(
+                                          origin_location: snapshot.data![index].origin_location,
+                                          origin_time: snapshot.data![index].origin_time,
+                                           destination_location: snapshot.data![index].destination_location,
+                                          destination_time: snapshot.data![index].destination_time,
+                                          headcode: snapshot.data![index].headcode,
+                                          train_uid: snapshot.data![index].train_uid, station: widget.station,
+                                        )));
+                                        if (result ?? false) {
+                                          setState(() {
+                                            _selectedIndexes.add(index);
+                                          });
+                                        }
+                                      },
+                                      child: Container(
 
-                                          title:  Padding(
-                                            padding: const EdgeInsets.only(top: 20),
-                                            child: Column(
-                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Text(trains[index].arrival_time.toString() == " " ? '--:--' : trains[index].arrival_time,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                                                const SizedBox(height: 20,),
-                                                Text(trains[index].departure_time.toString() == " " ? '--:--' : trains[index].departure_time,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                                              ],
-                                            ),
-                                          ),
-
-
-                                          trailing: Padding(
-                                            padding: const EdgeInsets.only(top: 10),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        height: 12.h,
+                                        padding: const EdgeInsets.symmetric(horizontal: 7),
+                                        child: Card(
+                                          color: _selectedIndexes.contains(index) ? Colors.green : null,
+                                          child: ListTile(
+                                            leading: Column(
+                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Text(trains[index].headcode,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
-                                                const SizedBox(height: 12,),
-                                                Text(trains[index].train_uid,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                const SizedBox(height: 5,),
+                                                Column(
+                                                  children: [
+                                                Text('${trains[index].origin_time}-${trains[index].origin_location}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),textAlign: TextAlign.center,),                                     ],
+                                                ),
+                                                const SizedBox(height: 15,),
+                                                Text('${trains[index].destination_time}-${trains[index].destination_location}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
                                               ],
+                                            ),
+
+                                            title:  Padding(
+                                              padding: const EdgeInsets.only(top: 20),
+                                              child: Column(
+                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(trains[index].arrival_time.toString() == " " ? '--:--' : trains[index].arrival_time,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                                                  const SizedBox(height: 20,),
+                                                  Text(trains[index].departure_time.toString() == " " ? '--:--' : trains[index].departure_time,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                                                ],
+                                              ),
+                                            ),
+
+
+                                            trailing: Padding(
+                                              padding: const EdgeInsets.only(top: 10),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(trains[index].headcode,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  const SizedBox(height: 12,),
+                                                  Text(trains[index].train_uid,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                } else {
-                                  // If there is no match, return an empty container
-                                  return Container();
-                                }
-                              },
+                                    );
+                                  } else {
+                                    // If there is no match, return an empty container
+                                    return Container();
+                                  }
+                                },
+                              ),
                             );
                           } else if (snapshot.hasError) {
                             return Center(

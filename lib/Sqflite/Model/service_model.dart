@@ -5,18 +5,18 @@ class Train {
   List<Train>? list;
   final String tiploc;
   // final String crs;
-  // final String description;
+  final String description;
 
   Train({required this.tiploc,
     // required this.crs,
-    // required this.description
+    required this.description
   });
 
   factory Train.fromJson(Map<String, dynamic> json) {
     return Train(
       tiploc: json['tiploc'],
       // crs: json['crs'],
-      // description: json['description'],
+      description: json['description'],
     );
   }
 
@@ -24,7 +24,7 @@ class Train {
     return {
       'tiploc': tiploc,
       // 'crs': crs,
-      // 'description': description,
+      'description': description,
     };
   }
 }

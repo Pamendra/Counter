@@ -61,7 +61,7 @@ class TiplocDatabaseHelper{
       return Train(
         tiploc: maps[i]['tiploc'],
         //crs: maps[i]['crs'],
-        // description: maps[i]['description'],
+        description: maps[i]['description'],
       );
     });
   }

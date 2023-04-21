@@ -1,5 +1,6 @@
 
 
+import 'package:counter/Screens/Login%20Screen/demo.dart';
 import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/colors_constants.dart';
@@ -108,8 +109,10 @@ class _BoardingState extends State<Boarding> {
         return AlertDialog(
           title: Text('Enter a Value'),
           content: TextField(
+            keyboardType: TextInputType.phone,
             controller: _delay,
             decoration: InputDecoration(
+
             ),
           ),
           actions: <Widget>[
@@ -272,6 +275,9 @@ class _BoardingState extends State<Boarding> {
                                             _otDactive = false;
                                             _joinactive = false;
                                             _alightactive = false;
+                                            _selectedNumber = int.tryParse(_ota.text) ?? 0;
+                                            _ota.selection = TextSelection.fromPosition(
+                                                TextPosition(offset: _ota.text.length));
                                           });
                                         },
                                         controller: _ota,
@@ -330,6 +336,9 @@ class _BoardingState extends State<Boarding> {
                                             _otDactive = true;
                                             _joinactive = false;
                                             _alightactive = false;
+                                            _selectedNumber = int.tryParse(_otd.text) ?? 0;
+                                            _otd.selection = TextSelection.fromPosition(
+                                                TextPosition(offset: _otd.text.length));
                                           });
                                         },
                                         keyboardType: TextInputType.phone,
@@ -380,6 +389,9 @@ class _BoardingState extends State<Boarding> {
                                             _otDactive = false;
                                             _joinactive = true;
                                             _alightactive = false;
+                                            _selectedNumber = int.tryParse(_join.text) ?? 0;
+                                            _join.selection = TextSelection.fromPosition(
+                                                TextPosition(offset: _join.text.length));
                                           });
                                         },
                                         keyboardType: TextInputType.phone,
@@ -431,6 +443,9 @@ class _BoardingState extends State<Boarding> {
                                             _otDactive = false;
                                             _joinactive = false;
                                             _alightactive = true;
+                                            _selectedNumber = int.tryParse(_alight.text) ?? 0;
+                                            _alight.selection = TextSelection.fromPosition(
+                                                TextPosition(offset: _alight.text.length));
                                           });
                                         },
                                         keyboardType: TextInputType.phone,
@@ -459,11 +474,11 @@ class _BoardingState extends State<Boarding> {
 
                       if (_showNumberPicker)
                       SizedBox(
-                        width: 9.w,
+                        width: 10.w,
                         child: NumberPicker(
                           selectedTextStyle: const TextStyle(fontSize: 22),
                           value: _selectedNumber,
-                          itemHeight: 35,
+                          itemHeight: 30,
                           itemCount: 10,
                           minValue: 0,
                           maxValue: 1000,
@@ -474,15 +489,23 @@ class _BoardingState extends State<Boarding> {
                               if (_otaactive) {
                                 _ota.text = value.toString();
                                 _ota.text = '$_selectedNumber';
+                                _ota.selection = TextSelection.fromPosition(
+                                    TextPosition(offset: _ota.text.length));
                               } else if (_otDactive) {
                                 _otd.text = value.toString();
                                 _otd.text = '$_selectedNumber';
+                                _otd.selection = TextSelection.fromPosition(
+                                    TextPosition(offset: _otd.text.length));
                               }else if (_joinactive) {
                                 _join.text = value.toString();
                                 _join.text = '$_selectedNumber';
+                                _join.selection = TextSelection.fromPosition(
+                                    TextPosition(offset: _join.text.length));
                               }else if (_alightactive) {
                                 _alight.text = value.toString();
                                 _alight.text = '$_selectedNumber';
+                                _alight.selection = TextSelection.fromPosition(
+                                    TextPosition(offset: _alight.text.length));
                               }
                             });
                           },
@@ -539,7 +562,8 @@ class _BoardingState extends State<Boarding> {
                     width: 50.w,
                     height: 5.h,
                     child: ElevatedButton(onPressed: (){
-                      Navigator.pop(context);
+                      //Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> MyWidget()));
                     },style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstants.appcolor
                     ),

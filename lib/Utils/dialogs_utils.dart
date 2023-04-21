@@ -82,13 +82,13 @@ class Dialogs {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // SizedBox(
-                    //   height: 1.h,
-                    // ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        headingText(
+                        subheadingText(
                           title: 'Message',
                         ),
                         GestureDetector(
@@ -102,13 +102,13 @@ class Dialogs {
                         )
                       ],
                     ),
-                    // SizedBox(
-                    //   height: 2.h,
-                    // ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
                     subheadingText(title: "$title"),
-                    // SizedBox(
-                    //   height: 2.h,
-                    // ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
                   ],
                 ),
               )

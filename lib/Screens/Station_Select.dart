@@ -26,7 +26,7 @@ class _StationState extends State<Station> {
   bool _isLoading = false;
 
   String trainID = "";
-  Train? trainData = Train(tiploc: '');
+  Train? trainData = Train(tiploc: '', description: '');
 
   Future<void> getTrainID(BuildContext context) async {
 

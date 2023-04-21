@@ -10,6 +10,7 @@ import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:counter/Widgets/images_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -134,11 +135,11 @@ class DrawerLogout extends StatelessWidget {
                           color: Colors.white),
                     ),
                     onTap: () async {
-                      // /// Clear Service List
-                      // final db = await openDatabase(
-                      //   join(await getDatabasesPath(), 'my_databas.db'),
-                      // );
-                      // await db.delete('trainlis');
+                      /// Clear Service List
+                      final db = await openDatabase(
+                        join(await getDatabasesPath(), 'my_databas.db'),
+                      );
+                      await db.delete('trainlis');
                       /// Clear Train list
                       final Database database = await openDatabase('my_database.db');
                       // Delete the database

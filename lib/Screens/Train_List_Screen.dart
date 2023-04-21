@@ -38,7 +38,7 @@ import 'package:sqflite/sqflite.dart';
      } else {
        results = trainIDList.where((data) {
          return data!.tiploc.toString().contains(enteredKeyword) ||
-             data.tiploc.toString().contains(enteredKeyword);
+             data.description.toString().contains(enteredKeyword);
        }).toList();
        // we use the toLowerCase() method to make it case-insensitive
      }
@@ -200,16 +200,17 @@ import 'package:sqflite/sqflite.dart';
                                        ),
                                        title: Text(
                                          /*isNormalStation ? data.value :*/
-                                         searchList[index]?.tiploc.toString() ?? "",
+                                         '${searchList[index]?.description.toString()} - ${searchList[index]?.tiploc.toString()}  ' ?? "",
                                          style: TextStyle(
                                            color: ColorConstants.appcolor,
                                            fontWeight: FontWeight.w500,
-                                           fontSize: 17,
+                                           fontSize: 15,
                                            fontFamily: "Aleo",
                                          ),
                                          maxLines: 2,
                                          overflow: TextOverflow.ellipsis,
                                        ),
+
                                      ),
                                    );
                                  },
