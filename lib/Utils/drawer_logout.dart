@@ -137,18 +137,18 @@ class DrawerLogout extends StatelessWidget {
                           color: Colors.white),
                     ),
                     onTap: () async {
-                      /// Clear Service List
-                      final db = await openDatabase(
-                        join(await getDatabasesPath(), 'my_databas.db'),
-                      );
-                      await db.delete('trainlis');
-                      /// Clear Train list
-                      final Database database = await openDatabase('my_database.db');
-                      // Delete the database
-                      await database.close();
-                      await deleteDatabase('my_database.db');
-                      var sharedpref = await SharedPreferences.getInstance();
-                      sharedpref.setBool(SplashScreenState.KEYLOGIN, false);
+                      // /// Clear Service List
+                      // final db = await openDatabase(
+                      //   join(await getDatabasesPath(), 'my_databas.db'),
+                      // );
+                      // await db.delete('trainlis');
+                      // /// Clear Train list
+                      // final Database database = await openDatabase('my_database.db');
+                      // // Delete the database
+                      // await database.close();
+                      // await deleteDatabase('my_database.db');
+                      // var sharedpref = await SharedPreferences.getInstance();
+                      // sharedpref.setBool(SplashScreenState.KEYLOGIN, false);
 
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(

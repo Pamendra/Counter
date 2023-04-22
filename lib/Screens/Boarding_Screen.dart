@@ -1,6 +1,5 @@
 
 
-import 'package:counter/Screens/Login%20Screen/demo.dart';
 import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/colors_constants.dart';

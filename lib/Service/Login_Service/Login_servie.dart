@@ -19,7 +19,11 @@ class LoginService {
           data: formData);
 
       if (response.statusCode == 200) {
-        return response.data;
+        if(response.data['status'] == 200){
+          return response.data;
+        }else{
+          return ConstantsMessage.incorrectPassword;
+        }
       } else {
         return ConstantsMessage.incorrectPassword;
       }
