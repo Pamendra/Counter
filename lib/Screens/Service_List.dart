@@ -299,12 +299,13 @@ class _TrainListState extends State<TrainList> {
                                   // DateTime now = DateTime.now();
                                   // DateTime originTime = DateTime.parse('2000-01-01 ${trains[index].origin_time}:00');
                                   // int diffInMinutes = originTime.difference(now).inMinutes;
-                                  //DateTime nextTime = now.add(Duration(minutes: diffInMinutes % 30 == 0 ? 30 : (30 - diffInMinutes % 30)));
+                                  // DateTime nextTime = now.add(Duration(minutes: diffInMinutes % 30 == 0 ? 30 : (30 - diffInMinutes % 30)));
 
                                   final isMatch = searchtrain.text.isEmpty ||
-                                      train.origin_location.toLowerCase().contains(searchtrain.text.toLowerCase()) || train.headcode.toLowerCase().contains((searchtrain.text.toLowerCase()))
-                                      || train.train_uid.toLowerCase().contains((searchtrain.text.toLowerCase())) || train.origin_time.replaceAll(':', '').contains(searchtrain.text);
-
+                                      train.origin_location.toLowerCase().contains(searchtrain.text.toLowerCase())
+                                      || train.headcode.toLowerCase().contains((searchtrain.text.toLowerCase()))
+                                      || train.train_uid.toLowerCase().contains((searchtrain.text.toLowerCase()))
+                                      || train.origin_time.replaceAll(':', '').contains(searchtrain.text);
                                   if (isMatch) {
                                     return InkWell(
                                       onTap: () async {

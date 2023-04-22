@@ -7,27 +7,38 @@ import 'package:counter/Utils/utils.dart';
 import 'package:lottie/lottie.dart';
 import 'package:counter/Screens/Service_List.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class SplashScreenState extends State<SplashScreen> {
   String logout = 'not logged In';
+  static const String KEYLOGIN = "Login";
 
-
+Trainlistdb() async {
+  /// Clear Train list
+  final Database database = await openDatabase('my_database.db');
+  // Delete the database
+  await database.close();
+  await deleteDatabase('my_database.db');
+}
 
   @override
   void initState() {
     super.initState();
+    Trainlistdb();
     Utils().setUserId(logout);
-    Timer(const Duration(milliseconds: 1600), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) =>  const LoginPage()));
-    });
+    // Timer(const Duration(milliseconds: 1600), () {
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) =>  const LoginPage()));
+    // });
+    wheretogo();
   }
 
   @override
@@ -44,4 +55,28 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
+
+  void wheretogo() async {
+    var sharedpref = await SharedPreferences.getInstance();
+    var isLoggedIn = sharedpref.getBool(KEYLOGIN);
+
+
+    Timer( Duration(milliseconds:1300), () {
+      if (isLoggedIn != null) {
+        if (isLoggedIn) {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const Station()));
+        } else {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const LoginPage()));
+        }
+      }else{
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) =>  const LoginPage()));
+      }
+    });
+  }
+
 }

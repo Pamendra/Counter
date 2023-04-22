@@ -168,52 +168,58 @@ class DataScreenState extends State<DataScreen> {
         },
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columns: const [
-              DataColumn(label: Text('ID')),
-              DataColumn(label: Text('HeadCode')),
-              DataColumn(label: Text('Origin')),
-              DataColumn(label: Text('Destination')),
-              DataColumn(label: Text('OTA')),
-              DataColumn(label: Text('OTD')),
-              DataColumn(label: Text('Joining')),
-              DataColumn(label: Text('Alightning')),
-              DataColumn(label: Text('Delay')),
-              DataColumn(label: Text('Comments')),
-              DataColumn(label: Text('Edit')),
-              DataColumn(label: Text('Delete')),
+          child: DataTableTheme(
+            data: const DataTableThemeData(
+              dataRowHeight: 48,
 
-            ],
-            rows: _data.map((row) {
-              return DataRow(cells: [
-                DataCell(Text(row['id'].toString())),
-                DataCell(Text('${row['headcode']}')),
-                DataCell(Text('${row['origin_location']}\n${row['origin_time']}')),
-                DataCell(Text('${row['destination_location']}\n${row['destination_time']}')),
-                DataCell(Text(row['ota'])),
-                DataCell(Text(row['otd'])),
-                DataCell(Text(row['joining'])),
-                DataCell(Text(row['alightning'])),
-                DataCell(Text(row['delay'])),
-                DataCell(Text(row['comment'])),
-                DataCell(
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      _editData(row['id']);
-                    },
+              headingRowHeight: 56,
+            ),
+            child: DataTable(
+              columns: const [
+                DataColumn(label: Text('ID')),
+                DataColumn(label: Text('HeadCode')),
+                DataColumn(label: Text('Origin')),
+                DataColumn(label: Text('Destination')),
+                DataColumn(label: Text('OTA')),
+                DataColumn(label: Text('OTD')),
+                DataColumn(label: Text('Joining')),
+                DataColumn(label: Text('Alightning')),
+                DataColumn(label: Text('Delay')),
+                DataColumn(label: Text('Comments')),
+                DataColumn(label: Text('Edit')),
+                DataColumn(label: Text('Delete')),
+              ],
+              rows: _data.map((row) {
+                return DataRow(cells: [
+                  DataCell(Text(row['id'].toString())),
+                  DataCell(Center(child: Text('${row['headcode']}'))),
+                  DataCell(Center(child: Text('${row['origin_location']}\n${row['origin_time']}'))),
+                  DataCell(Center(child: Text('${row['destination_location']}\n${row['destination_time']}'))),
+                  DataCell(Center(child: Text(row['ota']))),
+                  DataCell(Center(child: Text(row['otd']))),
+                  DataCell(Center(child: Text(row['joining']))),
+                  DataCell(Center(child: Text(row['alightning']))),
+                  DataCell(Center(child: Text(row['delay']))),
+                  DataCell(Center(child: Text(row['comment']))),
+                  DataCell(
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        _editData(row['id']);
+                      },
+                    ),
                   ),
-                ),
-                DataCell(
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      _deleteData(row['id']);
-                    },
+                  DataCell(
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _deleteData(row['id']);
+                      },
+                    ),
                   ),
-                ),
-              ]);
-            }).toList(),
+                ]);
+              }).toList(),
+            ),
           ),
         ),
       ),

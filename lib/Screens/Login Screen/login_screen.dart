@@ -2,6 +2,7 @@
 import 'package:counter/Bloc/Login_Bloc/LoginBloc.dart';
 import 'package:counter/Bloc/Login_Bloc/LoginEvent.dart';
 import 'package:counter/Bloc/Login_Bloc/LoginState.dart';
+import 'package:counter/Screens/Splash_Screen/splash_screen.dart';
 import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Utils/dialogs_utils.dart';
 import 'package:counter/Utils/drawer_login.dart';
@@ -11,6 +12,7 @@ import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import '../../Utils/colors_constants.dart';
 import '../../utils/ApploadingBar.dart';
@@ -195,6 +197,8 @@ class _LoginPageState extends State<LoginPage> {
                            BlocProvider.of<LoginBloc>(context).add(
                                LoginPressedEvent(emailController.text, passwordController.text));
                            Utils().setUserId(emailController.text);
+                           var sharedpref = await SharedPreferences.getInstance();
+                           sharedpref.setBool(SplashScreenState.KEYLOGIN, true);
                          }
                        },style: ElevatedButton.styleFrom(
                            backgroundColor: ColorConstants.appcolor

@@ -473,42 +473,51 @@ class _BoardingState extends State<Boarding> {
 
 
                       if (_showNumberPicker)
-                      SizedBox(
-                        width: 10.w,
-                        child: NumberPicker(
-                          selectedTextStyle: const TextStyle(fontSize: 22),
-                          value: _selectedNumber,
-                          itemHeight: 30,
-                          itemCount: 10,
-                          minValue: 0,
-                          maxValue: 1000,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedNumber = value;
+                      RawScrollbar(
+                        //trackVisibility: true,
+                        thumbColor: ColorConstants.appcolor,
+                        trackColor: Colors.white,
+                        //thumbVisibility: true,
+                        thickness: 5,
+                        radius: const Radius.circular(2),
 
-                              if (_otaactive) {
-                                _ota.text = value.toString();
-                                _ota.text = '$_selectedNumber';
-                                _ota.selection = TextSelection.fromPosition(
-                                    TextPosition(offset: _ota.text.length));
-                              } else if (_otDactive) {
-                                _otd.text = value.toString();
-                                _otd.text = '$_selectedNumber';
-                                _otd.selection = TextSelection.fromPosition(
-                                    TextPosition(offset: _otd.text.length));
-                              }else if (_joinactive) {
-                                _join.text = value.toString();
-                                _join.text = '$_selectedNumber';
-                                _join.selection = TextSelection.fromPosition(
-                                    TextPosition(offset: _join.text.length));
-                              }else if (_alightactive) {
-                                _alight.text = value.toString();
-                                _alight.text = '$_selectedNumber';
-                                _alight.selection = TextSelection.fromPosition(
-                                    TextPosition(offset: _alight.text.length));
-                              }
-                            });
-                          },
+                        child: Container(
+                          width: 16.w,
+                          child: NumberPicker(
+                            selectedTextStyle: const TextStyle(fontSize: 22),
+                            value: _selectedNumber,
+                            itemHeight: 30,
+                            itemCount: 10,
+                            minValue: 0,
+                            maxValue: 1001,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedNumber = value;
+
+                                if (_otaactive) {
+                                  _ota.text = value.toString();
+                                  _ota.text = '$_selectedNumber';
+                                  _ota.selection = TextSelection.fromPosition(
+                                      TextPosition(offset: _ota.text.length));
+                                } else if (_otDactive) {
+                                  _otd.text = value.toString();
+                                  _otd.text = '$_selectedNumber';
+                                  _otd.selection = TextSelection.fromPosition(
+                                      TextPosition(offset: _otd.text.length));
+                                }else if (_joinactive) {
+                                  _join.text = value.toString();
+                                  _join.text = '$_selectedNumber';
+                                  _join.selection = TextSelection.fromPosition(
+                                      TextPosition(offset: _join.text.length));
+                                }else if (_alightactive) {
+                                  _alight.text = value.toString();
+                                  _alight.text = '$_selectedNumber';
+                                  _alight.selection = TextSelection.fromPosition(
+                                      TextPosition(offset: _alight.text.length));
+                                }
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -562,8 +571,7 @@ class _BoardingState extends State<Boarding> {
                     width: 50.w,
                     height: 5.h,
                     child: ElevatedButton(onPressed: (){
-                      //Navigator.pop(context);
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> MyWidget()));
+                      Navigator.pop(context);
                     },style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstants.appcolor
                     ),

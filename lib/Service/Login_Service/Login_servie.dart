@@ -1,24 +1,25 @@
 import 'package:counter/Utils/message_contants.dart';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LoginService {
   loginUser(String username, String password) async {
-    var dataBody = {"username": username, "password": password};
+    var body = {"username": username, "password": password};
 
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-    };
+    // Map<String, String> headers = {
+    //   "Content-Type": "application/json",
+    //   "Accept": "application/json",
+    // };
 
     try {
-      final response = await http.post(
-          Uri.parse('https://dummyjson.com/auth/login'),
-          body: jsonEncode(dataBody),
-          headers: headers);
+      var formData = FormData.fromMap(body);
+
+      var response = await Dio().post('http://51.140.217.38:8000/pcds/logon/',
+          data: formData);
 
       if (response.statusCode == 200) {
-        return response.body;
+        return response.data;
       } else {
         return ConstantsMessage.incorrectPassword;
       }

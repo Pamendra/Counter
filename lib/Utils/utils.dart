@@ -18,6 +18,23 @@ class Utils {
     }
   }
 
+  void setUserLoggedIn(bool status) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('user_logged_in', status);
+  }
+
+  Future<bool> logoutUser() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('user_logged_in', false);
+      prefs.setString('user_session_start', '');
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   void setUserId(String userID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('username', userID);

@@ -2,6 +2,7 @@
 
 import 'package:counter/Screens/Login%20Screen/login_screen.dart';
 import 'package:counter/Screens/Save_Data.dart';
+import 'package:counter/Screens/Splash_Screen/splash_screen.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/drawertextbox.dart';
 import 'package:counter/Utils/utils.dart';
@@ -11,6 +12,7 @@ import 'package:counter/Widgets/images_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -145,6 +147,8 @@ class DrawerLogout extends StatelessWidget {
                       // Delete the database
                       await database.close();
                       await deleteDatabase('my_database.db');
+                      var sharedpref = await SharedPreferences.getInstance();
+                      sharedpref.setBool(SplashScreenState.KEYLOGIN, false);
 
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
