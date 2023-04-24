@@ -19,7 +19,7 @@ class DataScreen extends StatefulWidget {
 class DataScreenState extends State<DataScreen> {
   List<Map<String, dynamic>> _data = [];
   final LocalDatabase _localDatabase = LocalDatabase.instance;
-  double _scale = 1.0;
+
 
   @override
   void initState() {
@@ -57,8 +57,7 @@ class DataScreenState extends State<DataScreen> {
         final TextEditingController otaController = TextEditingController();
         final TextEditingController otdController = TextEditingController();
         final TextEditingController joiningController = TextEditingController();
-        final TextEditingController alightningController =
-        TextEditingController();
+        final TextEditingController alightningController = TextEditingController();
         final TextEditingController commentController = TextEditingController();
         final TextEditingController delayController = TextEditingController();
 
@@ -160,66 +159,59 @@ class DataScreenState extends State<DataScreen> {
         backgroundColor: ColorConstants.appcolor,
         title: const Text('Saved Data'),
       ),
-      body: GestureDetector(
-        onScaleUpdate: (ScaleUpdateDetails details) {
-          setState(() {
-            _scale = details.scale;
-          });
-        },
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTableTheme(
-            data: const DataTableThemeData(
-              dataRowHeight: 48,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTableTheme(
+          data: const DataTableThemeData(
+            dataRowHeight: 48,
 
-              headingRowHeight: 56,
-            ),
-            child: DataTable(
-              columns: const [
-                DataColumn(label: Text('ID')),
-                DataColumn(label: Text('HeadCode')),
-                DataColumn(label: Text('Origin')),
-                DataColumn(label: Text('Destination')),
-                DataColumn(label: Text('OTA')),
-                DataColumn(label: Text('OTD')),
-                DataColumn(label: Text('Joining')),
-                DataColumn(label: Text('Alightning')),
-                DataColumn(label: Text('Delay')),
-                DataColumn(label: Text('Comments')),
-                DataColumn(label: Text('Edit')),
-                DataColumn(label: Text('Delete')),
-              ],
-              rows: _data.map((row) {
-                return DataRow(cells: [
-                  DataCell(Text(row['id'].toString())),
-                  DataCell(Center(child: Text('${row['headcode']}'))),
-                  DataCell(Center(child: Text('${row['origin_location']}\n${row['origin_time']}'))),
-                  DataCell(Center(child: Text('${row['destination_location']}\n${row['destination_time']}'))),
-                  DataCell(Center(child: Text(row['ota']))),
-                  DataCell(Center(child: Text(row['otd']))),
-                  DataCell(Center(child: Text(row['joining']))),
-                  DataCell(Center(child: Text(row['alightning']))),
-                  DataCell(Center(child: Text(row['delay']))),
-                  DataCell(Center(child: Text(row['comment']))),
-                  DataCell(
-                    IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        _editData(row['id']);
-                      },
-                    ),
+            headingRowHeight: 56,
+          ),
+          child: DataTable(
+            columns: const [
+              // DataColumn(label: Text('ID')),
+              DataColumn(label: Text('HeadCode')),
+              DataColumn(label: Text('Origin')),
+              DataColumn(label: Text('Destination')),
+              DataColumn(label: Text('OTA')),
+              DataColumn(label: Text('OTD')),
+              DataColumn(label: Text('Joining')),
+              DataColumn(label: Text('Alightning')),
+              DataColumn(label: Text('Delay')),
+              DataColumn(label: Text('Comments')),
+              DataColumn(label: Text('Edit')),
+              DataColumn(label: Text('Delete')),
+            ],
+            rows: _data.map((row) {
+              return DataRow(cells: [
+                // DataCell(Text(row['id'].toString())),
+                DataCell(Center(child: Text('${row['headcode']}'))),
+                DataCell(Center(child: Text('${row['origin_location']}\n${row['origin_time']}'))),
+                DataCell(Center(child: Text('${row['destination_location']}\n${row['destination_time']}'))),
+                DataCell(Center(child: Text(row['ota']))),
+                DataCell(Center(child: Text(row['otd']))),
+                DataCell(Center(child: Text(row['joining']))),
+                DataCell(Center(child: Text(row['alightning']))),
+                DataCell(Center(child: Text(row['delay']))),
+                DataCell(Center(child: Text(row['comment']))),
+                DataCell(
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () {
+                      _editData(row['id']);
+                    },
                   ),
-                  DataCell(
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _deleteData(row['id']);
-                      },
-                    ),
+                ),
+                DataCell(
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      _deleteData(row['id']);
+                    },
                   ),
-                ]);
-              }).toList(),
-            ),
+                ),
+              ]);
+            }).toList(),
           ),
         ),
       ),

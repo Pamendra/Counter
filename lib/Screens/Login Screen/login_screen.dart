@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                            fillColor: Colors.white,
                            hintText: 'Username',
                            hintStyle: const TextStyle(color: Colors.black54),
-                           suffixIcon: const Icon(Icons.email,color:  Color(0xFF202447),),
+                           suffixIcon: const Icon(Icons.person,color:  Color(0xFF202447),),
                            border: OutlineInputBorder(
                                borderRadius: BorderRadius.circular(5))),
                      ),

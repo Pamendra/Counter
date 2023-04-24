@@ -1,7 +1,5 @@
 
 
-import 'package:counter/Bloc/NetworkBloc/network_bloc.dart';
-import 'package:counter/Bloc/NetworkBloc/network_state.dart';
 import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/colors_constants.dart';
@@ -12,7 +10,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Boarding extends StatefulWidget {
 
@@ -48,22 +45,8 @@ class _BoardingState extends State<Boarding> {
   final FocusNode _focusNo = FocusNode();
   final FocusNode _focusN = FocusNode();
   bool _showNumberPicker = false;
-  final LocalDatabase _database = LocalDatabase.instance;
   int _selectedNumber = 1;
-  bool _showTextField = false;
 
-  List<DropdownMenuItem<int>> _numberList() {
-    List<DropdownMenuItem<int>> items = [];
-    for (int i = 1; i <= 1000; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: i,
-          child: Text('$i'),
-        ),
-      );
-    }
-    return items;
-  }
 
 
   @override

@@ -13,7 +13,6 @@ import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:counter/Widgets/images_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sqflite/sqflite.dart';
@@ -29,7 +28,7 @@ class DrawerLogout extends StatelessWidget {
     bool checkInternet = await Utils.checkInternet();
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String version = packageInfo.version;
-    print(version);
+
 
     return showDialog(
         context: context,
@@ -42,13 +41,13 @@ class DrawerLogout extends StatelessWidget {
                     color: ColorConstants.primaryColor, width: 2
                 )),
             backgroundColor: ColorConstants.appcolor,
-            insetPadding: EdgeInsets.all(20),
+            insetPadding: const EdgeInsets.all(20),
 
             actionsPadding: const EdgeInsets.symmetric(horizontal: 10),
-            title: Container(
+            title: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Padding(
-                  padding: EdgeInsets.all(0.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Text(
                     "App Information",
                     style: TextStyle(
@@ -125,50 +124,50 @@ class DrawerLogout extends StatelessWidget {
                 },
               ),
 
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 8),
-              //   child: ListTile(
-              //     shape: Border(
-              //         bottom: BorderSide(
-              //           color: ColorConstants.backgroundappColor,
-              //         )),
-              //     title:const Text('Service List', style: TextStyle(
-              //         fontWeight: FontWeight.bold,
-              //         fontSize: 17,
-              //         color: Colors.white),),
-              //     onTap: (){
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(builder: (context) =>  TrainList(station: '',)),
-              //       );
-              //     },
-              //   ),
-              // ),
-              //
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 8),
-              //   child: ListTile(
-              //     shape: Border(
-              //         bottom: BorderSide(
-              //           color: ColorConstants.backgroundappColor,
-              //         )),
-              //     title:const Text('Change Station', style: TextStyle(
-              //         fontWeight: FontWeight.bold,
-              //         fontSize: 17,
-              //         color: Colors.white),),
-              //     onTap: () async {
-              //       /// Clear Train list
-              //       final Database database = await openDatabase('my_database.db');
-              //       // Delete the database
-              //       await database.close();
-              //       await deleteDatabase('my_database.db');
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(builder: (context) => const Station()),
-              //       );
-              //     },
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: ListTile(
+                  shape: Border(
+                      bottom: BorderSide(
+                        color: ColorConstants.backgroundappColor,
+                      )),
+                  title:const Text('Service List', style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: Colors.white),),
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>  TrainList(station: '',)),
+                    );
+                  },
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: ListTile(
+                  shape: Border(
+                      bottom: BorderSide(
+                        color: ColorConstants.backgroundappColor,
+                      )),
+                  title:const Text('Change Station', style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: Colors.white),),
+                  onTap: () async {
+                    /// Clear Train list
+                    final Database database = await openDatabase('my_database.db');
+                    // Delete the database
+                    await database.close();
+                    await deleteDatabase('my_database.db');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Station()),
+                    );
+                  },
+                ),
+              ),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -229,7 +228,7 @@ class DrawerLogout extends StatelessWidget {
 
 
               Padding(
-                padding: const EdgeInsets.only(top: 440),
+                padding: const EdgeInsets.only(top: 300),
                 child: Column(
                   children: [
                     // Padding(
