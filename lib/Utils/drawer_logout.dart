@@ -2,7 +2,9 @@
 
 import 'package:counter/Screens/Login%20Screen/login_screen.dart';
 import 'package:counter/Screens/Save_Data.dart';
+import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Screens/Splash_Screen/splash_screen.dart';
+import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/drawertextbox.dart';
 import 'package:counter/Utils/utils.dart';
@@ -122,43 +124,52 @@ class DrawerLogout extends StatelessWidget {
                   Navigator.pop(context);
                 },
               ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: ListTile(
-                    shape: Border(
-                        bottom: BorderSide(
-                      color: ColorConstants.backgroundappColor,
-                    )),
-                    title: const Text(
-                      'Logout',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: Colors.white),
-                    ),
-                    onTap: () async {
-                      // /// Clear Service List
-                      // final db = await openDatabase(
-                      //   join(await getDatabasesPath(), 'my_databas.db'),
-                      // );
-                      // await db.delete('trainlis');
-                      // /// Clear Train list
-                      // final Database database = await openDatabase('my_database.db');
-                      // // Delete the database
-                      // await database.close();
-                      // await deleteDatabase('my_database.db');
-                      // var sharedpref = await SharedPreferences.getInstance();
-                      // sharedpref.setBool(SplashScreenState.KEYLOGIN, false);
 
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                              (Route route) => false);
-                      /// Clear Local Database
-                      LocalDatabase.instance.cleanSingleTable('my_boarding');
-                    }),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8),
+              //   child: ListTile(
+              //     shape: Border(
+              //         bottom: BorderSide(
+              //           color: ColorConstants.backgroundappColor,
+              //         )),
+              //     title:const Text('Service List', style: TextStyle(
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 17,
+              //         color: Colors.white),),
+              //     onTap: (){
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(builder: (context) =>  TrainList(station: '',)),
+              //       );
+              //     },
+              //   ),
+              // ),
+              //
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8),
+              //   child: ListTile(
+              //     shape: Border(
+              //         bottom: BorderSide(
+              //           color: ColorConstants.backgroundappColor,
+              //         )),
+              //     title:const Text('Change Station', style: TextStyle(
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 17,
+              //         color: Colors.white),),
+              //     onTap: () async {
+              //       /// Clear Train list
+              //       final Database database = await openDatabase('my_database.db');
+              //       // Delete the database
+              //       await database.close();
+              //       await deleteDatabase('my_database.db');
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(builder: (context) => const Station()),
+              //       );
+              //     },
+              //   ),
+              // ),
 
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: ListTile(
@@ -178,33 +189,71 @@ class DrawerLogout extends StatelessWidget {
                   },
                 ),
               ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+              Container(
+                padding: const EdgeInsets.all(8),
                 child: ListTile(
-                  shape: Border(
-                      bottom: BorderSide(
-                        color: ColorConstants.backgroundappColor,
-                      )),
-                  title:const Text('App Information', style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                      color: Colors.white),),
-                  onTap: (){
-                    openAppInfoDialog(context);
-                  },
-                ),
+                    shape: Border(
+                        bottom: BorderSide(
+                          color: ColorConstants.backgroundappColor,
+                        )),
+                    title: const Text(
+                      'Logout',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                          color: Colors.white),
+                    ),
+                    onTap: () async {
+                      // /// Clear Service List
+                      // final db = await openDatabase(
+                      //   join(await getDatabasesPath(), 'my_databas.db'),
+                      // );
+                      // await db.delete('trainlis');
+                      // /// Clear Train list
+                      // final Database database = await openDatabase('my_database.db');
+                      // // Delete the database
+                      // await database.close();
+                      // await deleteDatabase('my_database.db');
+                      var sharedpref = await SharedPreferences.getInstance();
+                      sharedpref.setBool(SplashScreenState.KEYLOGIN, false);
+
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
+                              (Route route) => false);
+                      /// Clear Local Database
+                      LocalDatabase.instance.cleanSingleTable('my_boarding');
+                    }),
+
               ),
 
+
               Padding(
-                padding: const EdgeInsets.only(top: 400),
+                padding: const EdgeInsets.only(top: 440),
                 child: Column(
                   children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Divider(color:ColorConstants.backgroundappColor,thickness: 1),
+                    // ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Divider(color:ColorConstants.backgroundappColor,thickness: 1),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: ListTile(
+                        shape: Border(
+                            bottom: BorderSide(
+                              color: ColorConstants.backgroundappColor,
+                            ),top:BorderSide(
+                          color: ColorConstants.backgroundappColor,
+                        ) ),
+                        title:const Text('App Information', style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                            color: Colors.white),),
+                        onTap: (){
+                          openAppInfoDialog(context);
+                        },
+                      ),
                     ),
-
                     SizedBox(height: 2.h,),
                     boxtextSmall(title: "Powered By:"),
                     SizedBox(height: 1.h,),

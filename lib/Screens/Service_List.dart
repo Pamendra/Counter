@@ -9,7 +9,7 @@ import 'package:counter/Utils/gradient_color.dart';
 import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:counter/Widgets/text_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:path/path.dart';
 import 'package:sizer/sizer.dart';
@@ -305,7 +305,7 @@ class _TrainListState extends State<TrainList> {
                                       train.origin_location.toLowerCase().contains(searchtrain.text.toLowerCase())
                                       || train.headcode.toLowerCase().contains((searchtrain.text.toLowerCase()))
                                       || train.train_uid.toLowerCase().contains((searchtrain.text.toLowerCase()))
-                                      || train.origin_time.replaceAll(':', '').contains(searchtrain.text);
+                                      || train.arrival_time.replaceAll(':', '').contains(searchtrain.text);
                                   if (isMatch) {
                                     return InkWell(
                                       onTap: () async {

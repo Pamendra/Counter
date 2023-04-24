@@ -1,7 +1,5 @@
 import 'package:counter/Utils/message_contants.dart';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class LoginService {
   loginUser(String username, String password) async {
@@ -15,8 +13,7 @@ class LoginService {
     try {
       var formData = FormData.fromMap(body);
 
-      var response = await Dio().post('http://51.140.217.38:8000/pcds/logon/',
-          data: formData);
+      var response = await Dio().post('http://51.140.217.38:8000/pcds/logon/', data: formData);
 
       if (response.statusCode == 200) {
         if(response.data['status'] == 200){

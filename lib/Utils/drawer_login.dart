@@ -16,7 +16,6 @@ class DrawerLogin extends StatelessWidget {
   //PackageInfo packageInfo =await PackageInfo.fromPlatform();
    openAppInfoDialog(BuildContext context) async {
      Utils().setUserId(logout);
-     String user = await Utils().getUsererId();
      bool checkInternet = await Utils.checkInternet();
      PackageInfo packageInfo = await PackageInfo.fromPlatform();
      String version = packageInfo.version;
@@ -56,7 +55,7 @@ class DrawerLogin extends StatelessWidget {
                    crossAxisAlignment: CrossAxisAlignment.center,
                    children: [
                      DialogTextbox2(
-                         title: "User:", subtitle:user
+                         title: "User:", subtitle:'Not Logged In'
                      ),
                      DialogTextbox2(title: "App Version:", subtitle: version),
                      DialogTextbox2(
@@ -134,34 +133,32 @@ class DrawerLogin extends StatelessWidget {
                       Navigator.pop(context);
                     }),
               ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: ListTile(
-                    shape: Border(
-                        bottom: BorderSide(
-                          color: ColorConstants.backgroundappColor,
-                        )),
-                    title: const Text(
-                      'App Information',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: Colors.white),
-                    ),
-                    onTap: (){
-                      openAppInfoDialog(context);
-                    }),
-              ),
+
 
               Padding(
                 padding: const EdgeInsets.only(top: 430),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Divider(color:ColorConstants.backgroundappColor,thickness: 1),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      child: ListTile(
+                          shape: Border(
+                             top:BorderSide(
+                               color: ColorConstants.backgroundappColor,
+                             ) , bottom: BorderSide(
+                                color: ColorConstants.backgroundappColor,
+                              )),
+                          title: const Text(
+                            'App Information',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                                color: Colors.white),
+                          ),
+                          onTap: (){
+                            openAppInfoDialog(context);
+                          }),
                     ),
-
                     SizedBox(height: 2.h,),
                     boxtextSmall(title: "Powered By:"),
                     SizedBox(height: 1.h,),

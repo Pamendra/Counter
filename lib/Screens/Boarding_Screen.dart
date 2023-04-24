@@ -1,5 +1,7 @@
 
 
+import 'package:counter/Bloc/NetworkBloc/network_bloc.dart';
+import 'package:counter/Bloc/NetworkBloc/network_state.dart';
 import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/colors_constants.dart';
@@ -10,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Boarding extends StatefulWidget {
 
@@ -83,15 +86,18 @@ class _BoardingState extends State<Boarding> {
       setState(() {
         _showNumberPicker = _focusNode.hasFocus;
       });
-    });_focusNod.addListener(() {
+    });
+    _focusNod.addListener(() {
       setState(() {
         _showNumberPicker = _focusNod.hasFocus;
       });
-    });_focusNo.addListener(() {
+    });
+    _focusNo.addListener(() {
       setState(() {
         _showNumberPicker = _focusNo.hasFocus;
       });
-    });_focusN.addListener(() {
+    });
+    _focusN.addListener(() {
       setState(() {
         _showNumberPicker = _focusN.hasFocus;
       });
@@ -199,7 +205,6 @@ class _BoardingState extends State<Boarding> {
               Text('${widget.train_uid}',style: const TextStyle(fontWeight: FontWeight.w700),),
             ],
           ),
-
         ),
         body: Container(
          height: 1000.h,
@@ -269,6 +274,7 @@ class _BoardingState extends State<Boarding> {
                                         maxLength: 4,
                                         focusNode: _focusNode,
                                         onTap: () {
+                                          _focusNode.requestFocus();
                                           setState(() {
                                             _otaactive = true;
                                             _otDactive = false;
@@ -330,6 +336,7 @@ class _BoardingState extends State<Boarding> {
                                         },
                                         controller: _otd,
                                         onTap: () {
+                                          _focusNod.requestFocus();
                                           setState(() {
                                             _otaactive = false;
                                             _otDactive = true;
@@ -383,6 +390,7 @@ class _BoardingState extends State<Boarding> {
                                         },
                                         controller: _join,
                                         onTap: () {
+                                          _focusNo.requestFocus();
                                           setState(() {
                                             _otaactive = false;
                                             _otDactive = false;
@@ -437,6 +445,7 @@ class _BoardingState extends State<Boarding> {
                                         },
                                         controller: _alight,
                                         onTap: () {
+                                          _focusN.requestFocus();
                                           setState(() {
                                             _otaactive = false;
                                             _otDactive = false;

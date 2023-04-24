@@ -13,9 +13,6 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
     on<LoginPressedEvent>((event, emit) async{
       emit(LoginLoadingState());
 
-      // Map<String, dynamic> resultMap = await LoginService().loginUser(event.username, event.password);
-      // String? result = resultMap['result'] as String?;
-
       dynamic result = await LoginService().loginUser(event.username, event.password);
 
         if(result == ConstantsMessage.serveError){
@@ -23,6 +20,10 @@ class LoginBloc extends Bloc<LoginEvent,LoginState>{
       }else if (result == ConstantsMessage.incorrectPassword) {
         emit(LoginErrorState(ConstantsMessage.incorrectPassword));
       }else{
+          //
+          // Utils().setUserLoggedIn(true);
+          // Utils().setUserId(event.username);
+          // Utils().setUserPassword(event.password);
         emit(LoginSuccessState());
       }
     });

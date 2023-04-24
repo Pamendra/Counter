@@ -2,6 +2,8 @@
 import 'package:counter/Bloc/Login_Bloc/LoginBloc.dart';
 import 'package:counter/Bloc/Login_Bloc/LoginEvent.dart';
 import 'package:counter/Bloc/Login_Bloc/LoginState.dart';
+import 'package:counter/Bloc/NetworkBloc/network_bloc.dart';
+import 'package:counter/Bloc/NetworkBloc/network_state.dart';
 import 'package:counter/Screens/Splash_Screen/splash_screen.dart';
 import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Utils/dialogs_utils.dart';
@@ -30,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool _passwordVisible = false;
+  String logout = 'not logged In';
 
 
 
@@ -37,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _passwordVisible = false;
+    Utils().setUserId(logout);
   }
 
   @override
@@ -48,6 +52,19 @@ class _LoginPageState extends State<LoginPage> {
       drawer:  DrawerLogin(),
       appBar: AppBar(
         backgroundColor: ColorConstants.appcolor,
+        actions: [
+          BlocBuilder<NetworkBloc, NetworkState>(
+            builder: (context, state) {
+              return Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: Icon(
+                  state is NetworkFailure ? Icons.cloud_off : Icons.cloud_done,
+                  size: 35,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         height: 1000.h,

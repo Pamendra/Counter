@@ -17,7 +17,11 @@ class Utils {
       return false;
     }
   }
-
+  Future<bool> getUserLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('user_logged_in') ?? false;
+    return isLoggedIn;
+  }
   void setUserLoggedIn(bool status) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('user_logged_in', status);
@@ -35,6 +39,27 @@ class Utils {
     }
   }
 
+  void setUserID(String userID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('user_id', userID);
+  }
+
+  getUserID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString('user_id') ?? "";
+  }
+
+  void setUserPassword(String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('user_password', password);
+  }
+
+  getUserPassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_password') ?? "";
+  }
+
   void setUserId(String userID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('username', userID);
@@ -42,7 +67,6 @@ class Utils {
 
   getUsererId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     return prefs.getString('username') ?? "";
   }
 }

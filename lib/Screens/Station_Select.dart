@@ -1,3 +1,5 @@
+import 'package:counter/Bloc/NetworkBloc/network_bloc.dart';
+import 'package:counter/Bloc/NetworkBloc/network_state.dart';
 import 'package:counter/Screens/Train_List_Screen.dart';
 import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
@@ -9,7 +11,7 @@ import 'package:counter/Utils/gradient_color.dart';
 import 'package:counter/widgets/TextWidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sizer/sizer.dart';
 
@@ -68,6 +70,19 @@ class _StationState extends State<Station> {
     return Scaffold(
       drawer: const DrawerLogout(),
       appBar: AppBar(backgroundColor: ColorConstants.appcolor,
+        actions: [
+          BlocBuilder<NetworkBloc, NetworkState>(
+            builder: (context, state) {
+              return Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: Icon(
+                  state is NetworkFailure ? Icons.cloud_off : Icons.cloud_done,
+                  size: 35,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: ModalProgressHUD(
         color: Colors.white,

@@ -18,7 +18,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
-  String logout = 'not logged In';
   static const String KEYLOGIN = "Login";
 
 Trainlistdb() async {
@@ -27,13 +26,28 @@ Trainlistdb() async {
   // Delete the database
   await database.close();
   await deleteDatabase('my_database.db');
+  await Utils().getUsererId();
 }
+
+  // startSplashScreen() async {
+  //   var duration = const Duration(seconds: 4);
+  //   return Timer(duration, () async {
+  //     bool isLogin = await Utils().getUserLoggedIn();
+  //     if (isLogin) {
+  //       Navigator.of(context).pushReplacement(
+  //                       MaterialPageRoute(
+  //                           builder: (BuildContext context) => const Station()));
+  //     } else {
+  //       Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //                     builder: (BuildContext context) =>  const LoginPage()));
+  //     }
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
     Trainlistdb();
-    Utils().setUserId(logout);
     // Timer(const Duration(milliseconds: 1600), () {
     //   Navigator.push(
     //       context, MaterialPageRoute(builder: (context) =>  const LoginPage()));
