@@ -1,15 +1,14 @@
 
+import 'dart:async';
+
 import 'package:counter/Screens/Boarding_Screen.dart';
+import 'package:counter/Screens/ManualEntry.dart';
 import 'package:counter/Screens/Station_Select.dart';
-import 'package:counter/Screens/Save_Data.dart';
 import 'package:counter/Utils/ApploadingBar.dart';
 import 'package:counter/Utils/colors_constants.dart';
 import 'package:counter/Utils/drawer_logout.dart';
 import 'package:counter/Utils/gradient_color.dart';
-import 'package:counter/Widgets/TextWidgets.dart';
-import 'package:counter/Widgets/text_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:path/path.dart';
 import 'package:sizer/sizer.dart';
@@ -36,23 +35,18 @@ class _TrainListState extends State<TrainList> {
 
 
   getTrainListFromLOCAL() async {
-    // DateTime now = DateTime.now();
-    // TimeOfDay time = TimeOfDay.fromDateTime(now);
-    // print(time);
-
-
     setState(() {
       _isLoading = true;
     });
-    await _databaseHelper.fetchdata(widget.station);
-    List<ServiceList> trains = await _databaseHelper.getTrainsFromDatabase();
-    setState(() {
-      _trains = trains;
-      _filteredTrains = trains;
+      await _databaseHelper.fetchdata(widget.station);
+      List<ServiceList> trains = await _databaseHelper.getTrainsFromDatabase();
+      setState(() {
+        _trains = trains;
+        _filteredTrains = trains;
+      });
       setState(() {
         _isLoading = false;
       });
-    });
   }
 
 
@@ -84,9 +78,11 @@ class _TrainListState extends State<TrainList> {
       final destinationLocation = train.destination_location.toLowerCase();
       final headcode = train.headcode.toLowerCase();
       final trainUid = train.train_uid.toLowerCase();
+      final platform = train.platform.toLowerCase();
       return originLocation.contains(query) ||
           destinationLocation.contains(query) ||
           headcode.contains(query) ||
+          platform.contains(query) ||
           trainUid.contains(query);
     }).toList();
     setState(() {
@@ -100,58 +96,58 @@ class _TrainListState extends State<TrainList> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async{
-        /// Clear Service List
-        final db = await openDatabase(
-            join(await getDatabasesPath(), 'my_databas.db'),
-        );
-        await db.delete('trainlis');
-        Navigator.of(context).pop(
-        MaterialPageRoute(
-        builder: (context) => const Station()));
+        // /// Clear Service List
+        // final db = await openDatabase(
+        //     join(await getDatabasesPath(), 'my_databas.db'),
+        // );
+        // await db.delete('trainlis');
+        // Navigator.of(context).pop(
+        // MaterialPageRoute(
+        // builder: (context) => const Station()));
         return Future.value(false);
       },
       child: Scaffold(
         drawer: const DrawerLogout(),
-        bottomNavigationBar: InkWell(
-            onTap: () async{
-              /// Clear Service List
-              final db = await openDatabase(
-                  join(await getDatabasesPath(), 'my_databas.db'),
-              );
-              await db.delete('trainlis');
-              Navigator.of(context).pop(
-                  MaterialPageRoute(
-                      builder: (context) => const Station()));
-
-              /// Clear Train List
-              // final Database database = await openDatabase('my_database.db');
-              // // Delete the database
-              // await database.close();
-              // await deleteDatabase('my_database.db');
-            },
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              width: 50,
-              height: 55,
-              color: ColorConstants.appcolor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Go Back',
-                    style: TextStyle(color: Colors.white, fontSize: 19),
-                  )
-                ],
-              ),
-            )),
+        // bottomNavigationBar: InkWell(
+        //     onTap: () async{
+        //       /// Clear Service List
+        //       final db = await openDatabase(
+        //           join(await getDatabasesPath(), 'my_databas.db'),
+        //       );
+        //       await db.delete('trainlis');
+        //       Navigator.of(context).pop(
+        //           MaterialPageRoute(
+        //               builder: (context) => const Station()));
+        //
+        //       /// Clear Train List
+        //       // final Database database = await openDatabase('my_database.db');
+        //       // // Delete the database
+        //       // await database.close();
+        //       // await deleteDatabase('my_database.db');
+        //     },
+        //     child: Container(
+        //       padding: const EdgeInsets.all(15),
+        //       width: 50,
+        //       height: 55,
+        //       color: ColorConstants.appcolor,
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: const [
+        //           Icon(
+        //             Icons.arrow_back,
+        //             color: Colors.white,
+        //             size: 18,
+        //           ),
+        //           SizedBox(
+        //             width: 5,
+        //           ),
+        //           Text(
+        //             'Go Back',
+        //             style: TextStyle(color: Colors.white, fontSize: 19),
+        //           )
+        //         ],
+        //       ),
+        //     )),
         backgroundColor: const Color(0xFF024B40),
         appBar: AppBar(
           backgroundColor: ColorConstants.appcolor,
@@ -163,7 +159,7 @@ class _TrainListState extends State<TrainList> {
                 child: IconButton(onPressed: (){
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const DataScreen()),
+                    MaterialPageRoute(builder: (context) => const ManualEntry()),
                   );
                 }, icon: const Icon(Icons.data_saver_on,color: Colors.white,size: 30,),)
             ),
@@ -195,7 +191,7 @@ class _TrainListState extends State<TrainList> {
                         padding: const EdgeInsets.only(top: 5),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 18),
-                          child: SizedBox(
+                          child: Container(
                             width: MediaQuery.of(context).size.width,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,7 +214,7 @@ class _TrainListState extends State<TrainList> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
 
                                   children: const [
-                                    Text('Arrival',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
+                                    Text('  Arrival',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                     SizedBox(height: 5,),
                                     Text('Departure',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                   ],
@@ -309,6 +305,7 @@ class _TrainListState extends State<TrainList> {
                                   if (isMatch) {
                                     return InkWell(
                                       onTap: () async {
+
                                         final result = await   Navigator.push(context, MaterialPageRoute(builder: (context) => Boarding(
                                           origin_location: snapshot.data![index].origin_location,
                                           origin_time: snapshot.data![index].origin_time,
@@ -324,7 +321,7 @@ class _TrainListState extends State<TrainList> {
                                         }
                                       },
                                       child: Container(
-
+                                        width: 85.w,
                                         height: 12.h,
                                         padding: const EdgeInsets.symmetric(horizontal: 7),
                                         child: Card(
@@ -350,13 +347,14 @@ class _TrainListState extends State<TrainList> {
                                                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 crossAxisAlignment: CrossAxisAlignment.end,
                                                 children: [
-                                                  Text(trains[index].arrival_time.toString() == " " ? '--:--' : trains[index].arrival_time,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                                                  const SizedBox(height: 20,),
-                                                  Text(trains[index].departure_time.toString() == " " ? '--:--' : trains[index].departure_time,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                                                  Text(trains[index].arrival_time.toString() == " " ? '--:--' : trains[index].arrival_time,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  const SizedBox(height: 5,),
+                                                  Text(trains[index].departure_time.toString() == " " ? '--:--' : trains[index].departure_time,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  const SizedBox(height: 5,),
+                                                  Text('PF- ${trains[index].platform.toString() == " " ? 'Na': trains[index].platform.toString()}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
                                                 ],
                                               ),
                                             ),
-
 
                                             trailing: Padding(
                                               padding: const EdgeInsets.only(top: 10),
@@ -375,7 +373,7 @@ class _TrainListState extends State<TrainList> {
                                       ),
                                     );
                                   } else {
-                                    // If there is no match, return an empty container
+                                    // If there is no match, return empty container
                                     return Container();
                                   }
                                 },

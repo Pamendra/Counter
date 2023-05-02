@@ -22,8 +22,8 @@ import 'package:sqflite/sqflite.dart';
 
 import 'colors_constants.dart';
 
-class DrawerLogout extends StatelessWidget {
-  const DrawerLogout({Key? key}) : super(key: key);
+class DrawerNormal extends StatelessWidget {
+  const DrawerNormal({Key? key}) : super(key: key);
   openAppInfoDialog(BuildContext context) async {
     String user = await Utils().getUsererId();
     bool checkInternet = await Utils.checkInternet();
@@ -125,53 +125,50 @@ class DrawerLogout extends StatelessWidget {
                 },
               ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: ListTile(
-                  shape: Border(
-                      bottom: BorderSide(
-                        color: ColorConstants.backgroundappColor,
-                      )),
-                  title:const Text('Service List', style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                      color: Colors.white),),
-                  onTap: (){
-                   Navigator.pop(context);
-
-                  },
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: ListTile(
-                  shape: Border(
-                      bottom: BorderSide(
-                        color: ColorConstants.backgroundappColor,
-                      )),
-                  title:const Text('Change Station', style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                      color: Colors.white),),
-                  onTap: () async {
-                    /// Clear Train list
-                    final Database database = await openDatabase('my_database.db');
-                    // Delete the database
-                    await database.close();
-                    await deleteDatabase('my_database.db');
-                    /// Clear Service List
-                    final db = await openDatabase(
-                      join(await getDatabasesPath(), 'my_databas.db'),
-                    );
-                    await db.delete('trainlis');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Station()),
-                    );
-                  },
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8),
+              //   child: ListTile(
+              //     shape: Border(
+              //         bottom: BorderSide(
+              //           color: ColorConstants.backgroundappColor,
+              //         )),
+              //     title:const Text('Service List', style: TextStyle(
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 17,
+              //         color: Colors.white),),
+              //     onTap: (){
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(builder: (context) =>  TrainList(station: '',)),
+              //       );
+              //     },
+              //   ),
+              // ),
+              //
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8),
+              //   child: ListTile(
+              //     shape: Border(
+              //         bottom: BorderSide(
+              //           color: ColorConstants.backgroundappColor,
+              //         )),
+              //     title:const Text('Change Station', style: TextStyle(
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 17,
+              //         color: Colors.white),),
+              //     onTap: () async {
+              //       /// Clear Train list
+              //       final Database database = await openDatabase('my_database.db');
+              //       // Delete the database
+              //       await database.close();
+              //       await deleteDatabase('my_database.db');
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(builder: (context) => const Station()),
+              //       );
+              //     },
+              //   ),
+              // ),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -217,7 +214,6 @@ class DrawerLogout extends StatelessWidget {
                       // Delete the database
                       await database.close();
                       await deleteDatabase('my_database.db');
-                      /// Shared Preference
                       var sharedpref = await SharedPreferences.getInstance();
                       sharedpref.setBool(SplashScreenState.KEYLOGIN, false);
 
@@ -233,7 +229,7 @@ class DrawerLogout extends StatelessWidget {
 
 
               Padding(
-                padding: const EdgeInsets.only(top: 300),
+                padding: const EdgeInsets.only(top: 440),
                 child: Column(
                   children: [
                     // Padding(

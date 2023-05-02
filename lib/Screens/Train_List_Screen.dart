@@ -46,6 +46,7 @@ import 'package:sqflite/sqflite.dart';
      // Refresh the UI
      setState(() {
        searchList = results;
+       searchList.sort((a, b) => (a?.description ?? '').compareTo(b?.description ?? ''));
      });
    }
 
@@ -69,6 +70,7 @@ import 'package:sqflite/sqflite.dart';
      setState(() {
        trainIDList = tempList;
        searchList = tempList;
+       searchList.sort((a, b) => (a?.description ?? '').compareTo(b?.description ?? ''));
      });
 
      setState(() {

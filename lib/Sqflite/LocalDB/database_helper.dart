@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart' show getApplicationDocumentsDirectory;
 
@@ -75,41 +76,41 @@ class TiplocDatabaseHelper{
 /// Service DatabaseHelper
 
 
-class DatabaseHelper{
+class DatabaseHelper {
 
 
+  fetchdata(String? station) async {
 
-  fetchdata(String? station) async{
+      final response = await http.get(Uri.parse(
+          'http://51.140.217.38:8000/pcds/api/manul-count-app-services?selected_dates=2023-02-23_2023-02-23&toc=CC,CH,GN,GW,GX,IL,LE,LM,LO,SE,SN,SW,TL,XR&tiploc=$station&export_type=station&api_key=6afyVqs6r6bW7DzI'));
+
+      if (response.statusCode == 200) {
+        List<ServiceList> TrainList = [];
+
+        List<dynamic> jsonData = jsonDecode(response.body)['response'] as List<dynamic>;
+        for (var data in jsonData) {
+          ServiceList trains = ServiceList.fromJson(data);
+          TrainList.add(trains);
+        }
 
 
-    final response = await http.get(Uri.parse('http://51.140.217.38:8000/pcds/api/manul-count-app-services?selected_dates=2023-02-23_2023-02-23&toc=CC,CH,GN,GW,GX,IL,LE,LM,LO,SE,SN,SW,TL,XR&tiploc=$station&export_type=station&api_key=6afyVqs6r6bW7DzI'));
+        final Database database = await openDatabase(
+          join(await getDatabasesPath(), 'my_databas.db'),
+          onCreate: (db, version) {
+            return db.execute(
+              'CREATE TABLE trainlis(origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT,  train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT)',
+            );
+          },
+          version: 1,
+        );
 
-    if (response.statusCode == 200) {
-      List<ServiceList> TrainList = [];
-
-      List<dynamic> jsonData = jsonDecode(response.body)['response'] as List<dynamic>;
-      for (var data in jsonData) {
-        ServiceList trains = ServiceList.fromJson(data);
-        TrainList.add(trains);
+        for (var trains in TrainList) {
+          await database.insert('trainlis', trains.toMap());
+        }
+      } else {
+        throw Exception('Failed to fetch trains');
       }
 
-
-      final Database database = await openDatabase(
-        join(await getDatabasesPath(), 'my_databas.db'),
-        onCreate: (db, version) {
-          return db.execute(
-            'CREATE TABLE trainlis(origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  no_cars  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT,  late TEXT ,  train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT)',
-          );
-        },
-        version: 1,
-      );
-
-      for (var trains in TrainList) {
-        await database.insert('trainlis', trains.toMap());
-      }
-    } else {
-      throw Exception('Failed to fetch trains');
-    }
   }
 
 
@@ -118,7 +119,7 @@ class DatabaseHelper{
       join(await getDatabasesPath(), 'my_databas.db'),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE trainlis(origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  no_cars  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT,  late TEXT ,  train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT)',
+          'CREATE TABLE trainlis(origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT, train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT)',
         );
       },
       version: 1,
@@ -136,11 +137,10 @@ class DatabaseHelper{
         platform: maps[i]['platform'],
         arrival_time: maps[i]['arrival_time'],
         departure_time: maps[i]['departure_time'],
-        no_cars: maps[i]['no_cars'],
+        crs: maps[i]['crs'],
         joining: maps[i]['joining'],
         alighting: maps[i]['alighting'],
         otd: maps[i]['otd'],
-        late: maps[i]['late'],
         train_uid: maps[i]['train_uid'],
         toc: maps[i]['toc'],
         date_from: maps[i]['date_from'],
@@ -176,6 +176,7 @@ class LocalDatabase {
   static final columnDTIME = 'destination_time';
   static final columnDELAY = 'delay';
   static final columnHEADCODE = 'headcode';
+  static final columnTRAIN_UID = 'train_uid';
 
   // make this a singleton class
   LocalDatabase._privateConstructor();
@@ -216,7 +217,8 @@ class LocalDatabase {
       destination_location TEXT,
       destination_time TEXT,
       delay TEXT,
-      headcode TEXT
+      headcode TEXT,
+      train_uid TEXT
        )
       ''');
 
@@ -256,6 +258,21 @@ class LocalDatabase {
     } catch (e) {
       print('Failed to update data: $e');
     }  }
+
+  Future<Map<String, dynamic>> getDataForId(int id) async {
+    Database? db = await LocalDatabase.instance.database;
+    List<Map<String, dynamic>> rows = await db!.query(LocalDatabase.table,
+        where: '${LocalDatabase.columnID} = ?', whereArgs: [id]);
+
+    if (rows.isNotEmpty) {
+      // return the data for the specified ID
+      return rows.first;
+    } else {
+      // return an empty map if no data is found for the specified ID
+      return {};
+    }
+  }
+
 
 
   Future<void> deleteData(int id) async {

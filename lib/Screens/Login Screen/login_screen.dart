@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         height: 1000.h,
         decoration: gradient_login,
-        child: BlocConsumer<LoginBloc,LoginState>(
+          child: BlocConsumer<LoginBloc,LoginState>(
         listener: (context,state){
           if(state is LoginSuccessState){
             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>  const Station()), (route) => false);
@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                      ),
                    ),
                    const SizedBox(height: 40,),
-                   SizedBox(width: 375,height: 50,
+                   SizedBox(width: 91.w,height: 6.h,
                        child: ElevatedButton(onPressed: () async {
                          if (emailController.text.isEmpty) {
                            showDialog(
@@ -169,8 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                                    // title: Text("Alert Dialog"),
                                    backgroundColor:const Color(0xFF202447).withOpacity(1),
 
-                                   shape: RoundedRectangleBorder(
-                                       side:const BorderSide(color: Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
+                                   shape: RoundedRectangleBorder(side:const BorderSide(color: Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
                                    title: Row(
                                      children: [
                                        const Text('Message',style: TextStyle(color: Colors.white),),
@@ -182,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                                           child:const Icon(Icons.close,color: Colors.white,)),
                                      ],
                                    ),
-                                   content:const Text("enter your username or ID",style: TextStyle(color: Colors.white),),
+                                   content:const Text("Enter your username or ID",style: TextStyle(color: Colors.white),),
                                  );
                                }
                            );
@@ -206,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                                            child: const Icon(Icons.close,color: Colors.white,)),
                                      ],
                                    ),
-                                   content:const Text("enter your password",style: TextStyle(color: Colors.white),),
+                                   content:const Text("Enter your password",style: TextStyle(color: Colors.white),),
                                  );
                                }
                            );

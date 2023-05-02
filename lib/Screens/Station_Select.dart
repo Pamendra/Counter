@@ -5,6 +5,7 @@ import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Sqflite/Model/service_model.dart';
 import 'package:counter/Utils/ApploadingBar.dart';
+import 'package:counter/Utils/DrawerNormal.dart';
 import 'package:counter/Utils/colors_constants.dart';
 import 'package:counter/Utils/drawer_logout.dart';
 import 'package:counter/Utils/gradient_color.dart';
@@ -68,7 +69,7 @@ class _StationState extends State<Station> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const DrawerLogout(),
+      drawer: const DrawerNormal(),
       appBar: AppBar(backgroundColor: ColorConstants.appcolor,
         actions: [
           BlocBuilder<NetworkBloc, NetworkState>(
@@ -133,7 +134,7 @@ class _StationState extends State<Station> {
                                 Text(
                                   trainID == ""
                                       ? "Select Station"
-                                      : trainID.toString(),
+                                      : '${trainData!.description.toString()+' - '+ trainID.toString()}',
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(fontSize: 16),
                                 ),
@@ -173,8 +174,7 @@ class _StationState extends State<Station> {
                                           return  Center(
                                             child: AlertDialog(
                                               backgroundColor: const Color(0xFF202447).withOpacity(0.7),
-                                              shape: RoundedRectangleBorder(
-                                                  side: const BorderSide(color:Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
+                                              shape: RoundedRectangleBorder(side: const BorderSide(color:Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
                                               title: Row(
                                                 children: [
                                                   const Text('Message',style: TextStyle(color: Colors.white),),
@@ -186,7 +186,7 @@ class _StationState extends State<Station> {
                                                       child: const Icon(Icons.close,color: Colors.white,)),
                                                 ],
                                               ),
-                                              content: const Text("please select station",style: TextStyle(color: Colors.white),),
+                                              content: const Text("Please select station",style: TextStyle(color: Colors.white),),
                                             ),
                                           );});
                                   }

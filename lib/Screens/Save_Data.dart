@@ -1,9 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:counter/Bloc/ServiceData/ServiceBloc.dart';
+import 'package:counter/Bloc/ServiceData/ServiceEvent.dart';
+import 'package:counter/Bloc/ServiceData/ServiceState.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/colors_constants.dart';
+import 'package:counter/Utils/dialogs_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DataScreen extends StatefulWidget {
   const DataScreen({super.key});
@@ -154,65 +161,119 @@ class DataScreenState extends State<DataScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorConstants.appcolor,
-        title: const Text('Saved Data'),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTableTheme(
-          data: const DataTableThemeData(
-            dataRowHeight: 48,
+    return BlocProvider(
+      create: (context) => ServiceBloc(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: ColorConstants.appcolor,
+          title: const Text('Saved Data'),
+        ),
+        body: BlocConsumer<ServiceBloc,ServiceState>(
+            listener: (context,state){
+            if(state is ServiceSuccessState){
+                Fluttertoast.showToast(msg: 'Data Saved Successfully');
+            }else if(state is ServiceErrorState){
+            Dialogs.showValidationMessage(context, state.error);
+            }
+            },builder: (context,state) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Column(
+              children: [
+                DataTableTheme(
+                  data: const DataTableThemeData(
+                    dataRowHeight: 48,
 
-            headingRowHeight: 56,
-          ),
-          child: DataTable(
-            columns: const [
-              // DataColumn(label: Text('ID')),
-              DataColumn(label: Text('HeadCode')),
-              DataColumn(label: Text('Origin')),
-              DataColumn(label: Text('Destination')),
-              DataColumn(label: Text('OTA')),
-              DataColumn(label: Text('OTD')),
-              DataColumn(label: Text('Joining')),
-              DataColumn(label: Text('Alightning')),
-              DataColumn(label: Text('Delay')),
-              DataColumn(label: Text('Comments')),
-              DataColumn(label: Text('Edit')),
-              DataColumn(label: Text('Delete')),
-            ],
-            rows: _data.map((row) {
-              return DataRow(cells: [
-                // DataCell(Text(row['id'].toString())),
-                DataCell(Center(child: Text('${row['headcode']}'))),
-                DataCell(Center(child: Text('${row['origin_location']}\n${row['origin_time']}'))),
-                DataCell(Center(child: Text('${row['destination_location']}\n${row['destination_time']}'))),
-                DataCell(Center(child: Text(row['ota']))),
-                DataCell(Center(child: Text(row['otd']))),
-                DataCell(Center(child: Text(row['joining']))),
-                DataCell(Center(child: Text(row['alightning']))),
-                DataCell(Center(child: Text(row['delay']))),
-                DataCell(Center(child: Text(row['comment']))),
-                DataCell(
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      _editData(row['id']);
-                    },
+                    headingRowHeight: 56,
+                  ),
+                  child: DataTable(
+                    columns: const [
+                      // DataColumn(label: Text('ID')),
+                      DataColumn(label: Text('HeadCode')),
+                      DataColumn(label: Text('TrainUid')),
+                      DataColumn(label: Text('Origin')),
+                      DataColumn(label: Text('Destination')),
+                      DataColumn(label: Text('Origin Time')),
+                      DataColumn(label: Text('Destination Time')),
+                      DataColumn(label: Text('OTA')),
+                      DataColumn(label: Text('OTD')),
+                      DataColumn(label: Text('Joining')),
+                      DataColumn(label: Text('Alightning')),
+                      DataColumn(label: Text('Delay')),
+                      DataColumn(label: Text('Comments')),
+                      // DataColumn(label: Text('Total')),
+                      DataColumn(label: Text('Edit')),
+                      DataColumn(label: Text('Delete')),
+                      // DataColumn(label: Text('Approval')),
+                    ],
+                    rows: _data.map((row) {
+                      return DataRow(cells: [
+                        // DataCell(Text(row['id'].toString())),
+                        DataCell(Center(child: Text('${row['headcode']}'))),
+                        DataCell(Center(child: Text('${row['train_uid']}'))),
+                        DataCell(Text('${row['origin_location']}')),
+                        DataCell(Text('${row['destination_location']}')),
+                        DataCell(Center(child: Text('${row['origin_time']}'))),
+                        DataCell(Center(child: Text('${row['destination_time']}'))),
+                        DataCell(Center(child: Text(row['ota']))),
+                        DataCell(Center(child: Text(row['otd']))),
+                        DataCell(Center(child: Text(row['joining']))),
+                        DataCell(Center(child: Text(row['alightning']))),
+                        DataCell(Center(child: Text(row['delay']))),
+                        DataCell(Center(child: Text(row['comment']))),
+                        // DataCell(Text((int.parse(row['ota']) +
+                        //     int.parse(row['otd']) + int.parse(row['joining']) +
+                        //     int.parse(row['alightning']))
+                        //     .toString())),
+                        DataCell(
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              _editData(row['id']);
+                            },
+                          ),
+                        ),
+                        DataCell(
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              _deleteData(row['id']);
+                            },
+                          ),
+                        ),
+                        // DataCell(
+                        //                         //   ElevatedButton(
+                        //                         //     onPressed: (){
+                        //                         //       BlocProvider.of<ServiceBloc>(context).add(
+                        //                         //                     onPressedEvent( alightning:row['alightning']  ,comment:row['comment'] ,delay:row['delay'] ,
+                        //                         //                         destination_location: row['destination_location'],destination_time:row['destination_time'] ,
+                        //                         //                         headcode:row['headcode'] ,joining:row['joining'] , origin_location: row['origin_location'] ,
+                        //                         //                         origin_time: row['origin_time'],ota:row['ota'] ,otd:row['otd'] ,train_uid:row['train_uid']
+                        //                         //                     ));
+                        //                         //     },child: Text('Approve'),
+                        //                         //   )
+                        //                         // )
+                      ]);
+                    }).toList(),
                   ),
                 ),
-                DataCell(
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      _deleteData(row['id']);
-                    },
-                  ),
-                ),
-              ]);
-            }).toList(),
-          ),
+                SizedBox(height: 100,),
+                if(_data.isEmpty)
+                Visibility(
+                 visible: _data.isNotEmpty,
+                  child: ElevatedButton(
+                      onPressed: () {
+
+
+
+                      }, style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorConstants.appcolor,
+                  ), child: const Text('Approve')),
+                )
+              ],
+            ),
+          );
+        }
         ),
       ),
     );

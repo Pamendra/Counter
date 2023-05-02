@@ -44,11 +44,10 @@ class ServiceList {
   final String platform;
   final String arrival_time;
   final String departure_time;
-  final String no_cars;
+  final String crs;
   final String joining;
   final String alighting;
   final String otd;
-  final String late;
   final String train_uid;
   final String toc;
   final String date_from;
@@ -64,11 +63,10 @@ class ServiceList {
     required this.platform,
     required this.arrival_time,
     required this.departure_time,
-    required this.no_cars,
+    required this.crs,
     required this.joining,
     required this.alighting,
     required this.otd,
-    required this.late,
     required this.train_uid,
     required this.toc,
     required this.date_from,
@@ -87,11 +85,10 @@ class ServiceList {
       platform: json['platform'],
       arrival_time: json['arrival_time'],
       departure_time: json['departure_time'],
-      no_cars: json['no_cars'],
+      crs: json['crs'],
       joining: json['joining'],
       alighting: json['alighting'],
       otd: json['otd'],
-      late: json['late'],
       train_uid: json['train_uid'],
       toc: json['toc'],
       date_from: json['date_from'],
@@ -111,11 +108,10 @@ class ServiceList {
       'platform': platform,
       'arrival_time': arrival_time,
       'departure_time': departure_time,
-      'no_cars': no_cars,
+      'crs': crs,
       'joining': joining,
       'alighting': alighting,
       'otd': otd,
-      'late': late,
       'train_uid': train_uid,
       'toc': toc,
       'date_from': date_from,
@@ -125,4 +121,3 @@ class ServiceList {
     };
   }
 }
-

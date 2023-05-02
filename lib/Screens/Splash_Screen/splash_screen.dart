@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:counter/Screens/Login%20Screen/login_screen.dart';
+import 'package:counter/Screens/ManualEntry.dart';
 import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Utils/gradient_color.dart';
@@ -50,7 +51,7 @@ Trainlistdb() async {
     Trainlistdb();
     // Timer(const Duration(milliseconds: 1600), () {
     //   Navigator.push(
-    //       context, MaterialPageRoute(builder: (context) =>  const LoginPage()));
+    //       context, MaterialPageRoute(builder: (context) =>  const ManualEntry()));
     // });
     wheretogo();
   }

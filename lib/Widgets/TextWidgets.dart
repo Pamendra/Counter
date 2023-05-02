@@ -18,6 +18,22 @@ class headingText extends StatelessWidget {
 
 
 }
+
+
+
+class headingText1 extends StatelessWidget {
+  headingText1({Key? key, required this.title}) : super(key: key);
+  String title;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(title,style:TextStyle(fontWeight:FontWeight.w600,color:Color(0xFF202447),fontFamily:"Aleo",
+        fontSize:11.sp,letterSpacing:1),);
+  }
+
+
+}
 class DialogFieldText extends StatelessWidget {
   DialogFieldText({Key? key, required this.title}) : super(key: key);
   String title;

@@ -18,7 +18,7 @@ class Boarding extends StatefulWidget {
   String? destination_location;
   String? destination_time;
   String? headcode;
-  String? train_uid;
+  String train_uid;
   String? station;
 
 
@@ -29,12 +29,12 @@ class Boarding extends StatefulWidget {
 }
 
 class _BoardingState extends State<Boarding> {
-  TextEditingController comment = TextEditingController();
-  final TextEditingController _ota = TextEditingController();
-  final TextEditingController _otd = TextEditingController();
-  final TextEditingController _join = TextEditingController();
-  final TextEditingController _alight = TextEditingController();
-  final _delay = TextEditingController();
+  late TextEditingController comment = TextEditingController();
+  late TextEditingController _ota = TextEditingController();
+  late TextEditingController _otd = TextEditingController();
+  late TextEditingController _join = TextEditingController();
+  late TextEditingController _alight = TextEditingController();
+  late TextEditingController _delay = TextEditingController();
 
   bool _otaactive = false;
   bool _otDactive = false;
@@ -46,7 +46,9 @@ class _BoardingState extends State<Boarding> {
   final FocusNode _focusN = FocusNode();
   bool _showNumberPicker = false;
   int _selectedNumber = 1;
-
+  // Map<String, dynamic> _data = {};
+  List<Map<String, dynamic>> _data = [];
+  final LocalDatabase _localDatabase = LocalDatabase.instance;
 
 
   @override
@@ -65,6 +67,7 @@ class _BoardingState extends State<Boarding> {
   @override
   void initState() {
     super.initState();
+    onListItemTap(widget.train_uid);
     _focusNode.addListener(() {
       setState(() {
         _showNumberPicker = _focusNode.hasFocus;
@@ -85,9 +88,101 @@ class _BoardingState extends State<Boarding> {
         _showNumberPicker = _focusN.hasFocus;
       });
     });
+
+    _ota = TextEditingController();
+    _otd = TextEditingController();
+    _join = TextEditingController();
+    _alight = TextEditingController();
+    comment = TextEditingController();
+    _delay = TextEditingController();
+
+  }
+
+  // Define an onTap handler for the green color list item
+  void onListItemTap(String trainUid) async {
+    // Retrieve the details of the clicked item
+    Map<String, dynamic>? itemDetails = await getItemDetailsByTrainUid(trainUid);
+
+    // If the item details were found, fill the form fields with the details
+    if (itemDetails != null) {
+      fillFormFields(itemDetails);
+    }
   }
 
 
+// Define a function to retrieve the details of an item with a specific train_uid
+  Future<Map<String, dynamic>?> getItemDetailsByTrainUid(String trainUid) async {
+    // Get a reference to the database
+    Database? db = await LocalDatabase.instance.database;
+
+    // Query the database for the item with the specified train_uid
+    List<Map<String, dynamic>> results = await db!.query(
+      LocalDatabase.table,
+      where: '${LocalDatabase.columnTRAIN_UID} = ?',
+      whereArgs: [trainUid],
+    );
+
+    // If there are no results, return null
+    if (results.isEmpty) {
+      return null;
+    }
+
+    // Otherwise, return the first result
+    return results.first;
+  }
+
+  void fillFormFields(Map<String, dynamic> itemDetails) {
+    // Set the text of each controller to the corresponding value from the itemDetails map
+    _ota.text = itemDetails[LocalDatabase.columnOTA];
+    _otd.text = itemDetails[LocalDatabase.columnOTD];
+    _join.text = itemDetails[LocalDatabase.columnJOIN];
+    _alight.text = itemDetails[LocalDatabase.columnALIGHT];
+    comment.text = itemDetails[LocalDatabase.columnCOMMENT];
+    _delay.text = itemDetails[LocalDatabase.columnDELAY];
+  }
+
+
+  // Future<void> _getData() async {
+  //   // retrieve data from the database
+  //   List<Map<String, dynamic>> data = await _localDatabase.getData();
+  //   Database db = await openDatabase('my_database.db');
+  //   await db.close();
+  //   // update the state with the retrieved data
+  //   setState(() {
+  //     _data = data;
+  //   });
+  // }
+  //
+  // Future<void> editData(int id) async {
+  //   // Open the database
+  //   final Database? db = await _localDatabase.database;
+  //
+  //   List<Map<String, dynamic>> data = await db!.query(
+  //     'my_boarding',
+  //     where: 'id = ?',
+  //     whereArgs: <int>[id],
+  //   );
+  //   _ota.text = data[0]['ota'];
+  //   _otd.text = data[0]['otd'];
+  //   _join.text = data[0]['joining'];
+  //   _alight.text = data[0]['alightning'];
+  //   comment.text = data[0]['comment'];
+  //   _delay.text = data[0]['delay'];
+  //
+  //   await _localDatabase.updateData(
+  //     id,
+  //     _ota.text,
+  //     _otd.text,
+  //     _join.text,
+  //     _alight.text,
+  //     comment.text,
+  //     _delay.text,
+  //   );
+  //
+  //   // update the data on the screen
+  //   await _getData();
+  //
+  // }
 
 
   _showInputDialog() async {
@@ -95,23 +190,29 @@ class _BoardingState extends State<Boarding> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Enter a Value'),
+          backgroundColor:const Color(0xFF202447).withOpacity(1),
+          shape: RoundedRectangleBorder(side:const BorderSide(color: Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
+          title: Text('Enter a Value',style: TextStyle(color: Colors.white),),
           content: TextField(
             keyboardType: TextInputType.phone,
             controller: _delay,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
 
+              )
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('CANCEL'),
+              child: Text('CANCEL',style: TextStyle(color: Colors.white),),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('OK'),
+              child: Text('OK',style: TextStyle(color: Colors.white),),
               onPressed: () {
                 Navigator.of(context).pop(_delay.text);
               },
@@ -231,7 +332,7 @@ class _BoardingState extends State<Boarding> {
                 ),
                   const SizedBox(height: 10,),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8,bottom: 8,left: 8,right: 15),
+                  padding: const EdgeInsets.only(top: 8,bottom: 8,right: 15),
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -240,222 +341,210 @@ class _BoardingState extends State<Boarding> {
 
                           Padding(
                             padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
-                            child: Container(
-                              decoration: const BoxDecoration(border: Border(bottom: BorderSide())),
-                              child: Row(
-                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
 
-                                  const Text('OTA',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
-                                  const SizedBox(width: 77,),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      width: 150,
-                                      height: 50,
-                                      child: TextFormField(
-                                        maxLength: 4,
-                                        focusNode: _focusNode,
-                                        onTap: () {
-                                          _focusNode.requestFocus();
-                                          setState(() {
-                                            _otaactive = true;
-                                            _otDactive = false;
-                                            _joinactive = false;
-                                            _alightactive = false;
-                                            _selectedNumber = int.tryParse(_ota.text) ?? 0;
-                                            _ota.selection = TextSelection.fromPosition(
-                                                TextPosition(offset: _ota.text.length));
-                                          });
-                                        },
-                                        controller: _ota,
-                                        keyboardType: TextInputType.phone,
-                                        onChanged:  (value) {
-                                          setState(() {
-                                            _selectedNumber = int.tryParse(value) ?? 0;
-                                          });
-                                        },
-                                        decoration: const InputDecoration(
-                                          counterText: '',
-                                          fillColor: Colors.white,
-                                          filled: true,
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black)
-                                          ),
-                                          border: OutlineInputBorder(
+                                const Text('OTA',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                                const SizedBox(width: 77,),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: 40.w,
+                                    height: 6.h,
+                                    child: TextFormField(
+                                      maxLength: 4,
+                                      focusNode: _focusNode,
+                                      onTap: () {
+                                        _focusNode.requestFocus();
+                                        setState(() {
+                                          _otaactive = true;
+                                          _otDactive = false;
+                                          _joinactive = false;
+                                          _alightactive = false;
+                                          _selectedNumber = int.tryParse(_ota.text) ?? 0;
+                                          _ota.selection = TextSelection.fromPosition(
+                                              TextPosition(offset: _ota.text.length));
+                                        });
+                                      },
+                                      controller: _ota,
+                                      keyboardType: TextInputType.phone,
+                                      onChanged:  (value) {
+                                        setState(() {
+                                          _selectedNumber = int.tryParse(value) ?? 0;
+                                        });
+                                      },
+                                      decoration: const InputDecoration(
+                                        counterText: '',
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black)
+                                        ),
+                                        border: OutlineInputBorder(
 
-                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
 
 
                           Padding(
                             padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
-                            child: Container(
-                              decoration: const BoxDecoration(border: Border(bottom: BorderSide())),
-                              child: Row(
+                            child: Row(
 
-                                children:  [
-                                  const Text('OTD',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
-                                  const SizedBox(width: 77,),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      width: 150,
-                                      height: 50,
-                                      child: TextFormField(
-                                        maxLength: 4,
-                                        focusNode: _focusNod,
-                                        onChanged:  (value) {
-                                          setState(() {
-                                            _selectedNumber = int.tryParse(value) ?? 0;
-                                          });
-                                        },
-                                        controller: _otd,
-                                        onTap: () {
-                                          _focusNod.requestFocus();
-                                          setState(() {
-                                            _otaactive = false;
-                                            _otDactive = true;
-                                            _joinactive = false;
-                                            _alightactive = false;
-                                            _selectedNumber = int.tryParse(_otd.text) ?? 0;
-                                            _otd.selection = TextSelection.fromPosition(
-                                                TextPosition(offset: _otd.text.length));
-                                          });
-                                        },
-                                        keyboardType: TextInputType.phone,
-                                        decoration: const InputDecoration(
-                                          counterText: '',
-                                          fillColor: Colors.white,
-                                          filled: true,
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black)
-                                          ),
-                                          border: OutlineInputBorder(
+                              children:  [
+                                const Text('OTD',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                                const SizedBox(width: 77,),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: 40.w,
+                                    height: 6.h,
+                                    child: TextFormField(
+                                      maxLength: 4,
+                                      focusNode: _focusNod,
+                                      onChanged:  (value) {
+                                        setState(() {
+                                          _selectedNumber = int.tryParse(value) ?? 0;
+                                        });
+                                      },
+                                      controller: _otd,
+                                      onTap: () {
+                                        _focusNod.requestFocus();
+                                        setState(() {
+                                          _otaactive = false;
+                                          _otDactive = true;
+                                          _joinactive = false;
+                                          _alightactive = false;
+                                          _selectedNumber = int.tryParse(_otd.text) ?? 0;
+                                          _otd.selection = TextSelection.fromPosition(
+                                              TextPosition(offset: _otd.text.length));
+                                        });
+                                      },
+                                      keyboardType: TextInputType.phone,
+                                      decoration: const InputDecoration(
+                                        counterText: '',
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black)
+                                        ),
+                                        border: OutlineInputBorder(
 
-                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
-                            child: Container(
-                              decoration: const BoxDecoration(border: Border(bottom: BorderSide())),
-                              child: Row(
+                            child: Row(
 
-                                children: [
-                                  const Text('JOINING',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
-                                  const SizedBox(width: 42,),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      width: 150,
-                                      height: 50,
-                                      child: TextFormField(
-                                        maxLength: 4,
-                                        focusNode: _focusNo,
-                                        onChanged:  (value) {
-                                          setState(() {
-                                            _selectedNumber = int.tryParse(value) ?? 0;
-                                          });
-                                        },
-                                        controller: _join,
-                                        onTap: () {
-                                          _focusNo.requestFocus();
-                                          setState(() {
-                                            _otaactive = false;
-                                            _otDactive = false;
-                                            _joinactive = true;
-                                            _alightactive = false;
-                                            _selectedNumber = int.tryParse(_join.text) ?? 0;
-                                            _join.selection = TextSelection.fromPosition(
-                                                TextPosition(offset: _join.text.length));
-                                          });
-                                        },
-                                        keyboardType: TextInputType.phone,
-                                        decoration: const InputDecoration(
-                                          counterText: '',
-                                          fillColor: Colors.white,
-                                          filled: true,
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black)
-                                          ),
-                                          border: OutlineInputBorder(
+                              children: [
+                                const Text('JOINING',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                                const SizedBox(width: 42,),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: 40.w,
+                                    height: 6.h,
+                                    child: TextFormField(
+                                      maxLength: 4,
+                                      focusNode: _focusNo,
+                                      onChanged:  (value) {
+                                        setState(() {
+                                          _selectedNumber = int.tryParse(value) ?? 0;
+                                        });
+                                      },
+                                      controller: _join,
+                                      onTap: () {
+                                        _focusNo.requestFocus();
+                                        setState(() {
+                                          _otaactive = false;
+                                          _otDactive = false;
+                                          _joinactive = true;
+                                          _alightactive = false;
+                                          _selectedNumber = int.tryParse(_join.text) ?? 0;
+                                          _join.selection = TextSelection.fromPosition(
+                                              TextPosition(offset: _join.text.length));
+                                        });
+                                      },
+                                      keyboardType: TextInputType.phone,
+                                      decoration: const InputDecoration(
+                                        counterText: '',
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black)
+                                        ),
+                                        border: OutlineInputBorder(
 
-                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 10,),
                           Padding(
                             padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
-                            child: Container(
-                              decoration: const BoxDecoration(border: Border(bottom: BorderSide())),
-                              child: Row(
+                            child: Row(
 
-                                children: [
-                                  const Text('ALIGHTINING',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                              children: [
+                                const Text('ALIGHTINING',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                                const SizedBox(width: 13,),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8,top: 8,bottom: 8),
+                                  child: SizedBox(
+                                    width: 40.w,
+                                    height: 6.h,
+                                    child: TextFormField(
+                                      maxLength: 4,
+                                      focusNode: _focusN,
+                                      onChanged:  (value) {
+                                        setState(() {
+                                          _selectedNumber = int.tryParse(value) ?? 0;
+                                        });
+                                      },
+                                      controller: _alight,
+                                      onTap: () {
+                                        _focusN.requestFocus();
+                                        setState(() {
+                                          _otaactive = false;
+                                          _otDactive = false;
+                                          _joinactive = false;
+                                          _alightactive = true;
+                                          _selectedNumber = int.tryParse(_alight.text) ?? 0;
+                                          _alight.selection = TextSelection.fromPosition(
+                                              TextPosition(offset: _alight.text.length));
+                                        });
+                                      },
+                                      keyboardType: TextInputType.phone,
+                                      decoration: const InputDecoration(
+                                        counterText: '',
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black)
+                                        ),
+                                        border: OutlineInputBorder(
 
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      width: 150,
-                                      height: 50,
-                                      child: TextFormField(
-                                        maxLength: 4,
-                                        focusNode: _focusN,
-                                        onChanged:  (value) {
-                                          setState(() {
-                                            _selectedNumber = int.tryParse(value) ?? 0;
-                                          });
-                                        },
-                                        controller: _alight,
-                                        onTap: () {
-                                          _focusN.requestFocus();
-                                          setState(() {
-                                            _otaactive = false;
-                                            _otDactive = false;
-                                            _joinactive = false;
-                                            _alightactive = true;
-                                            _selectedNumber = int.tryParse(_alight.text) ?? 0;
-                                            _alight.selection = TextSelection.fromPosition(
-                                                TextPosition(offset: _alight.text.length));
-                                          });
-                                        },
-                                        keyboardType: TextInputType.phone,
-                                        decoration: const InputDecoration(
-                                          counterText: '',
-                                          fillColor: Colors.white,
-                                          filled: true,
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.black)
-                                          ),
-                                          border: OutlineInputBorder(
-
-                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -473,11 +562,11 @@ class _BoardingState extends State<Boarding> {
                         radius: const Radius.circular(2),
 
                         child: Container(
-                          width: 16.w,
+                          width: 10.w,
                           child: NumberPicker(
                             selectedTextStyle: const TextStyle(fontSize: 22),
                             value: _selectedNumber,
-                            itemHeight: 30,
+                            itemHeight: 3.h,
                             itemCount: 10,
                             minValue: 0,
                             maxValue: 1001,
@@ -487,22 +576,22 @@ class _BoardingState extends State<Boarding> {
 
                                 if (_otaactive) {
                                   _ota.text = value.toString();
-                                  _ota.text = '$_selectedNumber';
+                                 // _ota.text = '$_selectedNumber';
                                   _ota.selection = TextSelection.fromPosition(
                                       TextPosition(offset: _ota.text.length));
                                 } else if (_otDactive) {
                                   _otd.text = value.toString();
-                                  _otd.text = '$_selectedNumber';
+                                 // _otd.text = '$_selectedNumber';
                                   _otd.selection = TextSelection.fromPosition(
                                       TextPosition(offset: _otd.text.length));
                                 }else if (_joinactive) {
                                   _join.text = value.toString();
-                                  _join.text = '$_selectedNumber';
+                                //  _join.text = '$_selectedNumber';
                                   _join.selection = TextSelection.fromPosition(
                                       TextPosition(offset: _join.text.length));
                                 }else if (_alightactive) {
                                   _alight.text = value.toString();
-                                  _alight.text = '$_selectedNumber';
+                                 // _alight.text = '$_selectedNumber';
                                   _alight.selection = TextSelection.fromPosition(
                                       TextPosition(offset: _alight.text.length));
                                 }
@@ -594,6 +683,7 @@ class _BoardingState extends State<Boarding> {
                               // Navigator.pop(context, MaterialPageRoute(builder: (context) => TrainList(station: widget.station,) ));
                               Navigator.pop(context, true);
                               _insert();
+
                             }else{
                             Fluttertoast.showToast(msg: 'please enter values');
                           }
@@ -631,8 +721,8 @@ class _BoardingState extends State<Boarding> {
       LocalDatabase.columnOTIME  : widget.origin_time,
       LocalDatabase.columnDLOCATION  : widget.destination_location,
       LocalDatabase.columnDTIME  : widget.destination_time,
-      LocalDatabase.columnDTIME  : widget.destination_time,
       LocalDatabase.columnDELAY  : _delay.text,
+      LocalDatabase.columnTRAIN_UID  : widget.train_uid,
     };
 print(row);
     // do the insert and get the id of the inserted row
@@ -640,6 +730,28 @@ print(row);
 
     print(await db.query(LocalDatabase.table));
   }
+
+  void updateItemDetails(int id) async {
+    // Get a reference to the database
+    Database? db = await LocalDatabase.instance.database;
+
+    // Update the item details in the database
+    await db!.update(
+      LocalDatabase.table,
+      {
+        LocalDatabase.columnOTA: _ota.text,
+        LocalDatabase.columnOTD: _otd.text,
+        LocalDatabase.columnJOIN: _join.text,
+        LocalDatabase.columnALIGHT: _alight.text,
+        LocalDatabase.columnCOMMENT: comment.text,
+        LocalDatabase.columnDELAY: _delay.text,
+      },
+      where: '${LocalDatabase.columnID} = ?',
+      whereArgs: [id],
+    );
+  }
+
+
 }
 
 
