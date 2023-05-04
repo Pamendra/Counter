@@ -19,10 +19,21 @@ class Boarding extends StatefulWidget {
   String? destination_time;
   String? headcode;
   String train_uid;
+  // String? schedule_id;
+  // String? location_id;
+  bool? cancelled;
+  // String? origin_tiploc;
+  // String? destination_tiploc;
   String? station;
+  String? toc;
+  String? platform;
+  String? departure_time;
+  String? arrival_time;
+  String? date_from;
+  String? date_to;
 
 
-  Boarding({super.key, required this.station,required this.origin_location,required this.origin_time,required this.destination_location, required this.destination_time, required this.train_uid, required this.headcode});
+  Boarding({super.key,required this.date_to,required this.date_from,required this.arrival_time,required this.departure_time , required this.platform,required this.toc, required this.station,required this.origin_location,required this.origin_time,required this.destination_location, required this.destination_time, required this.train_uid, required this.headcode,required this.cancelled});
 
   @override
   State<Boarding> createState() => _BoardingState();
@@ -723,8 +734,19 @@ class _BoardingState extends State<Boarding> {
       LocalDatabase.columnDTIME  : widget.destination_time,
       LocalDatabase.columnDELAY  : _delay.text,
       LocalDatabase.columnTRAIN_UID  : widget.train_uid,
+      // LocalDatabase.columnSCHEDULEID  : widget.schedule_id,
+      // LocalDatabase.columnLOCATIONID  : widget.location_id,
+      LocalDatabase.columnCANCELLED  : widget.cancelled.toString(),
+      // LocalDatabase.columnORIGINTIPLOC  : widget.origin_tiploc,
+      // LocalDatabase.columnDESTINATIONTIPLOC  : widget.destination_tiploc,
+      LocalDatabase.columnTOC  : widget.toc,
+      LocalDatabase.columnPLATFORM  : widget.platform,
+      LocalDatabase.columnARRIVALTIME  : widget.arrival_time,
+      LocalDatabase.columnDEPARTURETIME  : widget.departure_time,
+      LocalDatabase.columnDATEFROM  : widget.date_from,
+      LocalDatabase.columnDATETO  : widget.date_to,
     };
-print(row);
+    print(row);
     // do the insert and get the id of the inserted row
     int id = await db!.insert(LocalDatabase.table, row);
 

@@ -98,7 +98,7 @@ class DatabaseHelper {
           join(await getDatabasesPath(), 'my_databas.db'),
           onCreate: (db, version) {
             return db.execute(
-              'CREATE TABLE trainlis(origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT,  train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT)',
+              'CREATE TABLE trainlis(  origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT, train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT, cancelled INTEGER)',
             );
           },
           version: 1,
@@ -119,7 +119,7 @@ class DatabaseHelper {
       join(await getDatabasesPath(), 'my_databas.db'),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE trainlis(origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT, train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT)',
+          'CREATE TABLE trainlis(  origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT, train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT, cancelled INTEGER)',
         );
       },
       version: 1,
@@ -129,6 +129,8 @@ class DatabaseHelper {
 
     return List.generate(maps.length, (i) {
       return ServiceList(
+        // schedule_id: maps[i]['schedule_id'],
+        // location_id: maps[i]['location_id'],
         origin_time: maps[i]['origin_time'],
         destination_time: maps[i]['destination_time'],
         origin_location: maps[i]['origin_location'],
@@ -146,6 +148,9 @@ class DatabaseHelper {
         date_from: maps[i]['date_from'],
         date_to: maps[i]['date_to'],
         stp_indicator: maps[i]['stp_indicator'],
+        cancelled: maps[i]['cancelled'] == 1,
+        // destination_tiploc: maps[i]['destination_tiploc'],
+        // origin_tiploc: maps[i]['origin_tiploc'],
       );
     });
   }
@@ -177,6 +182,17 @@ class LocalDatabase {
   static final columnDELAY = 'delay';
   static final columnHEADCODE = 'headcode';
   static final columnTRAIN_UID = 'train_uid';
+  static final columnSCHEDULEID = 'schedule_id';
+  static final columnLOCATIONID = 'location_id';
+  static final columnCANCELLED = 'cancelled';
+  static final columnORIGINTIPLOC = 'origin_tiploc';
+  static final columnDESTINATIONTIPLOC = 'destination_tiploc';
+  static final columnTOC= 'toc';
+  static final columnPLATFORM= 'platform';
+  static final columnARRIVALTIME= 'arrival_time';
+  static final columnDEPARTURETIME= 'departure_time';
+  static final columnDATEFROM= 'date_from';
+  static final columnDATETO= 'date_to';
 
   // make this a singleton class
   LocalDatabase._privateConstructor();
@@ -218,7 +234,18 @@ class LocalDatabase {
       destination_time TEXT,
       delay TEXT,
       headcode TEXT,
-      train_uid TEXT
+      train_uid TEXT,
+      schedule_id TEXT,
+      location_id  TEXT,
+      cancelled  TEXT,
+      destination_tiploc TEXT,
+      origin_tiploc TEXT,
+      toc TEXT,
+      platform TEXT,
+      arrival_time TEXT,
+      departure_time TEXT,
+      date_to TEXT,
+      date_from TEXT
        )
       ''');
 

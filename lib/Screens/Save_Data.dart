@@ -201,12 +201,14 @@ class DataScreenState extends State<DataScreen> {
                       DataColumn(label: Text('Alightning')),
                       DataColumn(label: Text('Delay')),
                       DataColumn(label: Text('Comments')),
-                      // DataColumn(label: Text('Total')),
+                      DataColumn(label: Text('Total')),
                       DataColumn(label: Text('Edit')),
                       DataColumn(label: Text('Delete')),
-                      // DataColumn(label: Text('Approval')),
+                      DataColumn(label: Text('Approval')),
                     ],
                     rows: _data.map((row) {
+                      int result_source = (int.parse(row['joining']) +
+                          int.parse(row['alightning']));
                       return DataRow(cells: [
                         // DataCell(Text(row['id'].toString())),
                         DataCell(Center(child: Text('${row['headcode']}'))),
@@ -221,10 +223,9 @@ class DataScreenState extends State<DataScreen> {
                         DataCell(Center(child: Text(row['alightning']))),
                         DataCell(Center(child: Text(row['delay']))),
                         DataCell(Center(child: Text(row['comment']))),
-                        // DataCell(Text((int.parse(row['ota']) +
-                        //     int.parse(row['otd']) + int.parse(row['joining']) +
-                        //     int.parse(row['alightning']))
-                        //     .toString())),
+                        DataCell(Text((int.parse(row['joining']) +
+                            int.parse(row['alightning']))
+                            .toString())),
                         DataCell(
                           IconButton(
                             icon: const Icon(Icons.edit),
@@ -241,18 +242,24 @@ class DataScreenState extends State<DataScreen> {
                             },
                           ),
                         ),
-                        // DataCell(
-                        //                         //   ElevatedButton(
-                        //                         //     onPressed: (){
-                        //                         //       BlocProvider.of<ServiceBloc>(context).add(
-                        //                         //                     onPressedEvent( alightning:row['alightning']  ,comment:row['comment'] ,delay:row['delay'] ,
-                        //                         //                         destination_location: row['destination_location'],destination_time:row['destination_time'] ,
-                        //                         //                         headcode:row['headcode'] ,joining:row['joining'] , origin_location: row['origin_location'] ,
-                        //                         //                         origin_time: row['origin_time'],ota:row['ota'] ,otd:row['otd'] ,train_uid:row['train_uid']
-                        //                         //                     ));
-                        //                         //     },child: Text('Approve'),
-                        //                         //   )
-                        //                         // )
+                        DataCell(
+                            ElevatedButton(
+                              onPressed: (){
+                                BlocProvider.of<ServiceBloc>(context).add(
+                                    onPressedEvent( alightning:row['alightning']  ,comments:row['comment'] ,delayed:(row['delay']) ,
+                                        destination_location: row['destination_location'],destination_time:row['destination_time'] ,
+                                        headcode:row['headcode'] ,boarding:row['joining'] , origin_location: row['origin_location'] ,
+                                        origin_time: row['origin_time'],ota:row['ota'] ,otd:row['otd'] ,train_uid:row['train_uid'],
+                                     cancelled: row['cancelled'], toc: row['toc'], arrival_time: row['arrival_time'],
+                                      departure_time: row['departure_time'], date_from: row['date_from'], date_to: row['date_to'],
+                                      result_source: result_source.toString(), platform: row['platform'],
+
+                                    ));
+                                },style: ElevatedButton.styleFrom(
+                              backgroundColor: ColorConstants.appcolor
+                            ),child: Text('Approve'),
+                            )
+                        )
                       ]);
                     }).toList(),
                   ),
@@ -268,7 +275,7 @@ class DataScreenState extends State<DataScreen> {
 
                       }, style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstants.appcolor,
-                  ), child: const Text('Approve')),
+                  ), child: const Text('Approval')),
                 )
               ],
             ),

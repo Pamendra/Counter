@@ -312,7 +312,10 @@ class _TrainListState extends State<TrainList> {
                                            destination_location: snapshot.data![index].destination_location,
                                           destination_time: snapshot.data![index].destination_time,
                                           headcode: snapshot.data![index].headcode,
-                                          train_uid: snapshot.data![index].train_uid, station: widget.station,
+                                          train_uid: snapshot.data![index].train_uid, station: widget.station, cancelled: snapshot.data![index].cancelled,
+                                          toc: snapshot.data![index].toc, platform: snapshot.data![index].platform,
+                                          arrival_time: snapshot.data![index].arrival_time, departure_time: snapshot.data![index].departure_time,
+                                          date_to:  snapshot.data![index].date_to, date_from:  snapshot.data![index].date_from,
                                         )));
                                         if (result ?? false) {
                                           setState(() {
