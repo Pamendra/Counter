@@ -60,6 +60,7 @@ class _BoardingState extends State<Boarding> {
   // Map<String, dynamic> _data = {};
   List<Map<String, dynamic>> _data = [];
   final LocalDatabase _localDatabase = LocalDatabase.instance;
+  bool _allFieldsFilled = false;
 
 
   @override
@@ -106,6 +107,7 @@ class _BoardingState extends State<Boarding> {
     _alight = TextEditingController();
     comment = TextEditingController();
     _delay = TextEditingController();
+    checkIfAllFieldsFilled();
 
   }
 
@@ -152,7 +154,17 @@ class _BoardingState extends State<Boarding> {
     _delay.text = itemDetails[LocalDatabase.columnDELAY];
   }
 
+  void checkIfAllFieldsFilled() {
+    // Check whether all required fields have been filled out
+    bool allFilled = _ota.text.isNotEmpty &&
+        _otd.text.isNotEmpty &&
+        _join.text.isNotEmpty &&
+        _alight.text.isNotEmpty;
 
+    setState(() {
+      _allFieldsFilled = allFilled;
+    });
+  }
   // Future<void> _getData() async {
   //   // retrieve data from the database
   //   List<Map<String, dynamic>> data = await _localDatabase.getData();
@@ -703,6 +715,12 @@ class _BoardingState extends State<Boarding> {
 
                           ),
                               child: const Text('Save'))),
+
+                      if (_allFieldsFilled)
+                        ElevatedButton(onPressed: (){
+
+                        }, child: Text('Update')),
+
                     ],
                   ),
                 )
@@ -745,6 +763,7 @@ class _BoardingState extends State<Boarding> {
       LocalDatabase.columnDEPARTURETIME  : widget.departure_time,
       LocalDatabase.columnDATEFROM  : widget.date_from,
       LocalDatabase.columnDATETO  : widget.date_to,
+      LocalDatabase.columnTIPLOC  : widget.station,
     };
     print(row);
     // do the insert and get the id of the inserted row

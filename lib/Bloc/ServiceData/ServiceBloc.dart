@@ -19,7 +19,7 @@ class ServiceBloc extends Bloc<ServiceEvent,ServiceState>{
       dynamic result = await ServiceApi().sendData(event.headcode, event.train_uid, event.origin_location, event.destination_location,
         event.origin_time, event.destination_time, event.ota, event.otd, event.boarding, event.alightning, event.delayed,
         event.comments,event.cancelled, event.toc,event.arrival_time,event.departure_time,event.date_from,event.date_to,event.result_source,
-        event.platform
+        event.platform,event.station
       );
       if(result == ConstantsMessage.serveError){
         emit(ServiceErrorState(ConstantsMessage.serveError));

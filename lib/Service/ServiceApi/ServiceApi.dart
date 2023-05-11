@@ -1,6 +1,5 @@
 
 
-
 import 'package:counter/Utils/message_contants.dart';
 import 'package:counter/Utils/utils.dart';
 import 'package:dio/dio.dart';
@@ -10,9 +9,9 @@ class ServiceApi {
       String destination_location, String origin_time, String destination_time,
       String ota, String otd, String boarding, String alightning, String delayed, String comments,
       String cancelled,String toc,String arrival_time,
-     String departure_time, String date_from,String date_to, String result_source, String platform) async {
+     String departure_time, String date_from,String date_to, String result_source, String platform, String station) async {
    String user = await Utils().getUsererId();
-   int delayedd = int.parse(delayed);
+   int delayedd = int.parse(delayed) == null ? 0 : int.parse(delayed);
 
 
 
@@ -42,20 +41,32 @@ class ServiceApi {
       "date_to": date_to,
       "result_source": result_source,
       "platform": platform,
+      "tiploc": station,
 
     };
 
+
     try{
+
+           print('send data: $dataBody');
       var formData = FormData.fromMap(dataBody);
 
-      var response = await Dio().post('http://192.168.2.15:8000/pcds/api/auto-count-app-services', data: formData);
+
+      var dio = Dio();
+      dio.options.connectTimeout = Duration(milliseconds: 10000);
+      dio.options.receiveTimeout = Duration(milliseconds: 10000);
+
+
+      var response = await dio.post('http://51.140.217.38:8000/pcds/api/auto-count-app-services', data: formData);
 
       if (response.statusCode == 200) {
+        print('Response data: ${response.data}');
           return response.data;
       } else {
         return ConstantsMessage.statusError;
       }
     }catch(e){
+      print('Error occurred: $e');
       return ConstantsMessage.serveError;
     }
   }

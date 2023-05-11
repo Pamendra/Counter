@@ -34,6 +34,7 @@ class onPressedEvent extends ServiceEvent{
    String date_to;
    String result_source;
    String platform;
+   String station;
 
    onPressedEvent(
    {
@@ -60,6 +61,7 @@ class onPressedEvent extends ServiceEvent{
       required this.date_from,
       required this.date_to,
       required this.result_source,
-      required this.platform
+      required this.platform,
+      required this.station
    });
    }

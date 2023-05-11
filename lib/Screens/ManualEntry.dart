@@ -1,4 +1,3 @@
-import 'package:counter/Screens/Train_List_Screen.dart';
 import 'package:counter/Screens/odStation.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Sqflite/Model/service_model.dart';
@@ -8,6 +7,7 @@ import 'package:counter/Utils/gradient_color.dart';
 import 'package:counter/Widgets/InputFormatter.dart';
 import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -399,7 +399,7 @@ class _ManualEntryState extends State<ManualEntry> {
                     ],
                   ),
 
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
 
                   Padding(
                     padding: const EdgeInsets.only(left: 30,right: 30),
@@ -426,7 +426,7 @@ class _ManualEntryState extends State<ManualEntry> {
                                     TimeInputFormatter(),
                                   ],
                                   decoration:  InputDecoration(
-                                    suffixIcon: Icon(Icons.timelapse,color: ColorConstants.appcolor,),
+                                    suffixIcon: Icon(Icons.access_time,color: ColorConstants.appcolor,),
                                     counterText: '',
                                     fillColor: Colors.white,
                                     filled: true,
@@ -460,7 +460,7 @@ class _ManualEntryState extends State<ManualEntry> {
                                     TimeInputFormatter(),
                                   ],
                                   decoration:  InputDecoration(
-                                    suffixIcon: Icon(Icons.timelapse,color: ColorConstants.appcolor,),
+                                    suffixIcon: Icon(Icons.access_time,color: ColorConstants.appcolor,),
                                     counterText: '',
                                     fillColor: Colors.white,
                                     filled: true,
@@ -720,7 +720,7 @@ class _ManualEntryState extends State<ManualEntry> {
                             thickness: 5,
                             radius: const Radius.circular(2),
 
-                            child: Container(
+                            child: SizedBox(
                               width: 30.w,
                               child: NumberPicker(
                                 selectedTextStyle: const TextStyle(fontSize: 22),
@@ -765,7 +765,7 @@ class _ManualEntryState extends State<ManualEntry> {
                     ),
                   ),
 
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
 
                   Padding(
                     padding: const EdgeInsets.only(left: 30,right: 30),
@@ -850,23 +850,23 @@ class _ManualEntryState extends State<ManualEntry> {
                       children: [
                         SizedBox(height: 5.h,
                             child: ElevatedButton(onPressed: (){
-                              if(_ota.text.isNotEmpty || _otd.text.isNotEmpty || _join.text.isNotEmpty || _alight.text.isNotEmpty)
+                              if(headCode.text.isNotEmpty && trainUid.text.isNotEmpty && _otd.text.isNotEmpty &&
+                                  _join.text.isNotEmpty && _alight.text.isNotEmpty && trainID.isNotEmpty && train.isNotEmpty)
                               {
                                 // Navigator.pop(context, MaterialPageRoute(builder: (context) => TrainList(station: widget.station,) ));
                                 Navigator.pop(context, true);
                                 _insert();
                               }else{
-                                Fluttertoast.showToast(msg: 'please enter values');
+                                Fluttertoast.showToast(msg: 'Please enter values');
                               }
                             },style: ElevatedButton.styleFrom(
                                 backgroundColor: ColorConstants.appcolor
-
                             ),
                                 child: const Text('Save'))),
                       ],
                     ),
                   ),
-                  SizedBox(height: 50,)
+                  const SizedBox(height: 50,)
                 ],
               ),
             ),
@@ -896,10 +896,14 @@ class _ManualEntryState extends State<ManualEntry> {
       LocalDatabase.columnDELAY  : _delay.text,
       LocalDatabase.columnTRAIN_UID  : trainUid.text,
     };
-    print(row);
+    if (kDebugMode) {
+      print(row);
+    }
     // do the insert and get the id of the inserted row
     int id = await db!.insert(LocalDatabase.table, row);
 
-    print(await db.query(LocalDatabase.table));
+    if (kDebugMode) {
+      print(await db.query(LocalDatabase.table));
+    }
   }
 }

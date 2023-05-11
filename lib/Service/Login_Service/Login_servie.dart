@@ -5,11 +5,6 @@ class LoginService {
   loginUser(String username, String password) async {
     var body = {"username": username, "password": password};
 
-    // Map<String, String> headers = {
-    //   "Content-Type": "application/json",
-    //   "Accept": "application/json",
-    // };
-
     try {
       var formData = FormData.fromMap(body);
 

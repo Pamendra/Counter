@@ -193,6 +193,7 @@ class LocalDatabase {
   static final columnDEPARTURETIME= 'departure_time';
   static final columnDATEFROM= 'date_from';
   static final columnDATETO= 'date_to';
+  static final columnTIPLOC= 'station';
 
   // make this a singleton class
   LocalDatabase._privateConstructor();
@@ -245,7 +246,8 @@ class LocalDatabase {
       arrival_time TEXT,
       departure_time TEXT,
       date_to TEXT,
-      date_from TEXT
+      date_from TEXT,
+      station TEXT
        )
       ''');
 

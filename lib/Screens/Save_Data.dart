@@ -10,14 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+
 
 class DataScreen extends StatefulWidget {
   const DataScreen({super.key});
-
-
-
-
 
   @override
   DataScreenState createState() => DataScreenState();
@@ -26,7 +23,8 @@ class DataScreen extends StatefulWidget {
 class DataScreenState extends State<DataScreen> {
   List<Map<String, dynamic>> _data = [];
   final LocalDatabase _localDatabase = LocalDatabase.instance;
-
+  bool _approvalPressed = false;
+  bool _approvePressed = false;
 
   @override
   void initState() {
@@ -45,6 +43,12 @@ class DataScreenState extends State<DataScreen> {
     });
   }
 
+  void _onApprovalPressed() {
+    setState(() {
+      _approvalPressed = true;
+      _approvePressed = true;
+    });
+  }
 
   Future<void> _editData(int id) async {
     // Open the database
@@ -252,30 +256,28 @@ class DataScreenState extends State<DataScreen> {
                                         origin_time: row['origin_time'],ota:row['ota'] ,otd:row['otd'] ,train_uid:row['train_uid'],
                                      cancelled: row['cancelled'], toc: row['toc'], arrival_time: row['arrival_time'],
                                       departure_time: row['departure_time'], date_from: row['date_from'], date_to: row['date_to'],
-                                      result_source: result_source.toString(), platform: row['platform'],
+                                      result_source: result_source.toString(), platform: row['platform'], station: row['station'],
 
                                     ));
                                 },style: ElevatedButton.styleFrom(
                               backgroundColor: ColorConstants.appcolor
-                            ),child: Text('Approve'),
+                            ),child: const Text('Approve'),
                             )
                         )
                       ]);
                     }).toList(),
                   ),
                 ),
-                SizedBox(height: 100,),
+                const SizedBox(height: 100,),
                 if(_data.isEmpty)
                 Visibility(
                  visible: _data.isNotEmpty,
                   child: ElevatedButton(
                       onPressed: () {
 
-
-
                       }, style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstants.appcolor,
-                  ), child: const Text('Approval')),
+                  ), child:  const Text('Approval')),
                 )
               ],
             ),
