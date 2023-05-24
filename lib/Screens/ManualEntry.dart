@@ -253,9 +253,11 @@ class _ManualEntryState extends State<ManualEntry> {
                               width:85.w,
                               height: 6.h,
                               child: TextFormField(
+                                maxLength: 4,
                                 textCapitalization: TextCapitalization.characters,
                                 controller: headCode,
                                 decoration:  InputDecoration(
+                                  counterText: '',
                                   suffixIcon: Icon(Icons.confirmation_number_rounded,color: ColorConstants.appcolor,),
                                   fillColor: Colors.white,
                                   filled: true,
@@ -291,9 +293,11 @@ class _ManualEntryState extends State<ManualEntry> {
                               width: 85.w,
                               height: 6.h,
                               child: TextFormField(
+                                maxLength: 6,
                                 textCapitalization: TextCapitalization.characters,
                                 controller: trainUid,
                                 decoration:  InputDecoration(
+                                  counterText: '',
                                   suffixIcon: Icon(Icons.train,color: ColorConstants.appcolor,),
                                   fillColor: Colors.white,
                                   filled: true,

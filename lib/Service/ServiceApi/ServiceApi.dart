@@ -11,7 +11,7 @@ class ServiceApi {
       String cancelled,String toc,String arrival_time,
      String departure_time, String date_from,String date_to, String result_source, String platform, String station) async {
    String user = await Utils().getUsererId();
-   int delayedd = int.parse(delayed) == null ? 0 : int.parse(delayed);
+   int delayedd = int.parse(delayed == '' ? '0' : delayed) ;
 
 
 

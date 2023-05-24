@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 
+import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Sqflite/Model/service_model.dart';
@@ -190,7 +191,8 @@ import 'package:sqflite/sqflite.dart';
                                  itemBuilder: (BuildContext context, int index) {
                                    return InkWell(
                                      onTap: () {
-                                       Navigator.pop(context, searchList[index]);
+                                       //Navigator.pop(context, searchList[index]);
+                                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TrainList(station: searchList[index]!.tiploc.toString(),)), (route) => false);
                                      },
                                      child: ListTile(
                                        contentPadding: EdgeInsets.zero,

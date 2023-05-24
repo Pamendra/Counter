@@ -10,9 +10,7 @@ import 'package:counter/Utils/drawer_logout.dart';
 import 'package:counter/Utils/gradient_color.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:path/path.dart';
 import 'package:sizer/sizer.dart';
-import 'package:sqflite/sqflite.dart';
 import '../Sqflite/LocalDB/database_helper.dart';
 import '../Sqflite/Model/service_model.dart';
 

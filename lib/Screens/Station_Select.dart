@@ -149,61 +149,61 @@ class _StationState extends State<Station> {
                       ),
 
 
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              SizedBox(height: 10,),
-                          Container(
-                            height: 50,
-                            width: 200,
-                            // decoration: BoxDecoration(
-                            //   borderRadius: BorderRadius.circular(5)
-                            // ),
-                            child: ElevatedButton(
-                                onPressed: () async{
-                                  if(trainID.isNotEmpty) {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => TrainList(station: trainID.toString(),)));
-                                  }
-
-                                  else{
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return  Center(
-                                            child: AlertDialog(
-                                              backgroundColor: const Color(0xFF202447).withOpacity(0.7),
-                                              shape: RoundedRectangleBorder(side: const BorderSide(color:Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
-                                              title: Row(
-                                                children: [
-                                                  const Text('Message',style: TextStyle(color: Colors.white),),
-                                                  const SizedBox(width: 170,),
-                                                  InkWell(
-                                                      onTap: (){
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: const Icon(Icons.close,color: Colors.white,)),
-                                                ],
-                                              ),
-                                              content: const Text("Please select station",style: TextStyle(color: Colors.white),),
-                                            ),
-                                          );});
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: ColorConstants.appcolor,
-                                  shape: const StadiumBorder(),
-                                ),
-                                child: const Text(
-                                  'Search',
-                                  style: TextStyle(fontSize: 21),
-                                )),
-                          ),
-
-                        ]),
-
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
+                      //   child: Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.end,
+                      //       children: [
+                      //         SizedBox(height: 10,),
+                      //     Container(
+                      //       height: 50,
+                      //       width: 200,
+                      //       // decoration: BoxDecoration(
+                      //       //   borderRadius: BorderRadius.circular(5)
+                      //       // ),
+                      //       child: ElevatedButton(
+                      //           onPressed: () async{
+                      //             if(trainID.isNotEmpty) {
+                      //                   Navigator.push(context, MaterialPageRoute(builder: (context) => TrainList(station: trainID.toString(),)));
+                      //             }
+                      //
+                      //             else{
+                      //               showDialog(
+                      //                   context: context,
+                      //                   builder: (BuildContext context) {
+                      //                     return  Center(
+                      //                       child: AlertDialog(
+                      //                         backgroundColor: const Color(0xFF202447).withOpacity(0.7),
+                      //                         shape: RoundedRectangleBorder(side: const BorderSide(color:Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
+                      //                         title: Row(
+                      //                           children: [
+                      //                             const Text('Message',style: TextStyle(color: Colors.white),),
+                      //                             const SizedBox(width: 170,),
+                      //                             InkWell(
+                      //                                 onTap: (){
+                      //                                   Navigator.pop(context);
+                      //                                 },
+                      //                                 child: const Icon(Icons.close,color: Colors.white,)),
+                      //                           ],
+                      //                         ),
+                      //                         content: const Text("Please select station",style: TextStyle(color: Colors.white),),
+                      //                       ),
+                      //                     );});
+                      //             }
+                      //           },
+                      //           style: ElevatedButton.styleFrom(
+                      //             backgroundColor: ColorConstants.appcolor,
+                      //             shape: const StadiumBorder(),
+                      //           ),
+                      //           child: const Text(
+                      //             'Search',
+                      //             style: TextStyle(fontSize: 21),
+                      //           )),
+                      //     ),
+                      //
+                      //   ]),
+                      //
+                      // ),
                     ],
                   ),
                 ),

@@ -204,11 +204,12 @@ class DrawerNormal extends StatelessWidget {
                           color: Colors.white),
                     ),
                     onTap: () async {
-                      /// Clear Service List
-                      final db = await openDatabase(
-                        join(await getDatabasesPath(), 'my_databas.db'),
-                      );
-                      await db.delete('trainlis');
+                      // /// Clear Service List
+                      // final db = await openDatabase(
+                      //   join(await getDatabasesPath(), 'service_database.db'),
+                      // );
+                      // await db.delete('servicelist');
+
                       /// Clear Train list
                       final Database database = await openDatabase('my_database.db');
                       // Delete the database
@@ -222,7 +223,7 @@ class DrawerNormal extends StatelessWidget {
                               builder: (context) => const LoginPage()),
                               (Route route) => false);
                       /// Clear Local Database
-                      LocalDatabase.instance.cleanSingleTable('my_boarding');
+                      LocalDatabase.instance.cleanSingleTable('saveddata');
                     }),
 
               ),

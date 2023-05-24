@@ -33,7 +33,7 @@ class TiplocDatabaseHelper{
             'CREATE TABLE trainlist(tiploc TEXT, crs TEXT, description TEXT)',
           );
         },
-        version: 1,
+        version: 4,
       );
 
       for (var trains in TrainList) {
@@ -53,7 +53,7 @@ class TiplocDatabaseHelper{
           'CREATE TABLE trainlist(tiploc TEXT, crs TEXT, description TEXT)',
         );
       },
-      version: 1,
+      version: 4,
     );
 
     final List<Map<String, dynamic>> maps = await database.query('trainlist');
@@ -95,17 +95,17 @@ class DatabaseHelper {
 
 
         final Database database = await openDatabase(
-          join(await getDatabasesPath(), 'my_databas.db'),
+          join(await getDatabasesPath(), 'service_database.db'),
           onCreate: (db, version) {
             return db.execute(
-              'CREATE TABLE trainlis(  origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT, train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT, cancelled INTEGER)',
+              'CREATE TABLE servicelist(  origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT, train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT, cancelled INTEGER)',
             );
           },
-          version: 1,
+          version: 4,
         );
 
         for (var trains in TrainList) {
-          await database.insert('trainlis', trains.toMap());
+          await database.insert('servicelist', trains.toMap());
         }
       } else {
         throw Exception('Failed to fetch trains');
@@ -116,16 +116,16 @@ class DatabaseHelper {
 
   Future<List<ServiceList>> getTrainsFromDatabase() async {
     final Database database = await openDatabase(
-      join(await getDatabasesPath(), 'my_databas.db'),
+      join(await getDatabasesPath(), 'service_database.db'),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE trainlis(  origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT, train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT, cancelled INTEGER)',
+          'CREATE TABLE servicelist(  origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT, train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT, cancelled INTEGER)',
         );
       },
-      version: 1,
+      version: 4,
     );
 
-    final List<Map<String, dynamic>> maps = await database.query('trainlis');
+    final List<Map<String, dynamic>> maps = await database.query('servicelist');
 
     return List.generate(maps.length, (i) {
       return ServiceList(
@@ -163,10 +163,10 @@ class DatabaseHelper {
 
 class LocalDatabase {
 
-  static final _databaseName = "Boarding.db";
-  static final _databaseVersion = 1;
+  static final _databaseName = "savedatabase.db";
+  static final _databaseVersion = 4;
 
-    static final table = 'my_boarding';
+    static final table = 'saveddata';
 
 
   static final columnID = 'id';
@@ -222,7 +222,7 @@ class LocalDatabase {
   // SQL code to create the database table
   Future _onCreate(Database db, int version) async {
     await db!.execute('''
-    CREATE TABLE my_boarding(
+    CREATE TABLE saveddata(
       id INTEGER PRIMARY KEY,
       ota TEXT,
       otd TEXT,
@@ -280,7 +280,7 @@ class LocalDatabase {
     // update the row with the given id
     try {
       // update the row with the given id
-      int rowsUpdated = await db!.update('my_boarding', row, where: 'id = ?', whereArgs: [id]);
+      int rowsUpdated = await db!.update('saveddata', row, where: 'id = ?', whereArgs: [id]);
       if (rowsUpdated != 1) {
         throw Exception('Failed to update data with id: $id');
       }
@@ -307,7 +307,7 @@ class LocalDatabase {
   Future<void> deleteData(int id) async {
     final db = await database;
     await db?.delete(
-      'my_boarding',
+      'saveddata',
       where: '$columnID = ?',
       whereArgs: [id],
     );

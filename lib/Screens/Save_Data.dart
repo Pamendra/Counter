@@ -153,7 +153,7 @@ class DataScreenState extends State<DataScreen> {
 
     // Delete the data with the given ID
     await db?.delete(
-      'my_boarding',
+      'saveddata',
       where: 'id = ?',
       whereArgs: <int>[id],
     );
@@ -268,17 +268,17 @@ class DataScreenState extends State<DataScreen> {
                     }).toList(),
                   ),
                 ),
-                const SizedBox(height: 100,),
-                if(_data.isEmpty)
-                Visibility(
-                 visible: _data.isNotEmpty,
-                  child: ElevatedButton(
-                      onPressed: () {
-
-                      }, style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorConstants.appcolor,
-                  ), child:  const Text('Approval')),
-                )
+                // const SizedBox(height: 100,),
+                // if(_data.isEmpty)
+                // Visibility(
+                //  visible: _data.isNotEmpty,
+                //   child: ElevatedButton(
+                //       onPressed: () {
+                //
+                //       }, style: ElevatedButton.styleFrom(
+                //     backgroundColor: ColorConstants.appcolor,
+                //   ), child:  const Text('Approval')),
+                // )
               ],
             ),
           );
