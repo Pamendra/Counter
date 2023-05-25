@@ -27,10 +27,12 @@ class _StationState extends State<Station> {
   TextEditingController station = TextEditingController();
   final TiplocDatabaseHelper _helper = TiplocDatabaseHelper();
   bool _isLoading = false;
-
+  final DatabaseHelper data = DatabaseHelper();
   String trainID = "";
+  String platforrmno = "";
   Train? trainData = Train(tiploc: '', description: '');
-
+  ServiceList? platformdata = ServiceList(origin_time: '', origin_location: '', destination_time: '', destination_location: '', headcode: '', platform: '', arrival_time: '', departure_time: '', crs: '', joining: '', alighting: '', otd: '', train_uid: '', toc: '', date_from: '', date_to: '', stp_indicator: '', cancelled: false);
+  String? selectedNumber;
   Future<void> getTrainID(BuildContext context) async {
 
 
@@ -46,14 +48,19 @@ class _StationState extends State<Station> {
     });
   }
 
+
+
+  
   Future<void> fetchdata() async{
     setState(() {
       _isLoading = true;
     });
     await _helper.fetchdatalm();
+    await data.fetchdata(trainID);
     setState(() {
       _isLoading = false;
     });
+
 }
 
 
@@ -70,6 +77,56 @@ class _StationState extends State<Station> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const DrawerNormal(),
+      bottomNavigationBar: Row(children: [
+        InkWell(
+            onTap: () {
+                   if(trainID.isNotEmpty) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TrainList(station: trainID.toString(),)));
+                      }
+                      else{
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return  Center(
+                                child: AlertDialog(
+                                  backgroundColor: const Color(0xFF202447).withOpacity(0.7),
+                                  shape: RoundedRectangleBorder(side: const BorderSide(color:Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
+                                  title: Row(
+                                    children: [
+                                      const Text('Message',style: TextStyle(color: Colors.white),),
+                                      const SizedBox(width: 170,),
+                                      InkWell(
+                                          onTap: (){
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Icon(Icons.close,color: Colors.white,)),
+                                    ],
+                                  ),
+                                  content: const Text("Please select station",style: TextStyle(color: Colors.white),),
+                                ),
+                              );});
+                      }
+
+            },
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              width: 100.w,
+              height: 5.8.h,
+              color: ColorConstants.appcolor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    " Continue",
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
+                  ),
+                ],
+              ),
+            )),
+      ]),
       appBar: AppBar(backgroundColor: ColorConstants.appcolor,
         actions: [
           BlocBuilder<NetworkBloc, NetworkState>(
@@ -134,12 +191,12 @@ class _StationState extends State<Station> {
                                 Text(
                                   trainID == ""
                                       ? "Select Station"
-                                      : '${trainData!.description.toString()+' - '+ trainID.toString()}',
+                                      : '${trainData!.description} - $trainID',
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(fontSize: 16),
                                 ),
                                 Icon(
-                                  CupertinoIcons.search,
+                                  CupertinoIcons.train_style_one,
                                   color: ColorConstants.appcolor,
                                 ),
                               ],
@@ -147,6 +204,78 @@ class _StationState extends State<Station> {
                           ),
                         ),
                       ),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+
+                // Container(
+                //   height: 7.h,
+                //   child: DropdownButtonFormField<String>(
+                //     value: selectedNumber,
+                //     onChanged: (String? newValue) {
+                //       setState(() {
+                //         selectedNumber = newValue;
+                //       });
+                //     },
+                //     decoration:  InputDecoration(
+                //       hintText: 'Select Platform',
+                //       filled: true,
+                //       fillColor: Colors.white,
+                //       focusedBorder: OutlineInputBorder(
+                //         borderSide: BorderSide(color: ColorConstants.appcolor)
+                //       ),
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(10)
+                //       ),
+                //     ),
+                //     items: List<DropdownMenuItem<String>>.generate(
+                //       12,
+                //           (int index) {
+                //         return DropdownMenuItem<String>(
+                //           value: (index + 1).toString(),
+                //           child: Text('Platform: ${(index + 1).toString()}'),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
+
+                      // GestureDetector(
+                      //   onTap: () {
+                      //
+                      //   },
+                      //   child: Container(
+                      //     width: 100,
+                      //     height: 60,
+                      //     decoration: BoxDecoration(
+                      //       border: Border.all(color: Colors.black),
+                      //       color: Colors.white,
+                      //       borderRadius: BorderRadius.circular(8),
+                      //     ),
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.all(10.0),
+                      //       child: Row(
+                      //         mainAxisAlignment:
+                      //         MainAxisAlignment.spaceBetween,
+                      //         children: [
+                      //           Text(
+                      //             platforrmno == ""
+                      //                 ? "Select Platform"
+                      //                 : platformdata!.platform.toString(),
+                      //             overflow: TextOverflow.ellipsis,
+                      //             style: const TextStyle(fontSize: 16),
+                      //           ),
+                      //           Icon(
+                      //             CupertinoIcons.placemark,
+                      //             color: ColorConstants.appcolor,
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
 
 
                       // Padding(

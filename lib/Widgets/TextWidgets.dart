@@ -1,4 +1,5 @@
 
+import 'package:counter/Utils/colors_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -94,6 +95,20 @@ class headingTextOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(title,style:TextStyle(fontWeight:FontWeight.w600,color:Colors.white,fontFamily:"Aleo",
+        fontSize:17.sp,letterSpacing:1),);
+  }
+
+
+}
+
+class headingTextOnewithdark extends StatelessWidget {
+  headingTextOnewithdark({Key? key, required this.title}) : super(key: key);
+  String title;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(title,style:TextStyle(fontWeight:FontWeight.w600,color:ColorConstants.appcolor,fontFamily:"Aleo",
         fontSize:17.sp,letterSpacing:1),);
   }
 

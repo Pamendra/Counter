@@ -257,7 +257,6 @@ class DataScreenState extends State<DataScreen> {
                                      cancelled: row['cancelled'], toc: row['toc'], arrival_time: row['arrival_time'],
                                       departure_time: row['departure_time'], date_from: row['date_from'], date_to: row['date_to'],
                                       result_source: result_source.toString(), platform: row['platform'], station: row['station'],
-
                                     ));
                                 },style: ElevatedButton.styleFrom(
                               backgroundColor: ColorConstants.appcolor

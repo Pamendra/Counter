@@ -66,6 +66,7 @@ import 'package:sqflite/sqflite.dart';
        _isLoading = true;
      });
 
+
      List<Train?> tempList = await get.getTrainsFromDatabase() ;
 
      setState(() {
@@ -73,6 +74,8 @@ import 'package:sqflite/sqflite.dart';
        searchList = tempList;
        searchList.sort((a, b) => (a?.description ?? '').compareTo(b?.description ?? ''));
      });
+
+
 
      setState(() {
        _isLoading = false;
@@ -190,9 +193,9 @@ import 'package:sqflite/sqflite.dart';
                                  itemCount: searchList.length,
                                  itemBuilder: (BuildContext context, int index) {
                                    return InkWell(
-                                     onTap: () {
-                                       //Navigator.pop(context, searchList[index]);
-                                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TrainList(station: searchList[index]!.tiploc.toString(),)), (route) => false);
+                                     onTap: () async {
+                                       Navigator.pop(context, searchList[index]);
+                                      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TrainList(station: searchList[index]!.tiploc.toString(),)), (route) => false);
                                      },
                                      child: ListTile(
                                        contentPadding: EdgeInsets.zero,

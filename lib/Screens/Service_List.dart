@@ -25,6 +25,8 @@ class TrainList extends StatefulWidget {
 
 class _TrainListState extends State<TrainList> {
   final TextEditingController searchtrain = TextEditingController();
+  final TextEditingController searchPlatform = TextEditingController();
+  final TextEditingController searchLocation = TextEditingController();
   List<ServiceList> _trains = [];
   List<ServiceList> _filteredTrains = [];
   final DatabaseHelper _databaseHelper = DatabaseHelper();
@@ -64,29 +66,37 @@ class _TrainListState extends State<TrainList> {
   @override
   void dispose() {
     searchtrain.dispose();
+
     super.dispose();
   }
 
 
 
 
-  void _filterTrains(String query) {
+  void _filterTrains(String locationQuery, String platformQuery) {
     List<ServiceList> filteredTrains = _trains.where((train) {
       final originLocation = train.origin_location.toLowerCase();
-      final destinationLocation = train.destination_location.toLowerCase();
       final headcode = train.headcode.toLowerCase();
       final trainUid = train.train_uid.toLowerCase();
       final platform = train.platform.toLowerCase();
-      return originLocation.contains(query) ||
-          destinationLocation.contains(query) ||
-          headcode.contains(query) ||
-          platform.contains(query) ||
-          trainUid.contains(query);
+
+      final isLocationMatch = locationQuery.isEmpty ||
+          originLocation.contains(locationQuery) ||
+          headcode.contains(locationQuery) ||
+          trainUid.contains(locationQuery);
+
+      final isPlatformMatch = platformQuery.isEmpty ||
+          platform.startsWith(platformQuery);
+
+      return isLocationMatch && isPlatformMatch;
     }).toList();
+
     setState(() {
       _filteredTrains = filteredTrains;
     });
   }
+
+
 
 
 
@@ -234,29 +244,66 @@ class _TrainListState extends State<TrainList> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 70,
-                      width: 250.w,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10,top: 5,right: 10),
-                        child: TextFormField(
-                          controller: searchtrain,
-                          onChanged: (value) {
-                            _filterTrains(value.toLowerCase());
-                          },
-                          decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(width: 3,color: Color(0xFF249238)),
-                                  borderRadius: BorderRadius.circular(5)
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 7.h,
+                          width: 50.w,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+                            child: TextFormField(
+                              controller: searchLocation,
+                              onChanged: (value) {
+                                _filterTrains(value.toLowerCase(), searchPlatform.text.toLowerCase());
+                              },
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(width: 3, color: Color(0xFF249238)),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                                suffixIcon: const Icon(Icons.search),
+                                hintText: 'Search',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              suffixIcon: const Icon(Icons.search),
-                              hintText: 'Search',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8))),
+                            ),
+                          ),
                         ),
-                      ),
+
+                        SizedBox(
+                          height: 7.h,
+                          width: 50.w,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+                            child: TextFormField(
+                              controller: searchPlatform,
+                              onChanged: (value) {
+                                _filterTrains(searchLocation.text.toLowerCase(), value.toLowerCase());
+                              },
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(width: 3, color: Color(0xFF249238)),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                                suffixIcon: const Icon(Icons.search),
+                                hintText: 'Platform',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+
+
+
+                      ],
                     ),
                     // _trains.isEmpty ?
                     // Row(
@@ -287,20 +334,22 @@ class _TrainListState extends State<TrainList> {
                               radius: const Radius.circular(20),
                               //corner radius of scrollbar
                               child: ListView.builder(
-                                itemCount: trains!.length,
+                                itemCount: _filteredTrains.length,
                                 itemBuilder: (context, index) {
-                                  final train = trains[index];
+                                  final train =_filteredTrains[index];
                                   // DateTime now = DateTime.now();
                                   // DateTime originTime = DateTime.parse('2000-01-01 ${trains[index].origin_time}:00');
                                   // int diffInMinutes = originTime.difference(now).inMinutes;
                                   // DateTime nextTime = now.add(Duration(minutes: diffInMinutes % 30 == 0 ? 30 : (30 - diffInMinutes % 30)));
 
-                                  final isMatch = searchtrain.text.isEmpty ||
-                                      train.origin_location.toLowerCase().contains(searchtrain.text.toLowerCase())
-                                      || train.headcode.toLowerCase().contains((searchtrain.text.toLowerCase()))
-                                      || train.train_uid.toLowerCase().contains((searchtrain.text.toLowerCase()))
-                                      || train.arrival_time.replaceAll(':', '').contains(searchtrain.text);
-                                  if (isMatch) {
+                                  // final isMatch = searchtrain.text.isEmpty ||
+                                  //     train.origin_location.toLowerCase().contains(searchtrain.text.toLowerCase())
+                                  //     || train.headcode.toLowerCase().contains((searchtrain.text.toLowerCase()))
+                                  //     || train.train_uid.toLowerCase().contains((searchtrain.text.toLowerCase()))
+                                  //     || train.arrival_time.replaceAll(':', '').contains(searchtrain.text)||
+                                  //     (searchtrain.text.length == 1 && train.platform.toLowerCase().contains(searchtrain.text.toLowerCase()));
+                                  //
+                                  // if (isMatch) {
                                     return InkWell(
                                       onTap: () async {
 
@@ -335,10 +384,10 @@ class _TrainListState extends State<TrainList> {
                                                 const SizedBox(height: 5,),
                                                 Column(
                                                   children: [
-                                                Text('${trains[index].origin_time}-${trains[index].origin_location}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),textAlign: TextAlign.center,),                                     ],
+                                                Text('${train.origin_time}-${train.origin_location}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),textAlign: TextAlign.center,),                                     ],
                                                 ),
                                                 const SizedBox(height: 15,),
-                                                Text('${trains[index].destination_time}-${trains[index].destination_location}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                                                Text('${train.destination_time}-${train.destination_location}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
                                               ],
                                             ),
 
@@ -348,11 +397,11 @@ class _TrainListState extends State<TrainList> {
                                                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 crossAxisAlignment: CrossAxisAlignment.end,
                                                 children: [
-                                                  Text(trains[index].arrival_time.toString() == " " ? '--:--' : trains[index].arrival_time,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  Text(train.arrival_time.toString() == " " ? '--:--' : train.arrival_time,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
                                                   const SizedBox(height: 5,),
-                                                  Text(trains[index].departure_time.toString() == " " ? '--:--' : trains[index].departure_time,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  Text(train.departure_time.toString() == " " ? '--:--' : train.departure_time,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
                                                   const SizedBox(height: 5,),
-                                                  Text('PF- ${trains[index].platform.toString() == " " ? 'Na': trains[index].platform.toString()}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  Text('PF- ${train.platform.toString() == " " ? 'Na': train.platform.toString()}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
                                                 ],
                                               ),
                                             ),
@@ -363,9 +412,9 @@ class _TrainListState extends State<TrainList> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(trains[index].headcode,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  Text(train.headcode,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
                                                   const SizedBox(height: 12,),
-                                                  Text(trains[index].train_uid,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  Text(train.train_uid,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
                                                 ],
                                               ),
                                             ),
@@ -373,11 +422,12 @@ class _TrainListState extends State<TrainList> {
                                         ),
                                       ),
                                     );
-                                  } else {
+                                  // }
+                                  // else {
                                     // If there is no match, return empty container
                                     return Container();
                                   }
-                                },
+                                // },
                               ),
                             );
                           } else if (snapshot.hasError) {
