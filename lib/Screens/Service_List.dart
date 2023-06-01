@@ -16,8 +16,8 @@ import '../Sqflite/Model/service_model.dart';
 
 class TrainList extends StatefulWidget {
   String? station;
-
-  TrainList({super.key, required this.station});
+  String? platformdata;
+  TrainList({super.key, required this.station, required this.platformdata});
 
   @override
   State<TrainList> createState() => _TrainListState();
@@ -32,17 +32,26 @@ class _TrainListState extends State<TrainList> {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
   bool _isLoading = false;
   final Set<int> _selectedIndexes = {};
-
+  String selectedPlatform = '';
+  List<String> platformList = [];
 
   getTrainListFromLOCAL() async {
     setState(() {
       _isLoading = true;
     });
-      await _databaseHelper.fetchdata(widget.station);
+      // await _databaseHelper.fetchdata(widget.station);
       List<ServiceList> trains = await _databaseHelper.getTrainsFromDatabase();
       setState(() {
         _trains = trains;
         _filteredTrains = trains;
+        // for (var train in _trains) {
+        //   if (train.platform.isNotEmpty && !platformList.contains(train.platform)) {
+        //     setState(() {
+        //       platformList.add(train.platform);
+        //       platformList = platformList.toSet().toList();
+        //     });
+        //   }
+        // }
       });
       setState(() {
         _isLoading = false;
@@ -79,11 +88,12 @@ class _TrainListState extends State<TrainList> {
       final headcode = train.headcode.toLowerCase();
       final trainUid = train.train_uid.toLowerCase();
       final platform = train.platform.toLowerCase();
-
+      final arrival = train.arrival_time.replaceAll(':', '');
       final isLocationMatch = locationQuery.isEmpty ||
           originLocation.contains(locationQuery) ||
           headcode.contains(locationQuery) ||
-          trainUid.contains(locationQuery);
+          trainUid.contains(locationQuery) ||
+          arrival.contains(locationQuery);
 
       final isPlatformMatch = platformQuery.isEmpty ||
           platform.startsWith(platformQuery);
@@ -95,8 +105,6 @@ class _TrainListState extends State<TrainList> {
       _filteredTrains = filteredTrains;
     });
   }
-
-
 
 
 
@@ -273,6 +281,7 @@ class _TrainListState extends State<TrainList> {
                           ),
                         ),
 
+
                         SizedBox(
                           height: 7.h,
                           width: 50.w,
@@ -299,6 +308,42 @@ class _TrainListState extends State<TrainList> {
                             ),
                           ),
                         ),
+                        // SizedBox(
+                        //   height: 7.h,
+                        //   width: 50.w,
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+                        //     child: DropdownButtonFormField<String>(
+                        //       value: selectedPlatform,
+                        //       onChanged: (String? value) {
+                        //         setState(() {
+                        //           selectedPlatform = value!;
+                        //           _filterTrains(searchLocation.text.toLowerCase(), value.toLowerCase());
+                        //         });
+                        //       },
+                        //       decoration: InputDecoration(
+                        //         focusedBorder: OutlineInputBorder(
+                        //           borderSide: const BorderSide(width: 3, color: Color(0xFF249238)),
+                        //           borderRadius: BorderRadius.circular(5),
+                        //         ),
+                        //         filled: true,
+                        //         fillColor: Colors.white,
+                        //         suffixIcon: const Icon(Icons.search),
+                        //         hintText: 'Platform',
+                        //         border: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(8),
+                        //         ),
+                        //       ),
+                        //       items: platformList.map((String platform) {
+                        //         return DropdownMenuItem<String>(
+                        //           value: platform,
+                        //           child: Text(platform),
+                        //         );
+                        //       }).toList(),
+                        //     ),
+                        //   ),
+                        // ),
+
 
 
 
@@ -401,7 +446,7 @@ class _TrainListState extends State<TrainList> {
                                                   const SizedBox(height: 5,),
                                                   Text(train.departure_time.toString() == " " ? '--:--' : train.departure_time,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
                                                   const SizedBox(height: 5,),
-                                                  Text('PF- ${train.platform.toString() == " " ? 'Na': train.platform.toString()}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  Text('P : ${train.platform.toString() == " " ? 'Na': train.platform.toString()}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
                                                 ],
                                               ),
                                             ),

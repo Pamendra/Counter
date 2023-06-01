@@ -1,5 +1,6 @@
 import 'package:counter/Bloc/NetworkBloc/network_bloc.dart';
 import 'package:counter/Bloc/NetworkBloc/network_state.dart';
+import 'package:counter/Screens/PlatformLiat.dart';
 import 'package:counter/Screens/Train_List_Screen.dart';
 import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
@@ -33,9 +34,9 @@ class _StationState extends State<Station> {
   Train? trainData = Train(tiploc: '', description: '');
   ServiceList? platformdata = ServiceList(origin_time: '', origin_location: '', destination_time: '', destination_location: '', headcode: '', platform: '', arrival_time: '', departure_time: '', crs: '', joining: '', alighting: '', otd: '', train_uid: '', toc: '', date_from: '', date_to: '', stp_indicator: '', cancelled: false);
   String? selectedNumber;
+
+
   Future<void> getTrainID(BuildContext context) async {
-
-
     /// Check  Auto route data receving
     final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>const TrainStationList()),);
     setState(() {
@@ -44,6 +45,19 @@ class _StationState extends State<Station> {
         trainID = trainData!.tiploc.toString();
       } else {
         trainID = '';
+      }
+    });
+  }
+
+  Future<void> getPlatform(BuildContext context) async {
+    /// Check  Auto route data receving
+    final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>const PlatformList()),);
+    setState(() {
+      if (result.toString() != "null") {
+        platformdata = result;
+        platforrmno = platformdata!.platform.toString();
+      } else {
+        platforrmno = '';
       }
     });
   }
@@ -81,7 +95,8 @@ class _StationState extends State<Station> {
         InkWell(
             onTap: () {
                    if(trainID.isNotEmpty) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => TrainList(station: trainID.toString(),)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                TrainList(station: trainID.toString(), platformdata: platforrmno.toString(),)));
                       }
                       else{
                         showDialog(
@@ -106,7 +121,6 @@ class _StationState extends State<Station> {
                                 ),
                               );});
                       }
-
             },
             child: Container(
               padding: const EdgeInsets.all(15),
@@ -165,7 +179,7 @@ class _StationState extends State<Station> {
                           Image.asset('assets/images/tracsis.png'),
                         ],
                       ),
-                      // const SizedBox(height: 50,),
+
 
 
                       const SizedBox(height: 20,),
@@ -242,40 +256,40 @@ class _StationState extends State<Station> {
                 //   ),
                 // ),
 
-                      // GestureDetector(
-                      //   onTap: () {
-                      //
-                      //   },
-                      //   child: Container(
-                      //     width: 100,
-                      //     height: 60,
-                      //     decoration: BoxDecoration(
-                      //       border: Border.all(color: Colors.black),
-                      //       color: Colors.white,
-                      //       borderRadius: BorderRadius.circular(8),
-                      //     ),
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.all(10.0),
-                      //       child: Row(
-                      //         mainAxisAlignment:
-                      //         MainAxisAlignment.spaceBetween,
-                      //         children: [
-                      //           Text(
-                      //             platforrmno == ""
-                      //                 ? "Select Platform"
-                      //                 : platformdata!.platform.toString(),
-                      //             overflow: TextOverflow.ellipsis,
-                      //             style: const TextStyle(fontSize: 16),
-                      //           ),
-                      //           Icon(
-                      //             CupertinoIcons.placemark,
-                      //             color: ColorConstants.appcolor,
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      GestureDetector(
+                        onTap: () {
+                          getPlatform(context);
+                        },
+                        child: Container(
+                          width: 100,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  platforrmno == ""
+                                      ? "Select Platform"
+                                      : platforrmno,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                Icon(
+                                  CupertinoIcons.placemark,
+                                  color: ColorConstants.appcolor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
 
 
                       // Padding(

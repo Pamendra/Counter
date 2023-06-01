@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:counter/Utils/SizedSpace.dart';
 import 'package:counter/Utils/drawertextbox.dart';
 import 'package:counter/Utils/utils.dart';
 import 'package:counter/Widgets/PrimaryButton.dart';
@@ -80,9 +81,7 @@ class DrawerLogin extends StatelessWidget {
                          ),
                        ],
                      ),
-                     const SizedBox(
-                       height: 16,
-                     )
+                    MediumSpace(),
                    ],
                  ),
                )
@@ -101,9 +100,7 @@ class DrawerLogin extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const SizedBox(
-                height: 50,
-              ),
+              LargeSpace(),
               ListTile(
                 leading: const Icon(
                   Icons.close_sharp,
@@ -115,17 +112,17 @@ class DrawerLogin extends StatelessWidget {
                 },
               ),
               Container(
-                padding: const EdgeInsets.all(10),
+                padding:  EdgeInsets.all(10.sp),
                 child: ListTile(
                     shape: Border(
                         bottom: BorderSide(
                           color: ColorConstants.backgroundappColor,
                         )),
-                    title: const Text(
+                    title: Text(
                       'Login',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 17,
+                          fontSize: 13.sp,
                           color: Colors.white),
                     ),
                     onTap: ()  {
@@ -136,11 +133,11 @@ class DrawerLogin extends StatelessWidget {
 
 
               Padding(
-                padding: const EdgeInsets.only(top: 430),
+                padding:  EdgeInsets.only(top: 43.h),
                 child: Column(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding:  EdgeInsets.all(8.sp),
                       child: ListTile(
                           shape: Border(
                              top:BorderSide(
@@ -148,11 +145,11 @@ class DrawerLogin extends StatelessWidget {
                              ) , bottom: BorderSide(
                                 color: ColorConstants.backgroundappColor,
                               )),
-                          title: const Text(
+                          title:  Text(
                             'App Information',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 17,
+                                fontSize: 13.sp,
                                 color: Colors.white),
                           ),
                           onTap: (){

@@ -26,6 +26,7 @@ import 'package:sqflite/sqflite.dart';
  class _TrainStationListState extends State<TrainStationList> {
    final TextEditingController searchtrain = TextEditingController();
    final TiplocDatabaseHelper get = TiplocDatabaseHelper();
+   DatabaseHelper fetch = DatabaseHelper();
    List<Train?> trainIDList = [];
    List<Train?> searchList = [];
    bool _isLoading = false;
@@ -194,8 +195,19 @@ import 'package:sqflite/sqflite.dart';
                                  itemBuilder: (BuildContext context, int index) {
                                    return InkWell(
                                      onTap: () async {
-                                       Navigator.pop(context, searchList[index]);
-                                      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TrainList(station: searchList[index]!.tiploc.toString(),)), (route) => false);
+                                       // setState(() {
+                                       //   _isLoading = true;
+                                       // });
+
+                                     await fetch.fetchdata(searchList[index]?.tiploc.toString());
+
+
+                                       // setState(() {
+                                       //   _isLoading = false;
+                                       // });
+                                        Navigator.pop(context, searchList[index]);
+
+                                       // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TrainList(station: searchList[index]!.tiploc.toString(),)), (route) => false);
                                      },
                                      child: ListTile(
                                        contentPadding: EdgeInsets.zero,

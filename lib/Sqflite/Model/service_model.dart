@@ -144,3 +144,10 @@ class ServiceList {
     };
   }
 }
+
+/// PlatformModel
+class PlatformData {
+  final String platform;
+
+  PlatformData({required this.platform});
+}

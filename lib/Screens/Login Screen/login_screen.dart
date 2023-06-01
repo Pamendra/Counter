@@ -6,6 +6,7 @@ import 'package:counter/Bloc/NetworkBloc/network_bloc.dart';
 import 'package:counter/Bloc/NetworkBloc/network_state.dart';
 import 'package:counter/Screens/Splash_Screen/splash_screen.dart';
 import 'package:counter/Screens/Station_Select.dart';
+import 'package:counter/Utils/SizedSpace.dart';
 import 'package:counter/Utils/dialogs_utils.dart';
 import 'package:counter/Utils/drawer_login.dart';
 import 'package:counter/Utils/gradient_color.dart';
@@ -83,24 +84,26 @@ class _LoginPageState extends State<LoginPage> {
            progressIndicator: const LoadingBar(),
            inAsyncCall: state is LoginLoadingState ? true : false,
            child: Padding(
-             padding: const EdgeInsets.only(right: 10,left: 10),
+             padding:  EdgeInsets.only(top: 10.sp,right: 16.sp,left: 16.sp),
              child: SingleChildScrollView(
                scrollDirection: Axis.vertical,
                child: Column(
                  children: [
                    Image.asset('assets/images/pcds.webp'),
-                   const Text('Counter App',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 30,color: Color(0xFF202447)),),
-                   const SizedBox(height: 40,),
+                    Text('Counter App',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 24.sp,color: ColorConstants.appcolor),),
+                   LargeSpace(),
                    Row(
                      children: [
                        Container(
-                           padding:const EdgeInsets.only(left: 15),
+                           padding: EdgeInsets.only(left: 2.sp),
                            child:headingText(title: 'Username or User ID',)
                        ),
                      ],
                    ),
-                   Padding(
-                     padding: const EdgeInsets.all(8.0),
+                   SmallSpace(),
+                   SizedBox(
+                     width: 95.w,
+                     height: 6.5.h,
                      child: TextFormField(
                        controller: emailController,
                        decoration: InputDecoration(
@@ -117,17 +120,19 @@ class _LoginPageState extends State<LoginPage> {
                                borderRadius: BorderRadius.circular(5))),
                      ),
                    ),
-                   const SizedBox(height: 20),
+                   MediumSpace(),
                    Row(
                      children: [
                        Container(
-                           padding:const EdgeInsets.only(left: 15),
+                           padding: EdgeInsets.only(left: 2.sp),
                            child:headingText(title: 'Password',)
                        ),
                      ],
                    ),
-                   Padding(
-                     padding: const EdgeInsets.all(8.0),
+                   SmallSpace(),
+                   SizedBox(
+                     width: 95.w,
+                     height: 6.5.h,
                      child: TextFormField(
                        controller: passwordController,
                        obscureText: !_passwordVisible,
@@ -158,57 +163,14 @@ class _LoginPageState extends State<LoginPage> {
                                borderRadius: BorderRadius.circular(5))),
                      ),
                    ),
-                   const SizedBox(height: 40,),
-                   SizedBox(width: 91.w,height: 6.h,
+                   LargeSpace(),
+                   SizedBox(width: 95.w,height: 6.h,
                        child: ElevatedButton(onPressed: () async {
                          if (emailController.text.isEmpty) {
-                           showDialog(
-                               context: context,
-                               builder: (BuildContext context){
-                                 return  AlertDialog(
-                                   // title: Text("Alert Dialog"),
-                                   backgroundColor:const Color(0xFF202447).withOpacity(1),
-
-                                   shape: RoundedRectangleBorder(side:const BorderSide(color: Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
-                                   title: Row(
-                                     children: [
-                                       const Text('Message',style: TextStyle(color: Colors.white),),
-                                      const SizedBox(width: 170,),
-                                      InkWell(
-                                          onTap: (){
-                                            Navigator.pop(context);
-                                          },
-                                          child:const Icon(Icons.close,color: Colors.white,)),
-                                     ],
-                                   ),
-                                   content:const Text("Enter your username or ID",style: TextStyle(color: Colors.white),),
-                                 );
-                               }
-                           );
+                          Dialogs.showValidationMessage(context, 'Please enter username');
                          } else if (passwordController.text.isEmpty) {
-                           showDialog(
-                               context: context,
-                               builder: (BuildContext context){
-                                 return  AlertDialog(
-                                   backgroundColor: const Color(0xFF202447).withOpacity(0.7),
-                                   // title: Text("Alert Dialog"),
-                                   shape: RoundedRectangleBorder(
-                                       side: const BorderSide(color:  Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
-                                   title: Row(
-                                     children: [
-                                       const Text('Message',style: TextStyle(color: Colors.white),),
-                                       const SizedBox(width: 170,),
-                                       InkWell(
-                                           onTap: (){
-                                             Navigator.pop(context);
-                                           },
-                                           child: const Icon(Icons.close,color: Colors.white,)),
-                                     ],
-                                   ),
-                                   content:const Text("Enter your password",style: TextStyle(color: Colors.white),),
-                                 );
-                               }
-                           );
+                           Dialogs.showValidationMessage(context, 'Please enter password');
+
                          } else  {
                            BlocProvider.of<LoginBloc>(context).add(
                                LoginPressedEvent(emailController.text, passwordController.text));
@@ -218,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                          }
                        },style: ElevatedButton.styleFrom(
                            backgroundColor: ColorConstants.appcolor
-                       ), child: const Text('Sign In',style: TextStyle(fontSize: 16,fontWeight:FontWeight.w700,fontFamily: "railBold"),)))
+                       ), child:  Text('Sign In',style: TextStyle(fontSize: 12.sp,fontWeight:FontWeight.w700,fontFamily: "railBold"),)))
                  ],
                ),
              ),

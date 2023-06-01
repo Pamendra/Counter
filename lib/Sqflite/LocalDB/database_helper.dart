@@ -125,7 +125,17 @@ class DatabaseHelper {
       version: 4,
     );
 
-    final List<Map<String, dynamic>> maps = await database.query('servicelist');
+   final List<Map<String, dynamic>> maps = await database.query('servicelist');
+   //  final List<Map<String, dynamic>> maps = await database.query(
+   //    'servicelist',
+   //    where: 'platform = ?',
+   //    whereArgs: [platform],
+   //  );
+   //  final List<Map<String, dynamic>> maps = await database.query(
+   //    'servicelist',
+   //    where: 'platform IN (${List.generate(platforms.length, (_) => '?').join(', ')})',
+   //    whereArgs: platforms,
+   //  );
 
     return List.generate(maps.length, (i) {
       return ServiceList(
