@@ -8,6 +8,7 @@ import 'package:counter/Sqflite/Model/service_model.dart';
 import 'package:counter/Utils/ApploadingBar.dart';
 import 'package:counter/Utils/colors_constants.dart';
 import 'package:counter/Utils/gradient_color.dart';
+import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -83,6 +84,30 @@ import 'package:sqflite/sqflite.dart';
      });
    }
 
+
+   showLoaderDialog(BuildContext context) {
+     AlertDialog alert = AlertDialog(
+       content: Row(
+         // mainAxisAlignment: MainAxisAlignment.center,
+         children: [
+           const CircularProgressIndicator(
+             color: Colors.black,
+           ),
+           Container(
+               margin: const EdgeInsets.only(left: 7), child: const Text("Loading...")),
+         ],
+       ),
+     );
+     showDialog(
+       barrierDismissible: false,
+       context: context,
+       builder: (BuildContext context) {
+         return alert;
+       },
+     );
+   }
+
+
    @override
    Widget build(BuildContext context) {
      return WillPopScope(
@@ -104,6 +129,7 @@ import 'package:sqflite/sqflite.dart';
          appBar: AppBar(
            automaticallyImplyLeading: false,
            backgroundColor: ColorConstants.appcolor,
+           title: Center(child: headingTextwithmedwhite(title: 'Station List',)),
          ),
          bottomNavigationBar: InkWell(
              onTap: () async{
@@ -118,27 +144,11 @@ import 'package:sqflite/sqflite.dart';
                        (Route route) => false);
              },
              child: Container(
-               padding: const EdgeInsets.all(15),
-               width: 50,
-               height: 55,
+               //padding:  EdgeInsets.all(8.sp),
+               width: 100.w,
+               height: 6.5.h,
                color: ColorConstants.appcolor,
-               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: const [
-                   Icon(
-                     Icons.arrow_back,
-                     color: Colors.white,
-                     size: 18,
-                   ),
-                   SizedBox(
-                     width: 5,
-                   ),
-                   Text(
-                     'Go Back',
-                     style: TextStyle(color: Colors.white, fontSize: 19),
-                   )
-                 ],
-               ),
+               child:  Center(child: headingTextwithsmallwhite(title: 'Go Back')),
              )),
 
          body: ModalProgressHUD(
@@ -153,25 +163,25 @@ import 'package:sqflite/sqflite.dart';
                decoration: gradient_login,
                child: SafeArea(
                  child: Padding(
-                   padding: const EdgeInsets.only(top: 80,left: 10,right: 10),
+                   padding:  EdgeInsets.only(top: 20.sp,left: 10.sp,right: 10.sp),
                    child: Column(
                        children: [
                          TextFormField(
                            textCapitalization: TextCapitalization.characters,
                            controller: searchtrain,
                            onChanged: _runFilter,
-
+                           style: TextStyle(fontSize: 11.sp,fontFamily: "railLight"),
                            decoration: InputDecoration(
                                focusedBorder: OutlineInputBorder(
                                    borderSide: const BorderSide(width: 3,color: Color(0xFF249238)),
-                                   borderRadius: BorderRadius.circular(11)
+                                   borderRadius: BorderRadius.circular(3.sp)
                                ),
                                filled: true,
                                fillColor: Colors.white,
-                               suffixIcon: const Icon(Icons.search),
+                               suffixIcon:  Icon(Icons.search,color: ColorConstants.appcolor,),
                                hintText: 'Search',
                                border: OutlineInputBorder(
-                                   borderRadius: BorderRadius.circular(21))),
+                                   borderRadius: BorderRadius.circular(3.sp))),
                          ),
 
                          Expanded(
@@ -195,17 +205,24 @@ import 'package:sqflite/sqflite.dart';
                                  itemBuilder: (BuildContext context, int index) {
                                    return InkWell(
                                      onTap: () async {
-                                       // setState(() {
-                                       //   _isLoading = true;
-                                       // });
+
+                                       showLoaderDialog(context);
+
+                                      // setState(() {
+                                      //   _isLoading = true;
+                                      // });
 
                                      await fetch.fetchdata(searchList[index]?.tiploc.toString());
 
+                                       Navigator.pop(context);
 
-                                       // setState(() {
-                                       //   _isLoading = false;
-                                       // });
-                                        Navigator.pop(context, searchList[index]);
+                                       Navigator.pop(context, searchList[index]);
+
+                                        // setState(() {
+                                        //   _isLoading = false;
+                                        // });
+
+
 
                                        // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TrainList(station: searchList[index]!.tiploc.toString(),)), (route) => false);
                                      },
@@ -218,12 +235,11 @@ import 'package:sqflite/sqflite.dart';
                                          color: ColorConstants.appcolor,
                                        ),
                                        title: Text(
-                                         /*isNormalStation ? data.value :*/
                                          '${searchList[index]?.description.toString()} - ${searchList[index]?.tiploc.toString()}  ' ?? "",
                                          style: TextStyle(
                                            color: ColorConstants.appcolor,
                                            fontWeight: FontWeight.w500,
-                                           fontSize: 15,
+                                           fontSize: 10.sp,
                                            fontFamily: "Aleo",
                                          ),
                                          maxLines: 2,
@@ -240,7 +256,6 @@ import 'package:sqflite/sqflite.dart';
                                  },
                                )),
                          ),
-
                        ]
                    ),
                  ),

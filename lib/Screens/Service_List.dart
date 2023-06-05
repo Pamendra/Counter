@@ -16,7 +16,7 @@ import '../Sqflite/Model/service_model.dart';
 
 class TrainList extends StatefulWidget {
   String? station;
-  String? platformdata;
+  List<String?> platformdata;
   TrainList({super.key, required this.station, required this.platformdata});
 
   @override
@@ -33,14 +33,15 @@ class _TrainListState extends State<TrainList> {
   bool _isLoading = false;
   final Set<int> _selectedIndexes = {};
   String selectedPlatform = '';
-  List<String> platformList = [];
+  List<String?> platformList = [];
 
   getTrainListFromLOCAL() async {
     setState(() {
       _isLoading = true;
     });
+    ;
       // await _databaseHelper.fetchdata(widget.station);
-      List<ServiceList> trains = await _databaseHelper.getTrainsFromDatabase();
+      List<ServiceList> trains = await _databaseHelper.getTrainsFromDatabaseplat(widget.platformdata);
       setState(() {
         _trains = trains;
         _filteredTrains = trains;
@@ -207,16 +208,16 @@ class _TrainListState extends State<TrainList> {
                         padding: const EdgeInsets.only(top: 5),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 18),
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width,
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children:  [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 10),
+                                  padding: EdgeInsets.only(left: 10),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: const [
+                                    children: [
                                       Text('Origin Station',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                       SizedBox(height: 5,),
                                       Text('Destination Station',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
@@ -224,23 +225,23 @@ class _TrainListState extends State<TrainList> {
                                   ),
                                 ),
 
-                                const SizedBox(width: 85,),
+                                SizedBox(width: 85,),
 
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
 
-                                  children: const [
+                                  children: [
                                     Text('  Arrival',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                     SizedBox(height: 5,),
                                     Text('Departure',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                   ],
                                 ),
-                                const SizedBox(width: 5,),
+                                SizedBox(width: 5,),
 
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
 
-                                  children: const [
+                                  children: [
                                     Text('Headcode',style:TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                     SizedBox(height: 5,),
                                     Text('Train UID',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
@@ -256,7 +257,7 @@ class _TrainListState extends State<TrainList> {
                       children: [
                         SizedBox(
                           height: 7.h,
-                          width: 50.w,
+                          width: 100.w,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
                             child: TextFormField(
@@ -282,32 +283,34 @@ class _TrainListState extends State<TrainList> {
                         ),
 
 
-                        SizedBox(
-                          height: 7.h,
-                          width: 50.w,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
-                            child: TextFormField(
-                              controller: searchPlatform,
-                              onChanged: (value) {
-                                _filterTrains(searchLocation.text.toLowerCase(), value.toLowerCase());
-                              },
-                              decoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(width: 3, color: Color(0xFF249238)),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                suffixIcon: const Icon(Icons.search),
-                                hintText: 'Platform',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        // SizedBox(
+                        //   height: 7.h,
+                        //   width: 50.w,
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+                        //     child: TextFormField(
+                        //       controller: searchPlatform,
+                        //       onChanged: (value) {
+                        //         _filterTrains(searchLocation.text.toLowerCase(), value.toLowerCase());
+                        //       },
+                        //       decoration: InputDecoration(
+                        //         focusedBorder: OutlineInputBorder(
+                        //           borderSide: const BorderSide(width: 3, color: Color(0xFF249238)),
+                        //           borderRadius: BorderRadius.circular(5),
+                        //         ),
+                        //         filled: true,
+                        //         fillColor: Colors.white,
+                        //         suffixIcon: const Icon(Icons.search),
+                        //         hintText: 'Platform',
+                        //         border: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(8),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+
+
                         // SizedBox(
                         //   height: 7.h,
                         //   width: 50.w,
@@ -363,7 +366,7 @@ class _TrainListState extends State<TrainList> {
                     // ): const Text(''),
                     Expanded(
                       child:  FutureBuilder(
-                        future: _databaseHelper.getTrainsFromDatabase(),
+                        future: _databaseHelper.getTrainsFromDatabaseplat([]),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             List<ServiceList>? trains = snapshot.data;
@@ -399,15 +402,15 @@ class _TrainListState extends State<TrainList> {
                                       onTap: () async {
 
                                         final result = await   Navigator.push(context, MaterialPageRoute(builder: (context) => Boarding(
-                                          origin_location: snapshot.data![index].origin_location,
-                                          origin_time: snapshot.data![index].origin_time,
-                                           destination_location: snapshot.data![index].destination_location,
-                                          destination_time: snapshot.data![index].destination_time,
-                                          headcode: snapshot.data![index].headcode,
-                                          train_uid: snapshot.data![index].train_uid, station: widget.station, cancelled: snapshot.data![index].cancelled,
-                                          toc: snapshot.data![index].toc, platform: snapshot.data![index].platform,
-                                          arrival_time: snapshot.data![index].arrival_time, departure_time: snapshot.data![index].departure_time,
-                                          date_to:  snapshot.data![index].date_to, date_from:  snapshot.data![index].date_from,
+                                          origin_location: train.origin_location,
+                                          origin_time: train.origin_time,
+                                           destination_location: train.destination_location,
+                                          destination_time: train.destination_time,
+                                          headcode: train.headcode,
+                                          train_uid: train.train_uid, station: widget.station, cancelled: train.cancelled,
+                                          toc: train.toc, platform: train.platform,
+                                          arrival_time: train.arrival_time, departure_time: train.departure_time,
+                                          date_to: train.date_to, date_from:  train.date_from,
                                         )));
                                         if (result ?? false) {
                                           setState(() {

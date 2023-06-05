@@ -7,10 +7,11 @@ import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Sqflite/Model/service_model.dart';
 import 'package:counter/Utils/ApploadingBar.dart';
 import 'package:counter/Utils/DrawerNormal.dart';
+import 'package:counter/Utils/SizedSpace.dart';
 import 'package:counter/Utils/colors_constants.dart';
-import 'package:counter/Utils/drawer_logout.dart';
+import 'package:counter/Utils/dialogs_utils.dart';
 import 'package:counter/Utils/gradient_color.dart';
-import 'package:counter/widgets/TextWidgets.dart';
+import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,11 +31,11 @@ class _StationState extends State<Station> {
   bool _isLoading = false;
   final DatabaseHelper data = DatabaseHelper();
   String trainID = "";
-  String platforrmno = "";
+  List<String?> platforrmno = [];
   Train? trainData = Train(tiploc: '', description: '');
-  ServiceList? platformdata = ServiceList(origin_time: '', origin_location: '', destination_time: '', destination_location: '', headcode: '', platform: '', arrival_time: '', departure_time: '', crs: '', joining: '', alighting: '', otd: '', train_uid: '', toc: '', date_from: '', date_to: '', stp_indicator: '', cancelled: false);
+  List<ServiceList> platformdata = [];
   String? selectedNumber;
-
+  List<ServiceList> _selectedOptions = [];
 
   Future<void> getTrainID(BuildContext context) async {
     /// Check  Auto route data receving
@@ -54,10 +55,10 @@ class _StationState extends State<Station> {
     final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>const PlatformList()),);
     setState(() {
       if (result.toString() != "null") {
-        platformdata = result;
-        platforrmno = platformdata!.platform.toString();
+        platforrmno = result;
+        // platforrmno = platformdata.toString();
       } else {
-        platforrmno = '';
+        platforrmno = [];
       }
     });
   }
@@ -81,75 +82,40 @@ class _StationState extends State<Station> {
   @override
   void initState()  {
     fetchdata();
-
     // TODO: implement initState
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const DrawerNormal(),
-      bottomNavigationBar: Row(children: [
-        InkWell(
-            onTap: () {
-                   if(trainID.isNotEmpty) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                TrainList(station: trainID.toString(), platformdata: platforrmno.toString(),)));
-                      }
-                      else{
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return  Center(
-                                child: AlertDialog(
-                                  backgroundColor: const Color(0xFF202447).withOpacity(0.7),
-                                  shape: RoundedRectangleBorder(side: const BorderSide(color:Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
-                                  title: Row(
-                                    children: [
-                                      const Text('Message',style: TextStyle(color: Colors.white),),
-                                      const SizedBox(width: 170,),
-                                      InkWell(
-                                          onTap: (){
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Icon(Icons.close,color: Colors.white,)),
-                                    ],
-                                  ),
-                                  content: const Text("Please select station",style: TextStyle(color: Colors.white),),
-                                ),
-                              );});
-                      }
-            },
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              width: 100.w,
-              height: 5.8.h,
-              color: ColorConstants.appcolor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    " Continue",
-                    style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white),
-                  ),
-                ],
-              ),
-            )),
-      ]),
+      bottomNavigationBar: InkWell(
+          onTap: () {
+                 if(trainID.isNotEmpty) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                              TrainList(station: trainID.toString(), platformdata: platforrmno,)));
+                    }
+                    else{
+                     Dialogs.showValidationMessage(context, 'Please select station');
+                    }
+          },
+          child: Container(
+            //padding:  EdgeInsets.all(8.sp),
+            width: 100.w,
+            height: 6.5.h,
+            color: ColorConstants.appcolor,
+            child: Center(child: headingTextwithsmallwhite(title: 'Continue')),
+          )),
       appBar: AppBar(backgroundColor: ColorConstants.appcolor,
         actions: [
           BlocBuilder<NetworkBloc, NetworkState>(
             builder: (context, state) {
               return Padding(
-                padding: EdgeInsets.only(right: 20.0),
+                padding: EdgeInsets.only(right: 15.sp),
                 child: Icon(
                   state is NetworkFailure ? Icons.cloud_off : Icons.cloud_done,
-                  size: 35,
+                  size: 30.sp,
                 ),
               );
             },
@@ -170,7 +136,7 @@ class _StationState extends State<Station> {
               scrollDirection: Axis.vertical,
               child: SafeArea(
                 child:Padding(
-                  padding: const EdgeInsets.only(top: 120,left: 10,right: 10),
+                  padding:  EdgeInsets.only(top: 100.sp,left: 10.sp,right: 10.sp),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -182,22 +148,22 @@ class _StationState extends State<Station> {
 
 
 
-                      const SizedBox(height: 20,),
+                      MediumSpace(),
 
                       GestureDetector(
                         onTap: () {
                           getTrainID(context);
                         },
                         child: Container(
-                          width: 100,
-                          height: 60,
+                          width: 95.w,
+                          height: 6.8.h,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black),
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(3.sp),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding:  EdgeInsets.all(8.sp),
                             child: Row(
                               mainAxisAlignment:
                               MainAxisAlignment.spaceBetween,
@@ -207,7 +173,7 @@ class _StationState extends State<Station> {
                                       ? "Select Station"
                                       : '${trainData!.description} - $trainID',
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 16),
+                                  style:  TextStyle(fontSize: 11.sp),
                                 ),
                                 Icon(
                                   CupertinoIcons.train_style_one,
@@ -219,9 +185,7 @@ class _StationState extends State<Station> {
                         ),
                       ),
 
-                      const SizedBox(
-                        height: 20,
-                      ),
+                     MediumSpace(),
 
 
                 // Container(
@@ -261,25 +225,23 @@ class _StationState extends State<Station> {
                           getPlatform(context);
                         },
                         child: Container(
-                          width: 100,
-                          height: 60,
+                          width: 95.w,
+                          height: 6.8.h,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black),
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(3.sp),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding:  EdgeInsets.all(8.sp),
                             child: Row(
                               mainAxisAlignment:
                               MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  platforrmno == ""
-                                      ? "Select Platform"
-                                      : platforrmno,
+                                  platforrmno == [] ? 'Select Platform' : platforrmno.toString().replaceAll("[", "").replaceAll("]", ""),
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 16),
+                                  style:  TextStyle(fontSize: 11.sp,color: Colors.black),
                                 ),
                                 Icon(
                                   CupertinoIcons.placemark,

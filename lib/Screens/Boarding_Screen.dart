@@ -253,7 +253,7 @@ class _BoardingState extends State<Boarding> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.pop(context, MaterialPageRoute(builder: (context) => TrainList(station: widget.station, platformdata: '',)));
+        Navigator.pop(context, MaterialPageRoute(builder: (context) => TrainList(station: widget.station, platformdata: [],)));
         return Future.value(false);
       },
       child: Scaffold(
@@ -273,7 +273,7 @@ class _BoardingState extends State<Boarding> {
               // await db.delete('trainlis');
 
 
-              Navigator.pop(context, MaterialPageRoute(builder: (context) => TrainList(station: widget.station, platformdata: '',)));
+              Navigator.pop(context, MaterialPageRoute(builder: (context) => TrainList(station: widget.station, platformdata: [],)));
 
             },
             child: Container(

@@ -204,11 +204,11 @@ class DrawerNormal extends StatelessWidget {
                           color: Colors.white),
                     ),
                     onTap: () async {
-                      // /// Clear Service List
-                      // final db = await openDatabase(
-                      //   join(await getDatabasesPath(), 'service_database.db'),
-                      // );
-                      // await db.delete('servicelist');
+                      /// Clear Service List
+                      final db = await openDatabase(
+                        join(await getDatabasesPath(), 'service_database.db'),
+                      );
+                      await db.delete('servicelist');
 
                       /// Clear Train list
                       final Database database = await openDatabase('my_database.db');

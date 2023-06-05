@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:counter/Utils/ApploadingBar.dart';
+import 'package:http/io_client.dart';
 import 'package:path_provider/path_provider.dart' show getApplicationDocumentsDirectory;
 
 import 'package:http/http.dart' as http;
@@ -13,7 +15,7 @@ import '../Model/service_model.dart';
 class TiplocDatabaseHelper{
 
   fetchdatalm() async{
-    final response = await http.get(Uri.parse('http://51.140.217.38:8000/pcds/api/tiplocs?api_key=6afyVqs6r6bW7DzI&toc=lm,se,lo,le,ch'));
+    final response = await http.get(Uri.parse('http://192.168.137.68:8000/pcds/api/tiplocs?api_key=6afyVqs6r6bW7DzI&toc=lm,se,lo,le,ch'));
 
     if (response.statusCode == 200) {
       List<Train> TrainList = [];
@@ -81,8 +83,16 @@ class DatabaseHelper {
 
   fetchdata(String? station) async {
 
-      final response = await http.get(Uri.parse(
-          'http://51.140.217.38:8000/pcds/api/manul-count-app-services?selected_dates=2023-02-23_2023-02-23&toc=CC,CH,GN,GW,GX,IL,LE,LM,LO,SE,SN,SW,TL,XR&tiploc=$station&export_type=station&api_key=6afyVqs6r6bW7DzI'));
+
+
+      final httpClient = HttpClient();
+      httpClient.connectionTimeout = const Duration(seconds: 120);
+      final httpIoClient = IOClient(httpClient);
+
+      final response = await httpIoClient.get(Uri.parse(
+      'http://192.168.137.68:8000/pcds/api/manul-count-app-services?selected_dates=2023-06-02_2023-06-02&toc=CC,CH,GN,GW,GX,IL,LE,LM,LO,SE,SN,SW,TL,XR&tiploc=$station&export_type=station&api_key=6afyVqs6r6bW7DzI'));
+
+    // final response = await http.get(Uri.parse('http://192.168.137.166:8000/pcds/api/manul-count-app-services?selected_dates=2023-06-02_2023-06-02&toc=CC,CH,GN,GW,GX,IL,LE,LM,LO,SE,SN,SW,TL,XR&tiploc=$station&export_type=station&api_key=6afyVqs6r6bW7DzI'));
 
       if (response.statusCode == 200) {
         List<ServiceList> TrainList = [];
@@ -112,8 +122,6 @@ class DatabaseHelper {
       }
 
   }
-
-
   Future<List<ServiceList>> getTrainsFromDatabase() async {
     final Database database = await openDatabase(
       join(await getDatabasesPath(), 'service_database.db'),
@@ -125,17 +133,69 @@ class DatabaseHelper {
       version: 4,
     );
 
-   final List<Map<String, dynamic>> maps = await database.query('servicelist');
+    final List<Map<String, dynamic>> maps = await database.query('servicelist');
+    // final List<Map<String, dynamic>> maps = await database.query(
+    //   'servicelist',
+    //   where: 'platform = ?',
+    //   whereArgs: [platform],
+    // );
+    //  final List<Map<String, dynamic>> maps = await database.query(
+    //    'servicelist',
+    //    where: 'platform IN (${List.generate(platforms.length, (_) => '?').join(', ')})',
+    //    whereArgs: platforms,
+    //  );
+
+    return List.generate(maps.length, (i) {
+      return ServiceList(
+        // schedule_id: maps[i]['schedule_id'],
+        // location_id: maps[i]['location_id'],
+        origin_time: maps[i]['origin_time'],
+        destination_time: maps[i]['destination_time'],
+        origin_location: maps[i]['origin_location'],
+        destination_location: maps[i]['destination_location'],
+        headcode: maps[i]['headcode'],
+        platform: maps[i]['platform'],
+        arrival_time: maps[i]['arrival_time'],
+        departure_time: maps[i]['departure_time'],
+        crs: maps[i]['crs'],
+        joining: maps[i]['joining'],
+        alighting: maps[i]['alighting'],
+        otd: maps[i]['otd'],
+        train_uid: maps[i]['train_uid'],
+        toc: maps[i]['toc'],
+        date_from: maps[i]['date_from'],
+        date_to: maps[i]['date_to'],
+        stp_indicator: maps[i]['stp_indicator'],
+        cancelled: maps[i]['cancelled'] == 1,
+        // destination_tiploc: maps[i]['destination_tiploc'],
+        // origin_tiploc: maps[i]['origin_tiploc'],
+      );
+    });
+  }
+
+
+  Future<List<ServiceList>> getTrainsFromDatabaseplat(List<String?> platforms) async {
+    final Database database = await openDatabase(
+      join(await getDatabasesPath(), 'service_database.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          'CREATE TABLE servicelist(  origin_time TEXT, destination_time  TEXT, origin_location TEXT, destination_location TEXT , headcode  TEXT,  platform  TEXT,  arrival_time   TEXT,  departure_time   TEXT,  crs  TEXT,  joining  TEXT ,  alighting  TEXT,  otd   TEXT, train_uid   TEXT,  toc  TEXT,  date_from  TEXT,  date_to  TEXT,  stp_indicator  TEXT, cancelled INTEGER)',
+        );
+      },
+      version: 4,
+    );
+
+   // final List<Map<String, dynamic>> maps = await database.query('servicelist');
    //  final List<Map<String, dynamic>> maps = await database.query(
    //    'servicelist',
    //    where: 'platform = ?',
    //    whereArgs: [platform],
    //  );
-   //  final List<Map<String, dynamic>> maps = await database.query(
-   //    'servicelist',
-   //    where: 'platform IN (${List.generate(platforms.length, (_) => '?').join(', ')})',
-   //    whereArgs: platforms,
-   //  );
+    final List<Map<String, dynamic>> maps = await database.query(
+      'servicelist',
+      where: 'platform IN (${List.generate(platforms.length, (_) => '?').join(', ')})',
+      whereArgs: platforms,
+    );
 
     return List.generate(maps.length, (i) {
       return ServiceList(
