@@ -8,7 +8,7 @@ class LoginService {
     try {
       var formData = FormData.fromMap(body);
 
-      var response = await Dio().post('http://192.168.137.68:8000/pcds/logon', data: formData);
+      var response = await Dio().post('http://192.168.137.183:8000/pcds/logon', data: formData);
 
       if (response.statusCode == 200) {
         if(response.data['status'] == 200){

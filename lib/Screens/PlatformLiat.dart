@@ -1,10 +1,10 @@
 // ignore_for_file: file_names
 
 
-import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Sqflite/Model/service_model.dart';
 import 'package:counter/Utils/ApploadingBar.dart';
+import 'package:counter/Utils/SizedSpace.dart';
 import 'package:counter/Utils/colors_constants.dart';
 import 'package:counter/Utils/gradient_color.dart';
 import 'package:counter/Widgets/TextWidgets.dart';
@@ -12,7 +12,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sizer/sizer.dart';
-import 'package:sqflite/sqflite.dart';
 
 
 
@@ -151,26 +150,33 @@ class _PlatformListState extends State<PlatformList> {
                   decoration: gradient_login,
                   child: SafeArea(
                     child: Padding(
-                      padding:  EdgeInsets.only(top: 80,left: 15.sp,right: 15.sp),
+                      padding:  EdgeInsets.only(top: 30.sp,left: 15.sp,right: 15.sp),
                       child: Column(
                           children: [
-                            TextFormField(
-                              textCapitalization: TextCapitalization.characters,
-                              controller: searchtrain,
-                              onChanged: _runFilter,
-
-                              decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(width: 3,color: Color(0xFF249238)),
-                                      borderRadius: BorderRadius.circular(11)
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  suffixIcon: const Icon(Icons.search),
-                                  hintText: 'Select Platform',
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(21))),
+                            // TextFormField(
+                            //   textCapitalization: TextCapitalization.characters,
+                            //   controller: searchtrain,
+                            //   onChanged: _runFilter,
+                            //
+                            //   decoration: InputDecoration(
+                            //       focusedBorder: OutlineInputBorder(
+                            //           borderSide: const BorderSide(width: 3,color: Color(0xFF249238)),
+                            //           borderRadius: BorderRadius.circular(11)
+                            //       ),
+                            //       filled: true,
+                            //       fillColor: Colors.white,
+                            //       suffixIcon: const Icon(Icons.search),
+                            //       hintText: 'Select Platform',
+                            //       border: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(21))),
+                            // ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                headingTextOnewithdark(title: 'Select Platform'),
+                              ],
                             ),
+                            SmallSpace(),
 
                             Expanded(
                               child: RawScrollbar(

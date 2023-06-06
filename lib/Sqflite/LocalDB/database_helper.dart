@@ -15,7 +15,7 @@ import '../Model/service_model.dart';
 class TiplocDatabaseHelper{
 
   fetchdatalm() async{
-    final response = await http.get(Uri.parse('http://192.168.137.68:8000/pcds/api/tiplocs?api_key=6afyVqs6r6bW7DzI&toc=lm,se,lo,le,ch'));
+    final response = await http.get(Uri.parse('http://192.168.137.183:8000/pcds/api/tiplocs?api_key=6afyVqs6r6bW7DzI&toc=lm,se,lo,le,ch'));
 
     if (response.statusCode == 200) {
       List<Train> TrainList = [];
@@ -90,7 +90,7 @@ class DatabaseHelper {
       final httpIoClient = IOClient(httpClient);
 
       final response = await httpIoClient.get(Uri.parse(
-      'http://192.168.137.68:8000/pcds/api/manul-count-app-services?selected_dates=2023-06-02_2023-06-02&toc=CC,CH,GN,GW,GX,IL,LE,LM,LO,SE,SN,SW,TL,XR&tiploc=$station&export_type=station&api_key=6afyVqs6r6bW7DzI'));
+      'http://192.168.137.183:8000/pcds/api/manul-count-app-services?selected_dates=2023-06-02_2023-06-02&toc=CC,CH,GN,GW,GX,IL,LE,LM,LO,SE,SN,SW,TL,XR&tiploc=$station&export_type=station&api_key=6afyVqs6r6bW7DzI'));
 
     // final response = await http.get(Uri.parse('http://192.168.137.166:8000/pcds/api/manul-count-app-services?selected_dates=2023-06-02_2023-06-02&toc=CC,CH,GN,GW,GX,IL,LE,LM,LO,SE,SN,SW,TL,XR&tiploc=$station&export_type=station&api_key=6afyVqs6r6bW7DzI'));
 

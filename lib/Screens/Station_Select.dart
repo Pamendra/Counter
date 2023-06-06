@@ -239,7 +239,7 @@ class _StationState extends State<Station> {
                               MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  platforrmno == [] ? 'Select Platform' : platforrmno.toString().replaceAll("[", "").replaceAll("]", ""),
+                                  platforrmno.isEmpty ? 'Select Platform' : platforrmno.toString().replaceAll("[", "").replaceAll("]", ""),
                                   overflow: TextOverflow.ellipsis,
                                   style:  TextStyle(fontSize: 11.sp,color: Colors.black),
                                 ),

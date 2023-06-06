@@ -142,7 +142,7 @@ class _TrainStationState extends State<TrainStation> {
                 decoration: gradient_login,
                 child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 80,left: 10,right: 10),
+                    padding:  EdgeInsets.only(top: 20.sp,left: 10.sp,right: 10.sp),
                     child: Column(
                         children: [
                           TextFormField(
@@ -153,14 +153,14 @@ class _TrainStationState extends State<TrainStation> {
                             decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(width: 3,color: Color(0xFF249238)),
-                                    borderRadius: BorderRadius.circular(11)
+                                    borderRadius: BorderRadius.circular(3.sp)
                                 ),
                                 filled: true,
                                 fillColor: Colors.white,
                                 suffixIcon: const Icon(Icons.search),
                                 hintText: 'Search',
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(21))),
+                                    borderRadius: BorderRadius.circular(3.sp))),
                           ),
 
                           Expanded(

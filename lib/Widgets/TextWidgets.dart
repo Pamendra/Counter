@@ -121,7 +121,7 @@ class headingTextOnewithdark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(title,style:TextStyle(fontWeight:FontWeight.w600,color:ColorConstants.appcolor,fontFamily:"Aleo",
-        fontSize:17.sp,letterSpacing:1),);
+        fontSize:13.sp,letterSpacing:1),);
   }
 
 
@@ -141,6 +141,20 @@ class headingTextwithsmallwhite extends StatelessWidget {
 
 }
 
+class headingTextwithminiwhite extends StatelessWidget {
+  headingTextwithminiwhite({Key? key, required this.title}) : super(key: key);
+  String title;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(title,style:TextStyle(fontWeight:FontWeight.w400,color:Colors.white,fontFamily:"railBold",
+        fontSize:10.sp,letterSpacing:1),);
+  }
+
+
+}
+
 class headingTextwithmedwhite extends StatelessWidget {
   headingTextwithmedwhite({Key? key, required this.title}) : super(key: key);
   String title;
@@ -150,6 +164,20 @@ class headingTextwithmedwhite extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(title,style:TextStyle(fontWeight:FontWeight.w400,color:Colors.white,fontFamily:"railBold",
         fontSize:13.sp,letterSpacing:1),);
+  }
+
+
+}
+
+class headingTextwithmedwhitebold extends StatelessWidget {
+  headingTextwithmedwhitebold({Key? key, required this.title}) : super(key: key);
+  String title;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(title,style:TextStyle(fontWeight:FontWeight.bold,color:Colors.white,fontFamily:"railBold",
+        fontSize:14.sp,letterSpacing:1),);
   }
 
 

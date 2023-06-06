@@ -2,9 +2,12 @@
 
 import 'package:counter/Screens/Service_List.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
+import 'package:counter/Utils/SizedSpace.dart';
 import 'package:counter/Utils/colors_constants.dart';
+import 'package:counter/Utils/dialogs_utils.dart';
 import 'package:counter/Utils/drawer_logout.dart';
 import 'package:counter/Utils/gradient_color.dart';
+import 'package:counter/Widgets/TextWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -214,8 +217,8 @@ class _BoardingState extends State<Boarding> {
       builder: (context) {
         return AlertDialog(
           backgroundColor:const Color(0xFF202447).withOpacity(1),
-          shape: RoundedRectangleBorder(side:const BorderSide(color: Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(11)),
-          title: Text('Enter a Value',style: TextStyle(color: Colors.white),),
+          shape: RoundedRectangleBorder(side:const BorderSide(color: Color(0xFF249238),width: 3),borderRadius: BorderRadius.circular(3.sp)),
+          title:  Text('Enter a Value',style: TextStyle(color: Colors.white),),
           content: TextField(
             keyboardType: TextInputType.phone,
             controller: _delay,
@@ -229,7 +232,7 @@ class _BoardingState extends State<Boarding> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('CANCEL',style: TextStyle(color: Colors.white),),
+              child:  Text('CANCEL',style: TextStyle(color: Colors.white),),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -278,26 +281,10 @@ class _BoardingState extends State<Boarding> {
             },
             child: Container(
               padding: const EdgeInsets.all(15),
-              width: 50,
-              height: 55,
+              width: 100.w,
+              height: 6.5.h,
               color: ColorConstants.appcolor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Go Back',
-                    style: TextStyle(color: Colors.white, fontSize: 19),
-                  )
-                ],
-              ),
+              child: Center(child: headingTextwithsmallwhite(title: 'Go Back',))
             )),
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -305,11 +292,11 @@ class _BoardingState extends State<Boarding> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${widget.headcode}',style: const TextStyle(fontWeight: FontWeight.bold),),
+              headingTextwithmedwhitebold(title: '${widget.headcode}'),
               // SizedBox(width: 10,),
-              Text('${widget.station}',style: const TextStyle(fontWeight: FontWeight.bold),),
+              headingTextwithmedwhitebold(title: '${widget.station}',),
               // SizedBox(width: 10,),
-              Text('${widget.train_uid}',style: const TextStyle(fontWeight: FontWeight.w700),),
+             headingTextwithmedwhitebold(title: '${widget.train_uid}')
             ],
           ),
         ),
@@ -324,7 +311,7 @@ class _BoardingState extends State<Boarding> {
 
 
                 Container(
-                  height: 60,
+                  height: 6.h,
                   color: ColorConstants.appcolor,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
@@ -334,8 +321,8 @@ class _BoardingState extends State<Boarding> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text('${widget.origin_location}',style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white),),
-                            Text('${widget.origin_time}',style: const TextStyle(fontWeight: FontWeight.w700,color: Colors.white),),
+                            headingTextwithminiwhite(title: '${widget.origin_location}'),
+                            headingTextwithminiwhite(title: '${widget.origin_time}')
                            // Text('${widget.origin_time}'),
                           ],
                         ),
@@ -345,17 +332,17 @@ class _BoardingState extends State<Boarding> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text('${widget.destination_location}',style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white),),
-                            Text('${widget.destination_time}',style: const TextStyle(fontWeight: FontWeight.w700,color: Colors.white),),
+                            headingTextwithminiwhite(title: '${widget.destination_location}',),
+                            headingTextwithminiwhite(title: '${widget.destination_time}',)
                           ],
                         )
                       ],
                     ),
                   ),
                 ),
-                  const SizedBox(height: 10,),
+                 SmallSpace(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8,bottom: 8,right: 15),
+                  padding:  EdgeInsets.only(top: 8.sp,bottom: 8.sp,right: 10.sp),
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -363,15 +350,15 @@ class _BoardingState extends State<Boarding> {
                         children: [
 
                           Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
+                            padding:  EdgeInsets.only(left: 16.sp,right: 16.sp,bottom: 16.sp),
                             child: Row(
                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
 
-                                const Text('OTA',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
-                                const SizedBox(width: 77,),
+                                headingTextOnewithdark(title: 'OTA',),
+                                 SizedBox(width: 20.w,),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(5.sp),
                                   child: SizedBox(
                                     width: 40.w,
                                     height: 6.h,
@@ -417,14 +404,14 @@ class _BoardingState extends State<Boarding> {
 
 
                           Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
+                            padding:  EdgeInsets.only(left: 16.sp,right: 16.sp,bottom: 16.sp),
                             child: Row(
 
                               children:  [
-                                const Text('OTD',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
-                                const SizedBox(width: 77,),
+                                headingTextOnewithdark(title: 'OTD',),
+                                 SizedBox(width: 19.5.w,),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(5.sp),
                                   child: SizedBox(
                                     width: 40.w,
                                     height: 6.h,
@@ -468,14 +455,14 @@ class _BoardingState extends State<Boarding> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
+                            padding:  EdgeInsets.only(left: 16.sp,right: 16.sp,bottom: 16.sp),
                             child: Row(
 
                               children: [
-                                const Text('JOINING',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
-                                const SizedBox(width: 42,),
+                                headingTextOnewithdark(title: 'JOINING',),
+                                 SizedBox(width: 10.w,),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(5.sp),
                                   child: SizedBox(
                                     width: 40.w,
                                     height: 6.h,
@@ -518,16 +505,16 @@ class _BoardingState extends State<Boarding> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 10,),
+
                           Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
+                            padding:  EdgeInsets.only(left: 16.sp,right: 16.sp,bottom: 16.sp),
                             child: Row(
 
                               children: [
-                                const Text('ALIGHTINING',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
-                                const SizedBox(width: 13,),
+                                headingTextOnewithdark(title: 'ALIGHTNING',),
+                                 SizedBox(width: 3.w,),
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 8,top: 8,bottom: 8),
+                                  padding:  EdgeInsets.only(right: 5.sp,top: 5.sp,bottom: 5.sp),
                                   child: SizedBox(
                                     width: 40.w,
                                     height: 6.h,
@@ -587,7 +574,7 @@ class _BoardingState extends State<Boarding> {
                         child: Container(
                           width: 10.w,
                           child: NumberPicker(
-                            selectedTextStyle: const TextStyle(fontSize: 22),
+                            selectedTextStyle:  TextStyle(fontSize: 15.sp),
                             value: _selectedNumber,
                             itemHeight: 3.h,
                             itemCount: 10,
@@ -628,7 +615,7 @@ class _BoardingState extends State<Boarding> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding:  EdgeInsets.symmetric(horizontal: 16.sp),
                   child: TextFormField(
                     controller: comment ,
                     decoration: InputDecoration(
@@ -660,30 +647,30 @@ class _BoardingState extends State<Boarding> {
                       filled: true,
                       hintText: 'Comments',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(11)
+                        borderRadius: BorderRadius.circular(3.sp)
                       )
                     ),
                   ),
                 ),
-                const SizedBox(height: 20,),
+                MediumSpace(),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Padding(padding: const EdgeInsets.only(left: 20),
+                children: [Padding(padding:  EdgeInsets.only(left: 16.sp),
                   child: SizedBox(
-                    width: 50.w,
+                    width: 45.w,
                     height: 5.h,
                     child: ElevatedButton(onPressed: (){
                       Navigator.pop(context);
                     },style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstants.appcolor
                     ),
-                        child: const Text('Cancellation')),
+                        child:  headingTextwithminiwhite(title: 'Cancellation',)),
                   ),
                 ),
-                  const SizedBox(width: 7,),
+                   SizedBox(width: 1.sp,),
                   Expanded(child: Padding(
-                    padding: const EdgeInsets.only(right: 20),
+                    padding:  EdgeInsets.only(right: 16.sp),
                     child: SizedBox(height: 5.h,
                         child: ElevatedButton(onPressed: () async {
                           String value = await _showInputDialog();
@@ -691,11 +678,11 @@ class _BoardingState extends State<Boarding> {
                         },style: ElevatedButton.styleFrom(
                           backgroundColor: ColorConstants.appcolor
                         ),
-                            child: const Text('Delay'))),
+                            child:  headingTextwithminiwhite(title: 'Delay',))),
                   )),
                   ]
                 ),
-                Padding(padding: const EdgeInsets.only(top: 10,left: 20,right: 20),
+                Padding(padding:  EdgeInsets.only(top: 8.sp,left: 16.sp,right: 16.sp),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -708,13 +695,13 @@ class _BoardingState extends State<Boarding> {
                               _insert();
 
                             }else{
-                            Fluttertoast.showToast(msg: 'please enter values');
+                            Dialogs.showValidationMessage(context, 'please enter values');
                           }
                           },style: ElevatedButton.styleFrom(
                             backgroundColor: ColorConstants.appcolor
 
                           ),
-                              child: const Text('Save'))),
+                              child:  headingTextwithminiwhite(title: 'Save',))),
 
                       if (_allFieldsFilled)
                         ElevatedButton(onPressed: (){

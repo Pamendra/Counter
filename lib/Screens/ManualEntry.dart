@@ -2,7 +2,9 @@ import 'package:counter/Screens/odStation.dart';
 import 'package:counter/Sqflite/LocalDB/database_helper.dart';
 import 'package:counter/Sqflite/Model/service_model.dart';
 import 'package:counter/Utils/ApploadingBar.dart';
+import 'package:counter/Utils/SizedSpace.dart';
 import 'package:counter/Utils/colors_constants.dart';
+import 'package:counter/Utils/dialogs_utils.dart';
 import 'package:counter/Utils/gradient_color.dart';
 import 'package:counter/Widgets/InputFormatter.dart';
 import 'package:counter/Widgets/TextWidgets.dart';
@@ -241,7 +243,7 @@ class _ManualEntryState extends State<ManualEntry> {
                 children: [
                   /// Head code
                   Padding(
-                    padding: const EdgeInsets.only(left: 30,right: 20),
+                    padding:  EdgeInsets.only(left: 20.sp,right: 20.sp),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -276,11 +278,11 @@ class _ManualEntryState extends State<ManualEntry> {
                     ),
                   ),
 
-                  const SizedBox(height: 10,),
+                 SmallSpace(),
 
                   /// Train Uid
                   Padding(
-                    padding: const EdgeInsets.only(left: 30,right: 20),
+                    padding:  EdgeInsets.only(left: 20.sp,right: 20.sp),
                     child: Row(
                       children: [
                         Column(
@@ -316,7 +318,7 @@ class _ManualEntryState extends State<ManualEntry> {
                     ),
                   ),
 
-                  const SizedBox(height: 10,),
+                  SmallSpace(),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -332,7 +334,7 @@ class _ManualEntryState extends State<ManualEntry> {
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black),
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(3.sp),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -345,7 +347,7 @@ class _ManualEntryState extends State<ManualEntry> {
                                       ? "Select Station"
                                       : trainID.toString(),
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 16),
+                                  style:  TextStyle(fontSize: 10.sp),
                                 ),
                                 Icon(
                                   CupertinoIcons.search,
@@ -360,7 +362,7 @@ class _ManualEntryState extends State<ManualEntry> {
                   ),
 
 
-                  const SizedBox(height: 10,),
+                 SmallSpace(),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,10 +378,10 @@ class _ManualEntryState extends State<ManualEntry> {
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black),
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(3.sp),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding:  EdgeInsets.all(8.sp),
                             child: Row(
                               mainAxisAlignment:
                               MainAxisAlignment.spaceBetween,
@@ -389,7 +391,7 @@ class _ManualEntryState extends State<ManualEntry> {
                                       ? "Select Station"
                                       : train.toString(),
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 16),
+                                  style:  TextStyle(fontSize: 10.sp),
                                 ),
                                 Icon(
                                   CupertinoIcons.search,
@@ -403,12 +405,12 @@ class _ManualEntryState extends State<ManualEntry> {
                     ],
                   ),
 
-                      const SizedBox(height: 10,),
+                      SmallSpace(),
 
                   Padding(
-                    padding: const EdgeInsets.only(left: 30,right: 30),
+                    padding:  EdgeInsets.only(left: 20.sp,right: 20.sp),
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
+                      padding:  EdgeInsets.only(bottom: 1.sp),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -430,7 +432,7 @@ class _ManualEntryState extends State<ManualEntry> {
                                     TimeInputFormatter(),
                                   ],
                                   decoration:  InputDecoration(
-                                    suffixIcon: Icon(Icons.access_time,color: ColorConstants.appcolor,),
+                                    suffixIcon: Icon(Icons.timelapse,color: ColorConstants.appcolor,),
                                     counterText: '',
                                     fillColor: Colors.white,
                                     filled: true,
@@ -464,7 +466,7 @@ class _ManualEntryState extends State<ManualEntry> {
                                     TimeInputFormatter(),
                                   ],
                                   decoration:  InputDecoration(
-                                    suffixIcon: Icon(Icons.access_time,color: ColorConstants.appcolor,),
+                                    suffixIcon: Icon(Icons.timelapse,color: ColorConstants.appcolor,),
                                     counterText: '',
                                     fillColor: Colors.white,
                                     filled: true,
@@ -541,10 +543,10 @@ class _ManualEntryState extends State<ManualEntry> {
                   //   ),
                   // ),
 
-                  const SizedBox(height: 10,),
+                SmallSpace(),
 
                   Padding(
-                    padding: const EdgeInsets.only(left: 22,right: 20),
+                    padding:  EdgeInsets.only(left: 15.sp,right: 20.sp),
                     child: Row(
                       children: [
                         Column(
@@ -555,12 +557,12 @@ class _ManualEntryState extends State<ManualEntry> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children:  [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10),
+                                    padding:  EdgeInsets.only(left: 7.sp),
                                     child: headingText1( title: 'OTD',),
                                   ),
 
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:  EdgeInsets.all(5.sp),
                                     child: SizedBox(
                                       width: 40.w,
                                       height:6.h,
@@ -603,19 +605,19 @@ class _ManualEntryState extends State<ManualEntry> {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 10,),
+                            SmallSpace(),
                             Container(
                              // decoration:  BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(color: Colors.green)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10),
+                                    padding:  EdgeInsets.only(left: 7.sp),
                                     child: headingText1( title: 'JOINING',),
                                   ),
-                                  const SizedBox(width: 48,),
+                                   SizedBox(width: 20.sp,),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:  EdgeInsets.all(5.sp),
                                     child: SizedBox(
                                       width: 40.w,
                                       height: 6.h,
@@ -658,19 +660,19 @@ class _ManualEntryState extends State<ManualEntry> {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 10,),
+                           SmallSpace(),
                             Container(
                               //decoration:  BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(color: Colors.green)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10),
+                                    padding:  EdgeInsets.only(left: 7.sp),
                                     child: headingText1( title: 'ALIGHTNING',),
                                   ),
 
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:  EdgeInsets.all(5.sp),
                                     child: SizedBox(
                                       width: 40.w,
                                       height: 6.h,
@@ -722,12 +724,12 @@ class _ManualEntryState extends State<ManualEntry> {
                             trackColor: Colors.white,
                             //thumbVisibility: true,
                             thickness: 5,
-                            radius: const Radius.circular(2),
+                            radius:  Radius.circular(1.sp),
 
                             child: SizedBox(
                               width: 30.w,
                               child: NumberPicker(
-                                selectedTextStyle: const TextStyle(fontSize: 22),
+                                selectedTextStyle:  TextStyle(fontSize: 17.sp),
                                 value: _selectedNumber,
                                 itemHeight: 25,
                                 itemCount: 10,
@@ -769,10 +771,10 @@ class _ManualEntryState extends State<ManualEntry> {
                     ),
                   ),
 
-                  const SizedBox(height: 10,),
+                 SmallSpace(),
 
                   Padding(
-                    padding: const EdgeInsets.only(left: 30,right: 30),
+                    padding:  EdgeInsets.only(left: 16.sp,right: 20.sp),
                     child: SizedBox(
                       width: 85.w,
                       height: 6.h,
@@ -810,18 +812,18 @@ class _ManualEntryState extends State<ManualEntry> {
                                 borderSide: BorderSide(color: Colors.green)
                             ),
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5)
+                                borderRadius: BorderRadius.circular(3.sp)
                             )
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20,),
+                  MediumSpace(),
 
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(padding: const EdgeInsets.only(left: 30),
+                        Padding(padding:  EdgeInsets.only(left: 20.sp),
                         child: SizedBox(
                           width: 43.w,
                           height: 5.h,
@@ -830,10 +832,10 @@ class _ManualEntryState extends State<ManualEntry> {
                           },style: ElevatedButton.styleFrom(
                               backgroundColor: ColorConstants.appcolor
                           ),
-                              child: const Text('Cancellation')),
+                              child:  headingTextwithminiwhite(title: 'Cancellation',)),
                         ),
                       ),
-                        const SizedBox(width: 7,),
+                         SizedBox(width: 2.sp,),
                         Expanded(child: Padding(
                           padding: const EdgeInsets.only(right: 30),
                           child: SizedBox( width: 50.w,
@@ -844,11 +846,11 @@ class _ManualEntryState extends State<ManualEntry> {
                               },style: ElevatedButton.styleFrom(
                                   backgroundColor: ColorConstants.appcolor
                               ),
-                                  child: const Text('Delay'))),
+                                  child:  headingTextwithminiwhite(title: 'Delay',))),
                         )),
                       ]
                   ),
-                  Padding(padding: const EdgeInsets.only(top: 10,left: 30,right: 30),
+                  Padding(padding:  EdgeInsets.only(top: 10.sp,left: 20.sp,right: 20.sp),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -861,12 +863,12 @@ class _ManualEntryState extends State<ManualEntry> {
                                 Navigator.pop(context, true);
                                 _insert();
                               }else{
-                                Fluttertoast.showToast(msg: 'Please enter values');
+                                Dialogs.showValidationMessage(context, 'please enter values');
                               }
                             },style: ElevatedButton.styleFrom(
                                 backgroundColor: ColorConstants.appcolor
                             ),
-                                child: const Text('Save'))),
+                                child:  headingTextwithminiwhite(title: 'Save',))),
                       ],
                     ),
                   ),

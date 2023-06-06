@@ -5,6 +5,7 @@ import 'package:counter/Screens/Boarding_Screen.dart';
 import 'package:counter/Screens/ManualEntry.dart';
 import 'package:counter/Screens/Station_Select.dart';
 import 'package:counter/Utils/ApploadingBar.dart';
+import 'package:counter/Utils/SizedSpace.dart';
 import 'package:counter/Utils/colors_constants.dart';
 import 'package:counter/Utils/drawer_logout.dart';
 import 'package:counter/Utils/gradient_color.dart';
@@ -198,53 +199,53 @@ class _TrainListState extends State<TrainList> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 0),
                       color: ColorConstants.appcolor,
-                      height:55,
+                      height:5.7.h,
                       // decoration: BoxDecoration(
                       //
                       //   borderRadius: BorderRadius.zero,
                       //   border: Border.all(color: Colors.black)
                       // ),
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 5),
+                        padding:  EdgeInsets.only(top: 5.sp),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          padding:  EdgeInsets.symmetric(horizontal: 15.sp),
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width,
-                            child: const Row(
+                            child:  Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children:  [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 10),
+                                  padding: EdgeInsets.only(left: 8.sp),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text('Origin Station',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
-                                      SizedBox(height: 5,),
-                                      Text('Destination Station',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
+                                      Text('Origin Station',style: TextStyle(fontSize: 10.sp,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
+                                      SmallSpace(),
+                                      Text('Destination Station',style: TextStyle(fontSize: 10.sp,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                     ],
                                   ),
                                 ),
 
-                                SizedBox(width: 85,),
+                                SizedBox(width: 70.sp),
 
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
 
                                   children: [
-                                    Text('  Arrival',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
-                                    SizedBox(height: 5,),
-                                    Text('Departure',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
+                                    Text('  Arrival',style: TextStyle(fontSize: 10.sp,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
+                                    SmallSpace(),
+                                    Text('Departure',style: TextStyle(fontSize: 10.sp,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                   ],
                                 ),
-                                SizedBox(width: 5,),
+                                SmallSpace(),
 
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
 
                                   children: [
-                                    Text('Headcode',style:TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
-                                    SizedBox(height: 5,),
-                                    Text('Train UID',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
+                                    Text('Headcode',style:TextStyle(fontSize: 10.sp,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
+                                    SmallSpace(),
+                                    Text('Train UID',style: TextStyle(fontSize: 10.sp,color: Colors.white,fontWeight: FontWeight.bold,fontFamily:"railBold"),),
                                   ],
                                 ),
                               ],
@@ -259,7 +260,7 @@ class _TrainListState extends State<TrainList> {
                           height: 7.h,
                           width: 100.w,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+                            padding:  EdgeInsets.only(left: 7.sp, top: 5.sp, right: 7.sp),
                             child: TextFormField(
                               controller: searchLocation,
                               onChanged: (value) {
@@ -268,14 +269,14 @@ class _TrainListState extends State<TrainList> {
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(width: 3, color: Color(0xFF249238)),
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(3.sp),
                                 ),
                                 filled: true,
                                 fillColor: Colors.white,
                                 suffixIcon: const Icon(Icons.search),
                                 hintText: 'Search',
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(3.sp),
                                 ),
                               ),
                             ),
@@ -421,7 +422,7 @@ class _TrainListState extends State<TrainList> {
                                       child: Container(
                                         width: 85.w,
                                         height: 12.h,
-                                        padding: const EdgeInsets.symmetric(horizontal: 7),
+                                        padding:  EdgeInsets.symmetric(horizontal: 7.sp),
                                         child: Card(
                                           color: _selectedIndexes.contains(index) ? Colors.green : null,
                                           child: ListTile(
@@ -429,13 +430,13 @@ class _TrainListState extends State<TrainList> {
                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                const SizedBox(height: 5,),
+                                                SmallSpace(),
                                                 Column(
                                                   children: [
-                                                Text('${train.origin_time}-${train.origin_location}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),textAlign: TextAlign.center,),                                     ],
+                                                Text('${train.origin_time}-${train.origin_location}', style:  TextStyle(fontSize: 9.sp, fontWeight: FontWeight.bold),textAlign: TextAlign.center,),                                     ],
                                                 ),
-                                                const SizedBox(height: 15,),
-                                                Text('${train.destination_time}-${train.destination_location}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                                                SmallSpace(),
+                                                Text('${train.destination_time}-${train.destination_location}',style:  TextStyle(fontSize: 9.sp,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
                                               ],
                                             ),
 
@@ -445,11 +446,11 @@ class _TrainListState extends State<TrainList> {
                                                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 crossAxisAlignment: CrossAxisAlignment.end,
                                                 children: [
-                                                  Text(train.arrival_time.toString() == " " ? '--:--' : train.arrival_time,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
-                                                  const SizedBox(height: 5,),
-                                                  Text(train.departure_time.toString() == " " ? '--:--' : train.departure_time,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
-                                                  const SizedBox(height: 5,),
-                                                  Text('P : ${train.platform.toString() == " " ? 'Na': train.platform.toString()}',style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  Text(train.arrival_time.toString() == " " ? '--:--' : train.arrival_time,style:  TextStyle(fontSize: 9.sp,fontWeight: FontWeight.bold),),
+                                                  SmallSpace(),
+                                                  Text(train.departure_time.toString() == " " ? '--:--' : train.departure_time,style:  TextStyle(fontSize: 9.sp,fontWeight: FontWeight.bold),),
+                                                  SmallSpace(),
+                                                  Text('P : ${train.platform.toString() == " " ? 'Na': train.platform.toString()}',style:  TextStyle(fontSize: 9.sp,fontWeight: FontWeight.bold),),
                                                 ],
                                               ),
                                             ),
@@ -460,9 +461,9 @@ class _TrainListState extends State<TrainList> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(train.headcode,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
-                                                  const SizedBox(height: 12,),
-                                                  Text(train.train_uid,style: const TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                                                  Text(train.headcode,style:  TextStyle(fontSize: 9.sp,fontWeight: FontWeight.bold),),
+                                                  SmallSpace(),
+                                                  Text(train.train_uid,style:  TextStyle(fontSize: 9.sp,fontWeight: FontWeight.bold),),
                                                 ],
                                               ),
                                             ),

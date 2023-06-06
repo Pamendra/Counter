@@ -57,7 +57,7 @@ class ServiceApi {
       dio.options.receiveTimeout = Duration(milliseconds: 30000);
 
 
-      var response = await dio.post('http://192.168.137.68:8000/pcds/api/auto-count-app-services', data: formData);
+      var response = await dio.post('http://192.168.137.183:8000/pcds/api/auto-count-app-services', data: formData);
 
       if (response.statusCode == 200) {
         print('Response data: ${response.data}');
