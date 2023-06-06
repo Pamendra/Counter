@@ -111,8 +111,8 @@ class DrawerLogout extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const SizedBox(
-                height: 50,
+               SizedBox(
+                height: 5.h,
               ),
               ListTile(
                 leading: const Icon(
@@ -132,9 +132,9 @@ class DrawerLogout extends StatelessWidget {
                       bottom: BorderSide(
                         color: ColorConstants.backgroundappColor,
                       )),
-                  title:const Text('Service List', style: TextStyle(
+                  title: Text('Service List', style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 17,
+                      fontSize: 13.sp,
                       color: Colors.white),),
                   onTap: (){
                    Navigator.pop(context);
@@ -150,9 +150,9 @@ class DrawerLogout extends StatelessWidget {
                       bottom: BorderSide(
                         color: ColorConstants.backgroundappColor,
                       )),
-                  title:const Text('Change Station', style: TextStyle(
+                  title: Text('Change Station', style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 17,
+                      fontSize: 13.sp,
                       color: Colors.white),),
                   onTap: () async {
                     /// Clear Train list
@@ -181,9 +181,9 @@ class DrawerLogout extends StatelessWidget {
                       bottom: BorderSide(
                         color: ColorConstants.backgroundappColor,
                       )),
-                  title:const Text('Saved Data', style: TextStyle(
+                  title: Text('Saved Data', style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 17,
+                      fontSize: 13.sp,
                       color: Colors.white),),
                   onTap: (){
                     Navigator.push(
@@ -200,11 +200,11 @@ class DrawerLogout extends StatelessWidget {
                         bottom: BorderSide(
                           color: ColorConstants.backgroundappColor,
                         )),
-                    title: const Text(
+                    title:  Text(
                       'Logout',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 17,
+                          fontSize: 13.sp,
                           color: Colors.white),
                     ),
                     onTap: () async {
@@ -236,7 +236,7 @@ class DrawerLogout extends StatelessWidget {
 
 
               Padding(
-                padding: const EdgeInsets.only(top: 300),
+                padding:  EdgeInsets.only(top: 25.h),
                 child: Column(
                   children: [
                     // Padding(
@@ -244,7 +244,7 @@ class DrawerLogout extends StatelessWidget {
                     //   child: Divider(color:ColorConstants.backgroundappColor,thickness: 1),
                     // ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding:  EdgeInsets.symmetric(horizontal: 6.sp),
                       child: ListTile(
                         shape: Border(
                             bottom: BorderSide(
